@@ -1,0 +1,25 @@
+{
+  "name": "amirka",
+  "version": "0.0.11",
+  "description": "Набор инструментов или татарский ножик в дополнение к Lodash :)",
+  "main": "index.js",
+  "keywords": [
+    "CSS",
+    "preprocessor",
+    "parser",
+    "minimalist",
+    "notation",
+    "modules",
+    "util"
+  ],
+  "author": {
+    "name": "Absolutely Amir",
+    "email": "mr.amirka@ya.ru",
+    "url": "https://github.com/mr-amirka"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:mr-amirka/amirka.git"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+  <title>Minimalist Notation Standalone</title>
+</head>
+<body m="p m">
+  <div 
+    class="block"
+    m="h100vh w100vw tbl bg0 cF tc rt@sm lt@400-768 lt@print bgF00@x600-"
+  >
+    <div class="block__element">
+      Minimalist Notation Standalone
+    </div>
+  </div>
+  <script src="assets/amirka.mn.js"></script>
+  <script src="assets/mn-styles/mn.settings.js"></script>
+  <script src="assets/mn-styles/mn.style.js"></script>
+  <script src="assets/amirka.boot.js"></script>
+  <script>
+    amirkaBoot.polyfill({
+      'CSS.escape': 'assets/standalone-shims/css.escape.shim.js',
+      'Promise': 'assets/standalone-shims/promise.shim.js',
+      'setImmediate': 'assets/standalone-shims/set-immediate.shim.js'
+    }, function(){
+      amirka.ready(() => {
+        mn
+          .recursiveCheckNodeByAttr(document)
+          .compile();
+
+          console.log('minimalistNotation', mn.data);
+      });  
+    });
+  </script>
+</body>
+</html>

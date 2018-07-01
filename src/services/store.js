@@ -25,7 +25,7 @@ store('theme.baseColor', '#0F0');
 store('theme.otherColor', '#00F');
  */
 
-import { ObservableStore } from '../../common/observable-store';
+import { ObservableStore } from '../common/observable-store';
 
 export const store = ObservableStore.call(function(){
   store.set.apply(store, arguments);

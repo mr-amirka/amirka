@@ -3,16 +3,13 @@
  * @author Absalyamov Amir <mr.amirka@ya.ru>
  */
 
-import {round} from 'lodash';
+import { round, lowerCase } from 'lodash';
 
-const regexpColor = /([A-Fa-f0-9]+)|rgba?\((.*)\)/;
+const regexpColor = /^(([A-Fa-f0-9]+)|rgba?\((.*)\))(.*)$/;
 const regexpColorDelimeter = /\s*,\s*/;
-const regexpRgba = /[A-Fa-f0-9]+/;
-export const color = (v) => {
-  if(!v)return '';
-  v = '' + v;
-  return v.match(regexpRgba) ? rgbaAlt(__normalize(v)) : [ lowerCase(v) ];
-};
+const regexpRgba = /^[A-Fa-f0-9]+$/;
+export const color = v => regexpRgba.exec(v) ? rgbaAlt(__normalize(v)) : [ lowerCase(v) ];
+
 const __normalize = (v) => {
   if(!v)return [0, 0, 0, 1];
   let l = v.length;
@@ -32,27 +29,28 @@ const __normalize = (v) => {
 };
 const k = 1.0 / 255;
 const getColor = color.get = (input) => {
-  const matchs = ('' + input).match(regexpColor);
-  if(!matchs)return [0, 0, 0, 1];
-  if(matchs[1])return __normalize(matchs[1]);
-  const tones = matchs[2].split(regexpColorDelimeter);
-  let output = [0, 0, 0, 1];
+  const matchs = regexpColor.exec(input);
+  if (!matchs) return [0, 0, 0, 1];
+  const c16 = matchs[2];
+  if (c16) return __normalize(c16);
+  const tones = matchs[3].split(regexpColorDelimeter);
+  const output = [0, 0, 0, 1];
   let v, i = tones.length;
-  if(i > 3){
+  if (i > 3) {
     i = 3;
     isNaN(v = parseFloat(v = tones[3])) || (output[3] = v);
   }
-  for(;i--;)isNaN(v = parseInt(tones[i])) || (output[i] = v * k);
+  for (;i--;) isNaN(v = parseInt(tones[i])) || (output[i] = v * k);
   return output;
 };
 const getCore = getColor.core = (args) => {
   let rgbaColor = [0, 0, 0, 1];
-  for(let v, l = args.length; l--;)isNaN(v = parseInt(args[l], 16)) || (rgbaColor[l] = v * k);
+  for (let v, l = args.length; l--;) isNaN(v = parseInt(args[l], 16)) || (rgbaColor[l] = v * k);
   return rgbaColor;
 };
 const prepare = color.prepare = (args) => {
   let arg, l = args.length, output = new Array(l);
-  for(; l--;)output[l] = isArrayLikeObject(arg = args[l]) ? arg : getColor(arg);
+  for (; l--;) output[l] = isArrayLikeObject(arg = args[l]) ? arg : getColor(arg);
   return output;
 };
 const join = color.join = (args) => rgba(joinCore(prepare(args)));

@@ -19,14 +19,15 @@ module.exports = {
   },
   mode: 'production',
   resolve: {
-    extensions: [ '.js' ]
+    extensions: [ '.ts', '.js' ]
   },
   entry: {
-    'amirka.base': './src/base/index.js',
-    'amirka.common': './src/common/index.js',
-    'amirka.minimalist-notation': './src/minimalist-notation/index.js',
     app: './src/example/index.js',
-    'boot-app': './src/example/boot-app.js',
+    'amirka': './src/standalone-amirka.js',
+    'amirka.mn': './src/standalone-mn.js',
+    'amirka.boot': './src/standalone-boot.js',
+    'mn-styles/mn.settings': './src/standalone-mn-styles/mn.settings.js',
+    'mn-styles/mn.style': './src/standalone-mn-styles/mn.style.js',
     'standalone-shims/promise.shim': './src/standalone-shims/promise.shim.js',
     'standalone-shims/css.escape.shim': './src/standalone-shims/css.escape.shim.js',
     'standalone-shims/set-immediate.shim': './src/standalone-shims/set-immediate.shim.js'
@@ -38,6 +39,17 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true
+            }
+          }
+        ]
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -119,20 +131,7 @@ module.exports = {
             loader: 'markdown-loader'
           }
         ]
-      },
-      {
-        test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true
-            }
-          }
-        ]
       }
-
-
     ]
   }
 

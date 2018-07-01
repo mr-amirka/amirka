@@ -4,6 +4,12 @@
  */
 
 export const execute = (funcs, args, context) => {
-  for (let i = 0; i < funcs.length; i++) funcs[i].apply(context, args);
+	const length = funcs.length;
+  for (let i = 0; i < length; i++) funcs[i].apply(context, args);
   return true;
+};
+export const executeProvider = execute.provider = (funcs) => {
+	return function() {
+		return execute(funcs, arguments, this);
+	};
 };

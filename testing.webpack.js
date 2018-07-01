@@ -10,7 +10,7 @@ module.exports = function(_path) {
     devtool: 'inline-source-map',
     resolve: {
       root: path.join(__dirname, 'src'),
-      extensions: ['', '.js' ],
+      extensions: ['', '.ts', '.js' ],
       modulesDirectories: ['node_modules']
     },
     module: {

@@ -6,10 +6,11 @@
 import {
   extend,
   sortBy,
-  isObject,
   isString,
   isEmpty,
+  isLength,
   isArrayLikeObject,
+  map as __map,
   values as __values,
   indexOf,
   set as __set,
@@ -27,7 +28,7 @@ import {flagsSimple as __flags} from '../base/flags';
 import {joinArrays} from '../common/join-arrays';
 import {routeParseProvider} from '../common/route-parse-provider';
 import {immediate} from '../common/immediate';
-import {css as __css, parseCSS} from '../common/css';
+import {cssPropertiesStringifyProvider} from '../common/css-properties-stringify-provider';
 import {selectorsCompileProvider} from './selectors-compile-provider';
 
 export {selectorsCompileProvider};
@@ -35,8 +36,15 @@ export const minimalistNotationProvider = ($$storage) => {
 
   const mn = (essencePath, extendedEssence, paramsMatchPath) => {
     
-    if (!essencePath || !isString(essencePath)) {
-      console.warn('MN: value must be an string', essencePath);
+    const pathType = typeof essencePath;
+
+    if (pathType === 'object') {
+      __setMap(essencePath);
+      return mn;
+    }
+
+    if (!essencePath || pathType !== 'string') {
+      console.warn('MN: essencePath value must be an string', essencePath);
       return mn;
     }
 
@@ -49,11 +57,31 @@ export const minimalistNotationProvider = ($$storage) => {
         extendedEssence;
       return mn;
     }
-    if (type !== 'object') {
-      console.warn('MN: value must be an object', extendedEssence);
+    if (type === 'object') {
+      __setEssense(essencePath, extendedEssence);
       return mn;
     }
-
+    console.warn('MN: extendedEssence value must be an object on', extendedEssence, 'where', essencePath);
+    return mn;
+  };
+  const __setMap = (map) => {
+    let essencePath, extendedEssence, type;
+    for (essencePath in map) {
+      extendedEssence = map[essencePath];
+      type = typeof extendedEssence;
+      if (type === 'function') {
+        $$handlerMap[essencePath] = extendedEssence;
+        continue;
+      }
+      if (type === 'object') {
+        __setEssense(essencePath, extendedEssence);
+      } else {
+        console.warn('MN: extendedEssence value must be an object on', extendedEssence, 'where', essencePath);
+      }
+    }
+  };
+  const __setEssense = (essencePath, extendedEssence) => {
+    
     essencePath = toPath(essencePath);
     const essenceName = essencePath[0];
     const path = [ essenceName ];
@@ -67,14 +95,16 @@ export const minimalistNotationProvider = ($$storage) => {
       __get($$staticsEssences, path), 
       __normalize(extendedEssence)
     ], {}, $$mergeDepth));
-    return mn;
-  }
+  };
 
   selectorsCompileProvider(mn);
   const classNameCompile = mn.classNameCompile;
   const attrCompile = mn.attrCompile;
  
   mn.$$storage = $$storage;
+  let storageSet = $$storage.set;
+  let storageRemove = $$storage.remove;
+
   let $$essences;
   let $$root;
   let $$classNamesMap;
@@ -89,6 +119,7 @@ export const minimalistNotationProvider = ($$storage) => {
   let $$media = mn.media = {};
   let $$handlerMap = mn.handlerMap = {};
   let $$checkAttrs = mn.checkAttrs = {};
+  let cssPropertiesStringify = mn.propertiesStringify = cssPropertiesStringifyProvider();
 
   let $$deferred = {};
   let $$newClassNames = [];
@@ -174,7 +205,7 @@ export const minimalistNotationProvider = ($$storage) => {
       const l = essences.length;
       let output = new Array(l);
       for (let i = 0; i < l; i++) output[i] = essences[i].content;
-      if (mediaQuery) output = ['@media ', mediaQuery, '{', output.join(''), '}' ];
+      if (mediaQuery) output = ['@media ', mediaQuery, '{', output.join(''), '}'];
       setStyle($$rootPrefix + mediaName, output.join(''), mediaPriority);
     },
     'media-queries-essences': (mediaName, context) => {
@@ -205,13 +236,9 @@ export const minimalistNotationProvider = ($$storage) => {
 
   const setStyle = (mediaName, content, priority) => {
     $$cache[mediaName] = true;
-    mn.$$storage.set(mediaName, content, priority);
-    return mn;
+    storageSet(mediaName, content, priority);
   };
-  const removeStyle = (mediaName) => {
-    mn.$$storage.remove(mediaName);
-    return mn;
-  };
+
   const assign = (essencesNames, selectors) => {
     selectors = __flags(selectors);
     essencesNames = __flags(essencesNames);
@@ -237,6 +264,19 @@ export const minimalistNotationProvider = ($$storage) => {
       }
     }
     return mn;
+  };
+
+  const __getRules = (rules, selectors, style, priority, childs) => {
+    const css = cssPropertiesStringify(style);
+    if (css) rules.push({ selectors, css: '{' + css + '}', priority });
+    let k, child;
+    for (k in childs) {
+      if(child = childs[k])__getRules(
+        rules, joinArrays([], selectors, child.selectors), 
+        child.style, child.priority || 0, child.childs
+      );
+    }
+    return rules;
   };
 
   const mnInclude = (essencesNames, includeEssencesNames) => {
@@ -308,25 +348,26 @@ export const minimalistNotationProvider = ($$storage) => {
         return essence;
       }
     }
-    const req = { input: essenceName, name: essenceName, suffix: '' };
-    __matchName(essenceName, req);
-    __matchValue(req.suffix, req);
+    const params = { input: essenceName, name: essenceName, suffix: '' };
+    __matchName(essenceName, params);
+    __matchImportant(params.suffix, params);
+    __matchValue(params.suffix, params);
 
     /**
      * Исходя из предшествующего опыта,
      * чтобы избавить разработчика от необходимости добалять 
      * эту логику руками в каждом отдельном обработчике,
-     * параметр req.i добавляется автоматически
+     * параметр params.i добавляется автоматически
      */
-    req.ni || (req.ni = '');
-    req.i = req.ni ? '' : '!important';
+    params.ni || (params.ni = '');
+    params.i = params.ni ? '' : '!important';
     
-    const _name = req.name;
+    const _name = params.name;
     const handler = $$handlerMap[_name];
 
     if (!handler) return essence;
 
-    const _essence = handler(req);
+    const _essence = handler(params);
 
     if (_essence) {
       __essenceSet(essence, _essence);
@@ -394,7 +435,7 @@ export const minimalistNotationProvider = ($$storage) => {
     $$css = $$data.css = __ctx($$data.css);
 
     let k, mediaName, sContext;
-    for (mediaName in $$cache) removeStyle(mediaName);
+    for (mediaName in $$cache) storageRemove(mediaName);
     $$cache = mn.$$cache = {};
     for (mediaName in $$staticsRoot) {
       sContext = $$staticsRoot[mediaName];
@@ -421,10 +462,12 @@ export const minimalistNotationProvider = ($$storage) => {
     const mode = modeName && $$contextMods[modeName];
     if (!mode) {
       console.error('Context mode "', modeName, '" is not available!');
-    }else{
+    } else {
       $$mode = mode;
     }
     $$storage = mn.$$storage;
+    storageSet = $$storage.set;
+    storageRemove = $$storage.remove;
     __reflect();
   };
   const clear = () => {
@@ -445,14 +488,14 @@ export const minimalistNotationProvider = ($$storage) => {
         v = map[k];
         for(prefix in $$keyframesPrefixes)output.push(prefix, v);
       }
-      $$storage.set('keyframes', output.join(''));
+      storageSet('keyframes', output.join(''), defaultCCSPriority);
     }
     if ($$css.updated) {
       $$css.updated = false;
       map = $$css.map;
       output = [];
       for (k in map) output.push(map[k].content);
-      $$storage.set('css', output.join(''));
+      storageSet('css', output.join(''), defaultCCSPriority);
     }
     if (mn.disabled) return;
     if (force) {
@@ -520,7 +563,7 @@ export const minimalistNotationProvider = ($$storage) => {
     $$newClassNames.push(className);
     return mn;
   };
-  const checkAttr = (attrName, attrValue) => {
+  const checkAttrOne = (attrName, attrValue) => {
     if (!attrValue) return mn;
     const attrValuesMap = $$attrsMap[attrName] || ($$attrsMap[attrName] = {});
     if (attrValuesMap[attrValue]) return;
@@ -528,7 +571,20 @@ export const minimalistNotationProvider = ($$storage) => {
     ($$newAttrsMap[attrName] || ($$newAttrsMap[attrName] = [])).push(attrValue);
     return mn;
   };
-  const coreCheckClassName = (classNamesValue) => {
+  const checkAttr = (attrName, attrValue) => {
+    if (!attrValue) return mn;
+    const attrValuesMap = $$attrsMap[attrName] || ($$attrsMap[attrName] = {});
+    const newAttrs = $$newAttrsMap[attrName] || ($$newAttrsMap[attrName] = []);
+    const vls = attrValue.split(regexpDelimiter);
+    for (let v, i = vls.length; i--; ) {
+      v = vls[i];
+      if (attrValuesMap[v]) continue;
+      attrValuesMap[v] = true;
+      newAttrs.push(v);
+    }
+    return mn;
+  };
+  const checkClassNames = (classNamesValue) => {
     const classNames = classNamesValue.split(regexpDelimiter);
     let className, i = classNames.length;
     for (; i--;) {
@@ -543,7 +599,7 @@ export const minimalistNotationProvider = ($$storage) => {
   };
   const checkNodeByClassName = (node) => {
     const className = node.className;
-    className && coreCheckClassName(className);
+    className && checkClassNames(className);
     if (!node.getAttribute) return mn;
     const ngClass = node.getAttribute('ng-class');
     ngClass && ngClass.replace(reNgClass, __ngCheck);
@@ -566,7 +622,7 @@ export const minimalistNotationProvider = ($$storage) => {
     }
     return mn;
   };
-  const __ngCheck = (find, a, b, c) => coreCheckClassName(a || b || c);
+  const __ngCheck = (find, a, b, c) => checkClassNames(a || b || c);
   
   const recursiveCheckNodeProvider = (checkNode) => {
     const childrenCheck = (nodes) => {
@@ -588,7 +644,7 @@ export const minimalistNotationProvider = ($$storage) => {
     };
     return (node) => {
       if (!node) return mn;
-      recursiveCheck(isArrayLikeObject(node) ? node : [ node ]);
+      recursiveCheck(isLength(node.length) ? node : [ node ]);
       return mn;
     };
 
@@ -597,10 +653,12 @@ export const minimalistNotationProvider = ($$storage) => {
   const setKeyframes = (name, body) => {
     let map = $$keyframes.map;
     if (body) {
-      let css, output = [ name, '{' ];
-      if (isObject(body)) {
+      let output = [ name, '{' ];
+      let css;
+      let type = typeof body;
+      if (type === 'object') {
         for(let k in body){
-          output.push(k, '{', isObject(css = body[k]) ? __css(css) : css, '}');
+          output.push(k, '{', typeof(css = body[k]) === 'object' ? cssPropertiesStringify(css) : css, '}');
         }
       } else {
         output.push(body);
@@ -615,15 +673,24 @@ export const minimalistNotationProvider = ($$storage) => {
   }
   
   const setCSS = (selector, css) => {
-    var map = $$css.map;
-    if (css) {
-      const instance = map[selector] || (map[selector] = { css: {} });
-      css = isObject(css) ? extend(instance.css, css) : parseCSS(css, instance.css);
-      instance.content = [ selector , '{', __css(css),  '}' ].join('');
-      $$css.updated = true;
+    const type = typeof selector;
+    const map = $$css.map;
+    const __setCSS = (selector, css) => {
+      if (css) {
+        const instance = map[selector] || (map[selector] = { css: {} });
+        css = extend(instance.css, css);
+        instance.content = [ selector , '{', cssPropertiesStringify(css), '}' ].join('');
+      } else {
+        delete map[selector];
+      }
+    };
+    if (type === 'object') {
+      const selectorsMap = selector;
+      for (selector in selectorsMap) __setCSS(selector, selectorsMap[selector]);
     } else {
-      delete map[selector];
+      __setCSS(selector, css);
     }
+    $$css.updated = true;
     return mn;
   };
 
@@ -631,6 +698,8 @@ export const minimalistNotationProvider = ($$storage) => {
     contextMode: 'media-queries', // 'media-queries-essences', //
     disabled: false,
     checkClassName,
+    checkClassNames,
+    checkAttrOne,
     checkAttr,
     ngCheck,
     
@@ -655,6 +724,7 @@ export const minimalistNotationProvider = ($$storage) => {
 };
 
 const defaultPriority = -2000;
+const defaultCCSPriority = defaultPriority - 2000;
 
 const parseMediaValue = (mediaValue) => {
   if (!mediaValue) return;
@@ -664,7 +734,7 @@ const parseMediaValue = (mediaValue) => {
   }
   return v;
 };
-export const parseMediaPart = (mediaPart) => {
+const parseMediaPart = (mediaPart) => {
   if (!mediaPart) return;
   const parts = mediaPart.split('-');
   if (parts.length > 1) {
@@ -678,8 +748,11 @@ export const parseMediaPart = (mediaPart) => {
   };
 };
 
-export const handlerWrap = (essenceHandler, paramsMatchPath) => {
-  const parse = routeParseProvider(paramsMatchPath);
+const __pi = v => routeParseProvider(v);
+const handlerWrap = (essenceHandler, paramsMatchPath) => {
+  const parse = isArrayLikeObject(paramsMatchPath) 
+    ? execute.provider(__map(paramsMatchPath, __pi))
+    : routeParseProvider(paramsMatchPath);
   return p => {
     parse(p.suffix, p);
     return essenceHandler(p);
@@ -688,7 +761,8 @@ export const handlerWrap = (essenceHandler, paramsMatchPath) => {
 
 const regexpDelimiter = /\s+/i;
 const regexpExts = /[\s,]+/;
-const __matchName = routeParseProvider('^([a-z]+):name(.+):suffix?(-i):ni?$');
+const __matchName = routeParseProvider('^([a-z]+):name(.*?):suffix$');
+const __matchImportant = routeParseProvider('^(.*?):suffix(-i):ni$');
 const __matchValue = routeParseProvider('^(([A-Z][a-z]+):camel|((\\-):negative?[0-9]+):num):value([a-z%]+):unit?(.*?):other?$');
 const $$keyframesPrefixes = reduce([
   '-webkit-', '-moz-', '-o-',  '-ms-', '-khtml-', ''
@@ -698,8 +772,7 @@ const $$keyframesPrefixes = reduce([
 }, {});
 
 const __norm = (essence) => {
-  let style = essence.style;
-  if (!isObject(style)) essence.style = style ? parseCSS(style) : {};
+  essence.style || (essence.style = {});
   let selectors = essence.selectors;
   if (isString(selectors)) {
     essence.selectors = [ selectors ];
@@ -713,35 +786,27 @@ const __norm = (essence) => {
   return essence;
 };
 
+
 const __normalize = (essence) => {
-  var src = essence.exts;
-  var dst = essence.exts = {};
-  if (isString(src)) src = src.split(regexpExts);
-  if (isObject(src)) {
-    if (isArrayLikeObject(src)) {
-      __flags(src, dst);
-    } else {
-      extend(dst, src);
+  const src = essence.exts;
+  const dst = essence.exts = {};
+  const type = typeof src;
+  if (type === 'string') {
+    __flags(src.split(regexpExts), dst);
+  } else {
+    if (type === 'object') {
+      if (isLength(src.length)) {
+        __flags(src, dst);
+      } else {
+        extend(dst, src);
+      }
     }
   }
-  var include = essence.include;
+  let include = essence.include;
   if (isString(include) && (include = include.split(regexpExts)).length) {
     essence.include = include;
   }
   return __norm(essence);
-};
-
-const __getRules = (rules, selectors, style, priority, childs) => {
-  const css = __css(style);
-  if (css) rules.push({ selectors, css: '{' + css + '}', priority });
-  let k, child;
-  for (k in childs) {
-    if(child = childs[k])__getRules(
-      rules, joinArrays([], selectors, child.selectors), 
-      child.style, child.priority || 0, child.childs
-    );
-  }
-  return rules;
 };
 
 const __sortByArgs = [ v => v.priority ];

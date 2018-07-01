@@ -15,19 +15,19 @@ import {escapeQuote} from '../common/escape-quote';
 import {variance} from '../common/variance';
 import {escapedSplitProvider} from '../common/escaped-split-provider';
 import {joinMaps} from '../common/join-maps';
-import {css} from '../common/css';
 import {escapedBreakupProvider} from '../common/escaped-breakup-provider';
 
 const __variance = variance.core;
-const __escape = css.escape;
+
 const regexpDepth = /^(\d+)(.*)$/;
 const splitParent = escapedSplitProvider(/<|>\-/).core;
 const splitChild = escapedSplitProvider(/>|<\-/).core;
 const splitState = escapedSplitProvider(':').core;
+const splitMedia = escapedSplitProvider('@').core;
 const regexpScope = /^(.*?)\[(.*)\]$/;
 
-
 export const selectorsCompileProvider = (instance) => {
+  const __escape = CSS.escape;
 
   const classNameCompile = (path) => 
     getSelectors(path, '.' + __escape(path));
@@ -40,8 +40,6 @@ export const selectorsCompileProvider = (instance) => {
 
     const rules = {};
     const suffixes = {};
-    const initial = {};
-    initial[targetName] = 1;
 
     let map = __variance(value);
     let suffix;
@@ -62,7 +60,7 @@ export const selectorsCompileProvider = (instance) => {
       parts = splitChild(suffix);
       mediaNames = [];
       l = parts.length;
-      alts = getParents(mediaNames, parts[0], initial);
+      alts = getParents(mediaNames, parts[0], targetName);
       for (i = 1; i < l; i++) {
         part = getPart(parts[i]);
         alts = joinMaps({}, alts, getParents(mediaNames, part.name), part.prefix);
@@ -82,29 +80,22 @@ export const selectorsCompileProvider = (instance) => {
   };
 
   const procMedia = (mediaNames, partName) => {
-    let mp = extractMedia(partName);
-    let mediaValue = mp.value;
-    if (!mediaValue) return mp.prefix;
-    let sp = extractSelector(mediaValue);
-    let mediaName = sp.prefix;
-    if (mediaName) {
-      mediaNames.push(mediaName);
-    }
-    return mp.prefix + sp.value;
+    const mediaParts = splitMedia(partName);
+    const mediaPartsLength = mediaParts.length;
+    const prefix = mediaParts[0];
+    if (mediaPartsLength < 2) return prefix;
+    const sp = extractSelector(mediaParts[mediaPartsLength - 1]);
+    mediaNames.push(mediaPartsLength > 2 ? mediaParts[1] : sp.prefix);
+    return prefix + sp.value;
   };
 
-  const getParents = (mediaNames, name, alts) => {       
+  const getParents = (mediaNames, name, targetName) => {       
     const parts = splitParent(name);
     const l = parts.length;
     let partName = procMedia(mediaNames, parts[0]);
     let essence = getEssence(partName);
 
-    let partAlts = joinMaps({}, getMap(essence.selector), essence.states);
-    if (alts) {
-      if (partName) alts = joinMaps({}, partAlts, alts);
-    } else {
-      alts = partAlts;
-    }
+    let alts = joinMaps({}, getMap((targetName || '') + essence.selector), essence.states);
     for (let part, i = 1; i < l; i++) {
       part = getPart(procMedia(mediaNames, parts[i]));
       essence = getEssence(part.name);
@@ -154,13 +145,12 @@ export const selectorsCompileProvider = (instance) => {
   });
   return instance;
 };
-
-const extractMedia = selectorsCompileProvider.extractMedia = escapedBreakupProvider('@');
 const extractSuffix = selectorsCompileProvider.extractSuffix = escapedBreakupProvider(/[<>:\.\[\]#+@]/);
 const extractSelector = selectorsCompileProvider.extractSelector = escapedBreakupProvider('<');
 const getPrefix = selectorsCompileProvider.getPrefix = (depth) => {
-  let i = 0, output = '';
-  for (; i < depth; i++) output += '>';
+  if (depth < 1) return '';
+  let output = '>';
+  for (depth--; depth--;) output += '*>';
   return output;
 };
 const getPart = selectorsCompileProvider.getPart = (name) => {

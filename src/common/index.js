@@ -4,7 +4,8 @@
  */
 
 export * from './api';
-export * from './css';
+export * from './css-properties-stringify-provider';
+export * from './css-properties-parse';
 export * from './deal';
 export * from './immediate';
 export * from './observable-store';
