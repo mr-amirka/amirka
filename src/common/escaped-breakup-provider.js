@@ -8,7 +8,8 @@
  * 
  */
 
-import {escapeRegExp, isRegExp} from 'lodash';
+import {escapeRegExp, isRegExp, map} from 'lodash';
+import {unslash} from './unslash';
 
 export const escapedBreakupProvider = (separator) => {
   if (isRegExp(separator)) {
@@ -18,7 +19,8 @@ export const escapedBreakupProvider = (separator) => {
     separator = escapeRegExp(separator);
   }
   const regexp = new RegExp('(\\\\.)|(' + separator + '(.*)$)', 'g');
-  return (input) => {
+  const instance = input => map(core(input), unslash);
+  const core = instance.core = input => {
     let prefix = input; 
     let suffix = '';
     let value = '';
@@ -30,4 +32,5 @@ export const escapedBreakupProvider = (separator) => {
     });
     return {prefix, suffix, value};
   };
+  return instance;
 };

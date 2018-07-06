@@ -10,45 +10,34 @@
 
 import {unslash} from './unslash';
 import {escapedSplitProvider} from './escaped-split-provider';
+import {joinArrays} from './join-arrays';
 
 export const variance = (path) => core(path).map(unslash);
 //Экранирование служебных символов
 const __split = escapedSplitProvider('|').core; //support escape
-const regexpScope = /([^)(\\]+)|(\\.)|([\(\)])/gi;
+const regexpScope = /([^)(\\]+|\\.)|([\(\)])/gi;
 const __push = [].push;
-const __prefix = variance.prefix = (output, values, prefix) => {
-	for (let i = 0, l = values.length; i < l; i++) output.push(prefix + values[i]);
-	return output;
-};
-const	__suffix = variance.suffix = (output, values, suffix) =>{
-	for (let i = 0, l = values.length; i < l; i++) output.push(values[i] + suffix);
-	return output;
-};
-const __join = (output, prefixes, suffixes) => {
-  for (let i = 0, si, l = prefixes.length, sl = suffixes.length, prefix; i < l; i++) {
-    prefix = prefixes[i];
-    for (si = 0; si < sl; si++) output.push(prefix + suffixes[si]);
-	}
-	return output;
-};
-const __parse = variance.parse = (prefixParts, childs) => {
-	if (childs.length < 1) return prefixParts;
-  const output = [], l = childs.length;
-  __push.apply(output, prefixParts);
-	let parts, i = 1, child = childs[0], inner = [], prefix = output.pop() || '';
-	let prev = __parse(__split(child.prefix), child.childs);
-	for (; i < l; i++) {
+const __build = variance.build = (childs) => {
+	const length = childs.length;
+	const output = [];
+	let parts, child, end, pi, pl, next, prev = [ '' ], i = 0;
+	for (; i < length; i++) {
 		child = childs[i];
 		parts = __split(child.prefix);
-		if (parts.length < 2) {
-			prev = __join([], prev, __parse(parts, child.childs));
+		pl = parts.length;
+		end = pl - 1;
+		joinArrays(next = [], [ parts[end] ], __build(child.childs));
+		if (end) {
+			joinArrays(output, prev, [ parts[0] ]);
+			prev = next;
+			for (pi = 1; pi < end; pi++) {
+				output.push(parts[pi]);
+			}
 		} else {
-			__suffix(inner, prev, parts.shift() || '');	
-			prev = __parse(parts, child.childs);
-		} 		
+			prev = joinArrays([], prev, next);
+		}
 	}
-	__push.apply(inner, prev);
-	__prefix(output, inner, prefix);
+	__push.apply(output, prev);
 	return output;
 };
 
@@ -57,12 +46,7 @@ const core = variance.core = (path) => {
 	const childs = levels[0] = [];
 	let depth = 0;
 	let parts = [];
-	path.replace(regexpScope, (haystack, _prefix, slash, scope) => {
-		//console.log({ _prefix, slash, scope });
-		if (slash) {
-			parts.push(slash);
-			return;
-		}
+	path.replace(regexpScope, (haystack, _prefix, scope) => {
 		if (_prefix) {
 			parts.push(_prefix);
 			return;
@@ -78,8 +62,6 @@ const core = variance.core = (path) => {
   	}
     parts = [];
 	});
-	if (parts.length) levels[depth].push({prefix: parts.join(''), childs: []});     	
-	const output = __parse([ '' ], childs);
-	return output;
+	if (parts.length) levels[depth].push({prefix: parts.join(''), childs: []});     
+	return __build(childs);
 };
-	

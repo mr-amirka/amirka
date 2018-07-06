@@ -56,7 +56,7 @@ export const selectorsCompileProvider = (instance) => {
     let _suffix;
     for (suffix in suffixes) { 
       _suffix = unslash(suffix);
-      item = rules[_suffix] = { essences: suffixes[_suffix] };
+      item = rules[_suffix] = { essences: suffixes[suffix] };
       parts = splitChild(suffix);
       mediaNames = [];
       l = parts.length;
@@ -105,29 +105,22 @@ export const selectorsCompileProvider = (instance) => {
   };
   
   const getEssence = (name) => {
-    const statesCollection = splitState(name);
-    if (statesCollection.length < 2) {
-      return { selector: unslash(name), states: {'': true} };
+    const stateExtract = extractState(name);
+    const value = stateExtract.value;
+    const selector = unslash(stateExtract.prefix);
+    if (!value) {
+      return { selector, states: {'': 1} };
     }
-    const selector = unslash(statesCollection.shift());
     const states = {};
-    let state, ns, si, v, scopeMatchs, i = statesCollection.length;
-    for (;i--;) {
-      if (state = unslash(statesCollection[i])) {
-        if (scopeMatchs = regexpScope.exec(state)) {
-          state = scopeMatchs[1];
-          if (v = '' || scopeMatchs[2]) v = '(' + v + ')';
-        } else {
-          v = '';
-        }
-        if ((ns = $$states[state]) && (si = ns.length)) {
-          for (;si--;) states[ns[si] + v] = true;
-        } else {
-          states[':' + state + v] = true; 
-        }
-      } else {
-        states[''] = true;
-      }
+    let state = value, scopeMatchs, v = '', ns, si;
+    if (scopeMatchs = regexpScope.exec(value)) {
+      state = scopeMatchs[1];
+      if (v = scopeMatchs[2] || '') v = '(' + v + ')';
+    }
+    if ((ns = $$states[state]) && (si = ns.length)) {
+      for (;si--;) states[ns[si] + v] = true;
+    } else {
+      states[':' + state + v] = true; 
     }
     return { selector, states };
   };
@@ -145,8 +138,9 @@ export const selectorsCompileProvider = (instance) => {
   });
   return instance;
 };
-const extractSuffix = selectorsCompileProvider.extractSuffix = escapedBreakupProvider(/[<>:\.\[\]#+@]/);
-const extractSelector = selectorsCompileProvider.extractSelector = escapedBreakupProvider('<');
+const extractSuffix = selectorsCompileProvider.extractSuffix = escapedBreakupProvider(/[<>:\.\[\]#+@]/).core;
+const extractSelector = selectorsCompileProvider.extractSelector = escapedBreakupProvider('<').core;
+const extractState = selectorsCompileProvider.extractState = escapedBreakupProvider(':').core;
 const getPrefix = selectorsCompileProvider.getPrefix = (depth) => {
   if (depth < 1) return '';
   let output = '>';

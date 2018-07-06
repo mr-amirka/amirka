@@ -1,7 +1,7 @@
 {
   "name": "amirka",
-  "version": "0.0.11",
-  "description": "Набор инструментов или татарский ножик в дополнение к Lodash :)",
+  "version": "0.0.13",
+  "description": "MinimalistNotation и прочие инструменты в дополнение к Lodash :)",
   "main": "index.js",
   "keywords": [
     "CSS",

@@ -184,8 +184,8 @@ forEach({
 }
 @content
 }
-
 */
+
 
 mn('tbl', {
   style: {display: 'table'},
@@ -397,10 +397,11 @@ forEach({
 .fw1#{$suffix}{font-weight:100;}
 */
 mn('fw', p => {
-  if (p.camel || p.negative) return;
+  if (p.negative) return;
+  const camel = p.camel;
   return {
     style: {
-      fontWeight: 100 * intval(p.num, 1, 1, 9)
+      fontWeight: camel ? kebabCase(camel) : (100 * intval(p.num, 1, 1, 9))
     }
   };
 });
@@ -639,16 +640,33 @@ mn('lh', p => {
 
     fx: 'flex',
 
-    ff: 'font-family',
-
     tp: 'transition-property',
   }, (propName, essenceName) => {
     mn(essenceName, p => {
       const style = {};
-      style[propName] = trim(lowerFirst(p.suffix || ''), '_').replace(regexp, replacer) + p.i;
+      style[propName] = lowerFirst(trim(p.suffix || '', '_')).replace(regexp, replacer) + p.i;
       return { style };
     });
   });
+
+  mn('ff', p => {
+    return {
+      style: {
+        fontFamily: trim(p.suffix || '', '_').replace(regexp, replacer)
+          .split(/[\s,]+/).map(v => '"' + v + '"').join(',') + p.i
+      }
+    };
+  });
+
+  mn('cn', p => {
+    return {
+      style: {
+        fontFamily: trim(p.suffix || ' ', '_').replace(regexp, replacer) + p.i
+      }
+    };
+  });
+ 
+
 })();
 
 /*
@@ -737,5 +755,49 @@ mn('blur', p => {
   };
 });
 
+
+mn('ratio', p => {
+  return p.negative || p.camel ? null : {
+    style: {
+      position: 'relative',
+      paddingTop: 'calc(' + (p.v || '100') + '% ' + (p.sign || '+') + ' ' + (p.calc || '0') + 'px)' + p.i
+    },
+    childs: {
+      overlay: {
+        selectors: [ '>*' ],
+        style: {
+          position: 'absolute',
+          top: '0px',
+          bottom: '0px',
+          left: '0px',
+          right: '0px'
+        }
+      }
+    }
+  };
+
+}, '(\\d+):v?(([-+]):sign(\\d+):calc)?');
+
+/*
+Оптимизировать обновление эссенций
+TODO: Добавить возможность добавлять расширять дочерние элементы эссенции
+EXAMPLE:
+mn('ratio', p => {
+  return p.negative || p.camel ? null : {
+    style: {
+      position: 'relative',
+      paddingTop: 'calc(' + (p.v || '100') + '% ' + (p.sign || '+') + ' ' + (p.calc || '0') + 'px)' + p.i
+    },
+    childs: {
+      overlay: {
+        selectors: [ '>*' ],
+        exts: [ 'overlay' ]
+      }
+    }
+  };
+
+}, '(\\d+):v?(([-+]):sign(\\d+):calc)?');
+
+ */
 
 };
