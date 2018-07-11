@@ -5,6 +5,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
+import {isLength} from 'lodash';
 import {withoutEmpty} from '../base/without-empty';
 
 export const param = (v, excludePrefix) => {
@@ -12,7 +13,7 @@ export const param = (v, excludePrefix) => {
   const s = [];
   const prefixLength = (excludePrefix || (excludePrefix = '$')).length;
   const l = v.length;
-  if (typeof l === 'number') {
+  if (isLength(l)) {
     for (let i = 0; i < l; i++) {
       paramBuild(s, i, v[i]);
     }
@@ -21,9 +22,8 @@ export const param = (v, excludePrefix) => {
       excludePrefix === k.slice(0, prefixLength) || paramBuild(s, k, v[k]);
     }
   }
-  return s.join('&').replace(exp20, '+').replace(exp22, '"').replace(exp3A, ':').replace(exp2C, ',');
+  return s.join('&');
 };
-const exp20 = /%20/g, exp22 = /%22/g, exp3A = /%3A/g, exp2C = /%2C/g;
 const buildMap = {
   object(v) {
     const dst = withoutEmpty(v);
@@ -33,6 +33,13 @@ const buildMap = {
 };
 const paramBuild = (s, p, v) => {
   const build = buildMap[typeof v];
-  if (build) s.push(encodeURIComponent(p) + '=' + encodeURIComponent(build(v)));
+  if (build) s.push(paramEscape(p) + '=' + paramEscape(build(v)));
   return s;
+};
+const paramEscape = v => {
+  return encodeURIComponent(v)
+    .replace(/%20/g, '+')
+    .replace(/%22/g, '"')
+    .replace(/%3A/g, ':')
+    .replace(/%2C/g, ',');
 };

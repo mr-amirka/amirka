@@ -8,7 +8,7 @@
  * @example
  * 
  * doneAll([
- *   done => support('CSS.escape') ? done() : scriptLoader('assets/standalone-shims/css.escape.shim.js', done);
+ *   done => support('CSS.escape') ? done() : scriptLoad('assets/standalone-shims/css.escape.shim.js', done);
  * 	
  * ], () => {
  *   console.log('done!');

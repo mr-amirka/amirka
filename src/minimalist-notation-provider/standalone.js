@@ -17,6 +17,7 @@ export * from '../common/css-properties-parse';
 export * from '../common/css-properties-stringify-provider';
 export * from './selectors-compile-provider';
 export * from './color';
+export * from '../additional';
 
 import {minimalistNotationProvider} from './index';
 import {styleProvider} from '../common/style-provider';

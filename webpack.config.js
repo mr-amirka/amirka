@@ -25,7 +25,6 @@ module.exports = {
     app: './src/example/index.js',
     'amirka': './src/standalone-amirka.js',
     'amirka.mn': './src/standalone-mn.js',
-    'amirka.boot': './src/standalone-boot.js',
     'mn-styles/mn.settings': './src/standalone-mn-styles/mn.settings.js',
     'mn-styles/mn.style': './src/standalone-mn-styles/mn.style.js',
     'standalone-shims/promise.shim': './src/standalone-shims/promise.shim.js',

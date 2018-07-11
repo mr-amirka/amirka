@@ -189,9 +189,8 @@ ready(() => {
 <script src="https://dartline.ru/assets/amirka.mn.js"></script>
 <script src="https://dartline.ru/assets/mn-styles/mn.settings.js"></script>
 <script src="https://dartline.ru/assets/mn-styles/mn.style.js"></script>
-<script src="https://dartline.ru/assets/amirka.boot.js"></script>
 <script>
-amirkaBoot.polyfill({
+amirka.polyfill({
   'CSS.escape': 'https://dartline.ru/assets/standalone-shims/css.escape.shim.js',
   'Promise': 'https://dartline.ru/assets/standalone-shims/promise.shim.js',
   'setImmediate': 'https://dartline.ru/assets/standalone-shims/set-immediate.shim.js'
@@ -236,6 +235,23 @@ Output:
 Input:
 
 ```html
+<script src="https://dartline.ru/assets/amirka.mn.js"></script>
+<script src="https://dartline.ru/assets/mn-styles/mn.settings.js"></script>
+<script src="https://dartline.ru/assets/mn-styles/mn.style.js"></script>
+<script src="https://dartline.ru/assets/amirka.boot.js"></script>
+<script>
+amirkaBoot.polyfill({
+  'CSS.escape': 'https://dartline.ru/assets/standalone-shims/css.escape.shim.js',
+  'Promise': 'https://dartline.ru/assets/standalone-shims/promise.shim.js',
+  'setImmediate': 'https://dartline.ru/assets/standalone-shims/set-immediate.shim.js'
+}, () => {
+  amirka.ready(() => {
+    mn
+      .recursiveCheckNodeByClassName(document)
+      .compile();
+  });  
+});
+</script>
 <x class="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</x>
 ```
 
@@ -259,6 +275,8 @@ Output:
 Demo page: https://dartline.ru/minimalist-notation
 
 Try this test: https://jsfiddle.net/Amirka/j6d8aozy/21/
+
+Home page: http://minimalist-notation.dartline.ru
 
 
 ### Notation
@@ -289,7 +307,7 @@ Example 4:
 
 ### Имя эссенции
 
-Часть имени, которая отвечает за эссенцию, парсится для генерации стилей и также делится на 2 части: 
+Часть имени, которая отвечает за эссенцию, парситься для генерации стилей и также делится на 2 части: 
 * префикс эссенции (статичная часть, собственно само имя эссенции);
 * суффикс эссенции (параметризуемая часть, значение эссенции).
 
@@ -308,13 +326,9 @@ Example 3:
 префикс эссенции: ``` c ```;  суффикс эссенции: ``` F ```
 
 
-В простейшем случае префикс эссенции сопоставляется с именем какого-то атрибута стиля в СSS, а из префикса эссенции генерируется значение для этого атрибута.  
-Например: ``` cF  ``` -> ``` color: #FFF ```
-
-
 ### Контекст эссенции
 
-Часть нотации, отвечающая за контекст эссенции может разделяться символом ``` > ``` на несколько частей, представляющие собой последовательность дочерних элементов до целевого элемента, на который распространяются стили эссенции. Например:  
+Часть нотации, отвечающая за контекст эссенции может разделяться символом ``` > ``` на несколько частей, представляющие собой последовательность дочерних элементов до целевого элемента, на который распространяется влияние эссенции. Например:  
 ``` essenceValue>.child1>.child2>.targetChild ```
 
 
