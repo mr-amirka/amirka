@@ -235,23 +235,6 @@ Output:
 Input:
 
 ```html
-<script src="https://dartline.ru/assets/amirka.mn.js"></script>
-<script src="https://dartline.ru/assets/mn-styles/mn.settings.js"></script>
-<script src="https://dartline.ru/assets/mn-styles/mn.style.js"></script>
-<script src="https://dartline.ru/assets/amirka.boot.js"></script>
-<script>
-amirkaBoot.polyfill({
-  'CSS.escape': 'https://dartline.ru/assets/standalone-shims/css.escape.shim.js',
-  'Promise': 'https://dartline.ru/assets/standalone-shims/promise.shim.js',
-  'setImmediate': 'https://dartline.ru/assets/standalone-shims/set-immediate.shim.js'
-}, () => {
-  amirka.ready(() => {
-    mn
-      .recursiveCheckNodeByClassName(document)
-      .compile();
-  });  
-});
-</script>
 <x class="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</x>
 ```
 
