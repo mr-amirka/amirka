@@ -1,6 +1,6 @@
 {
   "name": "amirka",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "MinimalistNotation и прочие инструменты в дополнение к Lodash :)",
   "main": "index.js",
   "keywords": [

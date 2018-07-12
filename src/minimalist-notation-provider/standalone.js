@@ -4,12 +4,7 @@
  */
 
 export * from 'lodash';
-export * from '../base/execute';
-export * from '../base/get-by-type';
-export * from '../base/clone-depth';
-export * from '../base/extend-depth';
-export * from '../base/merge-depth';
-export * from '../base/flags';
+export * from '../base';
 export * from '../common/join-arrays';
 export * from '../common/route-parse-provider';
 export * from '../common/immediate';

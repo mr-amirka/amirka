@@ -29,6 +29,13 @@ Minimalist Notation (MN) (минималистическая нотация) - �
 Преимущество перед традиционными технологиями CSS-препроцессинга в том, что разработчик избавляется от необходимости писать CSS. CSS генерируется автоматически на основании нотации и заданных разработчиком правил генерации стилей. Разработчику больше не нужно контролировать, какие стили используются в его разметке, а какие - нет, ибо отныне стили генерируются динамически только для того, что присутствует в разметке. 
 
 
+Demo page: https://dartline.ru/minimalist-notation
+
+Try this test: https://jsfiddle.net/Amirka/j6d8aozy/42/
+
+Home page: http://minimalist-notation.dartline.ru
+
+
 PS:   
 Технология ориентирована на методологию Functional/Atomic CSS - не так давно меня просветили в теории.  
 Валерий, СПАСИБО!  
@@ -58,7 +65,7 @@ PS: Если Вы верстаете по методологии Functional/Atom
 
 
 
-PS: Если у Вас вызывает беспокойство, почему некоторые атрибуты имеют флаг ``` !important ```, то это обусловлено тем, что атомные классы должны быть более приоритетными, чем традиционные классы и сложные селекторы, так как применение атомных классов подразумевает более точечную кастомизацию разметки поверх других более общих правил CSS. Например, во флаге ``` !important ``` была необходимость когда я применял технологию ``` MN ``` вместе с ``` Angular Material (MD)``` для корректировки и кастомизации внешнего вида некоторых элементов, так как стили комплексных селекторов из MD перекрывали стили MN. Однако такой подход может создавать Вам грабли, если Вы захотите посредством JS динамически менять стиль элемента, на который распространяется действие флага ``` !important ``` из CSS. Поэтому этот нюанс стоит учитывать. Например, это предусмотрено в некоторых дефолтных правилах MN генерации эссенций стилей. Вы можете добавить суффикс ``` -i ``` в конец имени эссенции:  
+PS: Если у Вас вызывает беспокойство, почему некоторые атрибуты имеют флаг ``` !important ```, то это обусловлено тем, что атомные классы должны быть более приоритетными, чем традиционные классы и сложные селекторы, так как применение атомных классов подразумевает более точечную кастомизацию разметки поверх других более общих правил CSS. Например, во флаге ``` !important ``` была необходимость когда я применял технологию ``` MN ``` вместе с ``` Angular Material (MD) ``` для корректировки и кастомизации внешнего вида некоторых элементов, так как стили комплексных селекторов из MD перекрывали стили MN. Однако такой подход может создавать Вам грабли, если Вы захотите посредством JS динамически менять стиль элемента, на который распространяется действие флага ``` !important ``` из CSS. Поэтому этот нюанс стоит учитывать. Например, это предусмотрено в некоторых дефолтных правилах MN генерации эссенций стилей. Вы можете добавить суффикс ``` -i ``` в конец имени эссенции:  
 ```css
 [m~='dn250-i'] {
   -khtml-transition-duration: 250ms;
@@ -133,7 +140,7 @@ mn.css('.theme-bg', {
 
 
 
-## Using Amirka
+## Usage
 
 ```
 npm install amirka --save
@@ -146,29 +153,6 @@ import {readyProvider} from 'amirka/common/ready-provider';
 const ready = readyProvider(window);
 const style = styleProvider(document, 'mn-styles', 'mn.');
 const mn = minimalistNotationProvider(style);
-
-mn('dn', p => {
-  if (p.camel || p.negative) return
-  const num = p.num;
-  if (num) {
-    return {
-      style: {transitionDuration: num + 'ms' + p.i}
-    };
-  }
-  return {
-    exts: [ 'dn250' + p.ni]
-  };
-});
-
-mn('overlay', {
-  style: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0
-  }
-});
 
 mn.checkAttrs.m = true;
 
@@ -203,7 +187,7 @@ amirka.polyfill({
   });  
 });
 </script>
-
+```
 
 ### Example with mn.recursiveCheckNodeByAttr
 
@@ -235,23 +219,6 @@ Output:
 Input:
 
 ```html
-<script src="https://dartline.ru/assets/amirka.mn.js"></script>
-<script src="https://dartline.ru/assets/mn-styles/mn.settings.js"></script>
-<script src="https://dartline.ru/assets/mn-styles/mn.style.js"></script>
-<script src="https://dartline.ru/assets/amirka.boot.js"></script>
-<script>
-amirkaBoot.polyfill({
-  'CSS.escape': 'https://dartline.ru/assets/standalone-shims/css.escape.shim.js',
-  'Promise': 'https://dartline.ru/assets/standalone-shims/promise.shim.js',
-  'setImmediate': 'https://dartline.ru/assets/standalone-shims/set-immediate.shim.js'
-}, () => {
-  amirka.ready(() => {
-    mn
-      .recursiveCheckNodeByClassName(document)
-      .compile();
-  });  
-});
-</script>
 <x class="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</x>
 ```
 
@@ -271,12 +238,6 @@ Output:
   </style>
 </x>
 ```
-
-Demo page: https://dartline.ru/minimalist-notation
-
-Try this test: https://jsfiddle.net/Amirka/j6d8aozy/21/
-
-Home page: http://minimalist-notation.dartline.ru
 
 
 ### Notation
@@ -374,6 +335,66 @@ Example 3:
 В строке *3* мы получим несколько имен медиа-запросов, но в силу вступит только первое имя медиа-запроса в этой последовательности.
 
 
+
+### + Grouping
+
+Группировка помогает сократить запись.
+
+Несколько параметров можно сгруппировать вместе с помощью разделителя ``` | ``` между альтернативными подстроками внутри скобок.
+
+
+Example:
+
+Вместо этого
+```html
+<x m="bc00F>input:h bc00F>input:a bg0>input:h bg0>input:a"></x>
+```
+Вы можете сделать так:
+```html
+<x m="(bc00F|bg0)>input:(h|a)"></x>
+```
+
+Т.е., эти записи эквивалентны:  
+Example 1:  
+``` (bc00F|bg0)>input ``` ->   
+``` bc00F>input bg0>input ```  
+
+Example 2:  
+``` input:(h|a) ``` ->   
+``` input:h input:a ```  
+
+Example 3: 
+``` (bc00F|bg0)>input:(h|a) ``` ->   
+``` bc00F>input:h bc00F>input:a bg0>input:h bg0>input:a ```
+
+
+
+
+### + Escaping
+
+В процессе применения MN могут возникать ситуации, когда Вам нужно экранировать служебные символы, например в таком случае:
+```html
+<x m="pt33.3%"></x>
+```
+Мы получим не то, чего ожидаем, так как точка является служебным символом
+``` pt33.3%  ```  ->  
+```css
+[m~='pt33.3%'].3%{padding-top:33px}
+```
+
+
+Если мы хотим, чтобы точка попала в параметры эссенции, то мы должны экранировать её так:
+```html
+<x m="pt33\.3%"></x>
+```
+Таким образом, получим желаемое:
+``` pt33\.3% ``` ->  
+```css
+[m~='pt33\\.3%']{padding-top:33.3%}
+```
+
+
+
 ### Генерация медиа-запросов  
 
 
@@ -415,6 +436,7 @@ mn.media.xs = {
   priority: 1
 };
 ```  
+
 ```html
 <x m="f18@sm f16@xs">текст</x>
 ```  
@@ -591,9 +613,9 @@ mn('tbl.cell',  {
 Example 1.  
 Вы просто пишите в разметку:
 ```html
-<div m="tbl">
-  <div>текст</div>
-</div>
+<x m="tbl">
+  <x>текст</x>
+</x>
 
 ```  
 CSS для этой разметки генерируется автоматически:
@@ -605,14 +627,14 @@ CSS для этой разметки генерируется автоматич
 Example 2.
 Как это работает с контекстами эссенций:
 ```html
-<div m="tbl>.example2__item">
-  <div class="example2__item">
-    <div>текст</div>
-  </div>
-  <div class="example2__item">
-    <div>текст</div>
-  </div>
-</div>
+<x m="tbl>.example2__item">
+  <x class="example2__item">
+    <x>текст</x>
+  </x>
+  <x class="example2__item">
+    <x>текст</x>
+  </x>
+</x>
 ```
 Сгенерированный CSS:
 ```css
@@ -624,11 +646,11 @@ Example 2.
 Example 3.  
 Более практичeский пример:
 ```html
-<div m="mb10 lh">
+<x m="mb10 lh">
   <a class="example__button" m="tbl w200 h50 tc cF bg0">
-    <div>центрированный текст</div>
+    <x>центрированный текст</x>
   </a>
-</div>
+</x>
 ```
 Сгенерированный CSS:
 ```css
@@ -659,7 +681,7 @@ params.i = params.ni ? '' : '!important';
 
 
 
-PS: см. функцию * amirka/common/route-parse-provider *
+PS: см. функцию **amirka/common/route-parse-provider**
 
 
 #### Генерация эссенций стилей:
@@ -667,7 +689,7 @@ Example 1:
 
 INPUT:  
 ```html
-<div m="p20 mb20 dt5 br2">...</div> 
+<x m="p20 mb20 dt5 br2">...</x> 
 ```
 ```js
 mn('p', p => {
@@ -707,6 +729,477 @@ OUTPUT:
 [m~='dt5']{top:5px !important}
 [m~='br2']{border-right-width:2px !important}
 ```
+
+
+
+Example 2:
+
+Обработчик:  
+```js
+mn('x', p => {
+  return {
+    style: {
+      transform: 'translate(' + ((p.x || '0') + (p.xu || 'px')) + ',' +
+        ((p.y || '0') + (p.yu || 'px')) + ')' + 
+        (p.s ? (' scale(' + (0.01 * p.s) + ')') : '') + p.i
+    }
+  };
+}, '^(-?[0-9]+):x?(%):xu?([yY](-?[0-9]+):y(%):yu?)?([sS]([0-9]+):s)?$');
+```
+
+
+```html
+<x m="x10y5">...</x>
+```
+->
+```css
+[m~='x10y5']{
+  -khtml-transform:translate(10px,5px) !important;
+  -ms-transform:translate(10px,5px) !important;
+  -o-transform:translate(10px,5px) !important;
+  -moz-transform:translate(10px,5px) !important;
+  -webkit-transform:translate(10px,5px) !important;
+  transform:translate(10px,5px) !important
+}
+```
+
+
+```html
+<x m="x12">...</x>
+```
+->
+```css
+[m~='x12']{
+  -khtml-transform:translate(12px,0px) !important;
+  -ms-transform:translate(12px,0px) !important;
+  -o-transform:translate(12px,0px) !important;
+  -moz-transform:translate(12px,0px) !important;
+  -webkit-transform:translate(12px,0px) !important;
+  transform:translate(12px,0px) !important
+}
+```
+
+
+```html
+<x m="x0y20%">...</x>
+```
+->
+```css
+[m~='x0y20%']{
+  -khtml-transform:translate(0px,20%) !important;
+  -ms-transform:translate(0px,20%) !important;
+  -o-transform:translate(0px,20%) !important;
+  -moz-transform:translate(0px,20%) !important;
+  -webkit-transform:translate(0px,20%) !important;
+  transform:translate(0px,20%) !important
+}
+```
+
+
+```html
+<x m="x0y20">...</x>
+```
+->
+```css
+[m~='x0y20']{
+  -khtml-transform:translate(0px,20px) !important;
+  -ms-transform:translate(0px,20px) !important;
+  -o-transform:translate(0px,20px) !important;
+  -moz-transform:translate(0px,20px) !important;
+  -webkit-transform:translate(0px,20px) !important;
+  transform:translate(0px,20px) !important
+}
+```
+
+
+```html
+<x m="x7%y20%">...</x>
+```
+->
+```css
+[m~='x7%y20%']{
+  -khtml-transform:translate(7%,20%) !important;
+  -ms-transform:translate(7%,20%) !important;
+  -o-transform:translate(7%,20%) !important;
+  -moz-transform:translate(7%,20%) !important;
+  -webkit-transform:translate(7%,20%) !important;
+  transform:translate(7%,20%) !important
+}
+```
+
+
+```html
+<x m="x0y20s90">...</x>
+```
+->
+```css
+[m~='x0y20s90']{
+  -webkit-transform:translate(0px,20px) scale(0.9) !important;
+  -moz-transform:translate(0px,20px) scale(0.9) !important;
+  -o-transform:translate(0px,20px) scale(0.9) !important;
+  -ms-transform:translate(0px,20px) scale(0.9) !important;
+  -khtml-transform:translate(0px,20px) scale(0.9) !important;
+  transform:translate(0px,20px) scale(0.9) !important
+}
+```
+
+
+
+Для добавления статической эссенции и создания правил генерации эссенций используется метод ``` mn ```
+
+```ts 
+interface mn {
+  (essencePrefix: string, essenceOptions: EssenceOptions): mn;
+  (essencePrefix: string, handler: EssenceHandler, matches?: string | string[]): mn;
+  (essences: EssenceMapOptions): mn;
+}
+interface EssenceMapOptions {
+  [essencePrefix: string]: EssenceOptions | EssenceHandler;
+}
+
+//функция-генератор эссенции
+interface EssenceHandler {
+  (params: ParamsOptions): EssenceOptions
+}
+interface ParamsOptions {
+  [name: string]: string;
+}
+
+//Опции эссенции
+interface EssenceOptions {
+  inited?: boolean;
+  priority?: number;
+  style?: {
+    [prop: string]: string | string[]
+  };
+  exts?: string[];
+  include?: string[];
+  selectors?: string[];
+  childs?: {
+    [childName: string]: EssenceOptions
+  },
+  media: {
+    [mediaName: string]: EssenceOptions
+  }
+}
+
+```
+
+
+
+### + Auto prefixes
+
+Вы можете настроить автоподстановку префиксов для кроссбраузерности верстки, добавив имена свойств стилей в карту префиксов таким образом:
+```js
+mn.propertiesStringify.prefixedAttrs.transform = true;
+mn.propertiesStringify.prefixedAttrs.transitionDuration = true;
+mn.propertiesStringify.prefixedAttrs.pointerEvents = true;
+mn.propertiesStringify.prefixedAttrs.userSelect = true;
+mn.propertiesStringify.prefixedAttrs.filter = true;
+mn.propertiesStringify.prefixedAttrs.boxSizing = true;
+```
+
+либо так:
+```js
+extend(mn.propertiesStringify.prefixedAttrs, {
+  transform: true,
+  transitionDuration: true,
+  pointerEvents: true,
+  userSelect: true,
+  filter: true,
+  boxSizing: true
+});
+```
+
+, но лучше так:
+```js
+flags([ 
+  'transform', 'transitionDuration', 'pointerEvents', 'userSelect', 'filter', 'boxSizing'
+], mn.propertiesStringify.prefixedAttrs);
+```
+
+
+Указать какие именно префиксы должны подставляться Вы можете так:
+```js
+flags(['-webkit-', '-moz-', '-o-',  '-ms-', '-khtml-' ], mn.propertiesStringify.prefixes);
+```
+
+### + States
+
+Состояние - в MN это часть имени в нотации класса после двоеточия(``` : ```), которой может соответствовать аналогичные псевдоселекторы в терминах CSS.  
+В MN мы стараемся использовать сокращенные записи. Так для одного имени состояния в MN можно указать несколько произвольных селекторов. 
+
+
+Input:
+```html
+<i 
+  class="ion-chevron-right" 
+  m="x10:h cF00:a f16:(h|a)"
+></i> 
+```
+
+```js
+extend(mn.states, {
+  h: [ ':hover' ],
+  a: [ ':active', '.active' ]
+});
+```
+
+Output:
+```css
+[m~='x10:h']:hover{
+  -khtml-transform:translate(10px,0px) !important;
+  -ms-transform:translate(10px,0px) !important;
+  -o-transform:translate(10px,0px) !important;
+  -moz-transform:translate(10px,0px) !important;
+  -webkit-transform:translate(10px,0px) !important;
+  transform:translate(10px,0px) !important
+}
+[m~='cF00:a']:active,
+[m~='cF00:a'].active{
+  color:rgba(255,0,0,1) !important
+}
+[m~='f16:(h|a)']:hover,
+[m~='f16:(h|a)']:active,
+[m~='f16:(h|a)'].active{
+  font-size: 16px;
+}
+```
+
+Если Вы укажете какое-либо иное незадекларированное состояние, то оно выводится как есть:
+```css
+f16:hz -> 
+[m~='f16:hz']:hz{font-size: 16px;}
+
+f16:hover -> 
+[m~='f16:hover']:hover{font-size: 16px;}
+```
+
+#### Вы можете параметризовать состояния через квадратные скобки:
+
+```js
+extend(mn.states, {
+  n: [ ':nth-child' ]
+});
+```
+
+```css
+f16:n[3n+2] -> 
+[m~='f16:n[3n+2]']:nth-child(3n+2){font-size: 16px;}
+```
+
+PS: В связи с тем, что круглые скобки являются служебными символами MN, необходимыми для группировки подстрок, то вместо них применяются квадратные скобки.  
+
+
+Вы можете без проблем в нотации записать псевдокласс отрицания:
+```css
+f16:not[.active] -> 
+[m~='f16:not[.active]']:not(.active){font-size: 16px;}
+
+f16:not[[type=number]] -> 
+[m~='f16:not[[type=number]]']:not([type=number]){font-size: 16px;}
+```
+
+Вы можете указать в нотации имени класса несколько состояний:
+```css
+f16:(hover|active) -> 
+[m~='f16:(hover|active)']:hover, [m~='f16:(hover|active)']:active{font-size: 16px;}
+```
+
+
+В состояниях предусмотрена возможность использования нестандартных псевдоклассов в качестве синонимов:  
+
+Input:
+```js
+extend(mn.states, {
+  i: [ 
+    '::-webkit-input-placeholder', 
+    '::-moz-placeholder', 
+    ':-ms-input-placeholder', 
+    '::placeholder' 
+  ]
+});
+```
+
+
+```html
+<input class="cA:i" placeholder="имя"/>
+```  
+
+Output:
+```css
+[m~='cA:i']::-webkit-input-placeholder{color:rgb(170,170,170) !important}
+[m~='cA:i']::-moz-placeholder{color:rgb(170,170,170) !important}
+[m~='cA:i']:-ms-input-placeholder{color:rgb(170,170,170) !important}
+[m~='cA:i']::placeholder{color:rgb(170,170,170) !important}
+```
+
+
+
+### + Родительские/дочерние селекторы (Parent/child selectors)
+
+Разделитель родительских селекторов: ``` < ```
+
+Например, для класса ``` bgF00<.active ``` генерируется следующий селектор:  
+
+```css
+.active [m~='bgF00<.active'] { /* ... */ }
+```
+  
+Так мы можем указать для текущего элемента при наличии какого родительского класса будет отображаться стиль эссенции ``` bgF00 ```.
+
+
+Разделитель дочерних селекторов: ``` > ```  
+С дочерними селекторами всё точно также как и с родительскими, только наоборот.  
+
+
+Например, для класса ``` bgF00>.active ``` генерируется следующий селектор:  
+```css
+[m~='bgF00>.active'] .active { /* ... */ }
+```
+
+
+### + Глубина (Depth)
+
+
+Для задания определенной глубины вложенности мы можем подставить число перед селектором, например:  
+
+```css
+/* bgF00<1.active -> */
+.active>[m~='bgF00<1.active'] { /* ... */ }
+
+/* bgF00<2.active -> */
+.active>*>[m~='bgF00<2.active'] { /* ... */ }
+
+/* bgF00<3.active -> */
+.active>*>*>[m~='bgF00<3.active'] { /* ... */ }
+```
+
+  
+Если нужно чтобы стили эссенции были активны при наличии какого-либо селектора(в частности класс ``` active ```) на текущем элементе:
+```css
+/* bgF00<0.active -> */
+.active[m~='bgF00<0.active'] { /* ... */ }
+```
+
+Если есть отрицательный знак, то мы получим распространение стиля эссенции на дочернии элементы:
+```css
+/* bgF00<-1.active -> */
+[m~='bgF00<-1.active']>.active { /* ... */ }
+
+/* bgF00<-2.active -> */
+[m~='bgF00<-2.active']>*>.active { /* ... */ }
+```
+
+
+Вы можете игнорировать разделитель.  
+Если нужно чтобы стили эссенции были активны при наличии какого-либо селектора на текущем элементе (в частности класс active), то Вы можете писать более лаконично и получать на выходе желаемое:  
+
+```css
+/* bgF00.active -> */
+[m~='bgF00.active'].active { /* ... */ }
+```
+
+
+### + Complex selectors
+
+
+Всё вышеперечисленное аналогично можем применять и для других селекторов c атрибутами:  
+```css
+/* bgF00>[type=text] -> */
+[m~='bgF00>[type=text]'] [type=text] { /* ... */ }
+
+/* bgF00[type=text] -> */
+[m~='bgF00[type=text]'][type=text] { /* ... */ }
+```
+
+Пример более сложного селектора:
+```css
+/* bgF00.theme1.active -> */
+[m~='bgF00.theme1.active'].theme1.active { /* ... */ }
+```
+
+Разделители подразумевают, что Вы можете совместно указать сколько угодно родительских и дочерних элементов и состояний в контексте эссенции:  
+```css
+/* bgF00.active<.md>.anyChild -> */
+.md [m~='bgF00.active<.md>.anyChild'].active .anyChild { /* ... */ }
+```
+
+
+Example 1:  
+
+Input:
+```html
+<a href="#">
+  <i
+    class="ion-chevron-right"
+    m="x10<a:h cF00:a"
+  ></i> 
+</a>
+<x m="c0F0:a<.parent1">...</x>
+<x m="bg02<.parent1<.parent2">...</x>
+<x m="c065:a<0.parent1">...</x>
+<x m="bgD852<3.parent1<.parent2:h">...</x>
+```
+
+Output:
+```css
+[m~='cF00:a'].active,
+[m~='cF00:a']:active{
+  color:rgba(255,0,0,1) !important
+}
+a:hover [m~='x10<a:h']{
+  -khtml-transform:translate(10px,0px) !important;
+  -ms-transform:translate(10px,0px) !important;
+  -o-transform:translate(10px,0px) !important;
+  -moz-transform:translate(10px,0px) !important;
+  -webkit-transform:translate(10px,0px) !important;
+  transform:translate(10px,0px) !important
+}
+.parent1 [m~='c0F0:a<.parent1']:active,
+.parent1 [m~='c0F0:a<.parent1'].active{
+  color:rgba(0,255,0,1) !important
+}
+.parent1[m~='c065:a<0.parent1']:active,
+.parent1[m~='c065:a<0.parent1'].active{
+  color:rgba(0,102,85,1) !important
+}
+.parent2 .parent1 [m~='bg02<.parent1<.parent2']{
+  background-color:rgba(0,0,0,0.13333333333333333) !important
+}
+.parent2:hover .parent1>*>*>[m~='bgD852<3.parent1<.parent2:h']{
+  background-color:rgba(221,136,85,0.13333333333333333) !important
+}
+```
+
+
+Example 2:  
+
+Input:
+```html
+<x m="(sq50|bg0)<2.anyClass"></x>
+<x m="(w50|h5|bg00F8)>5.innerItem"></x>
+```
+Output:
+```css
+.anyClass>*>[m~='(sq50|bg0)<2.anyClass']{
+  background:rgba(0,0,0,1) !important
+}
+.anyClass>*>[m~='(sq50|bg0)<2.anyClass']{
+  width:50px !important;
+  height:50px !important
+}
+[m~='(w50|h5|bg00F8)>5.innerItem']>*>*>*>*>.innerItem{
+  background:rgba(0,0,255,0.5333333333333333) !important
+}
+[m~='(w50|h5|bg00F8)>5.innerItem']>*>*>*>*>.innerItem{
+  height:5px !important
+}
+[m~='(w50|h5|bg00F8)>5.innerItem']>*>*>*>*>.innerItem{
+  width:50px !important
+}
+```
+
 
 
 

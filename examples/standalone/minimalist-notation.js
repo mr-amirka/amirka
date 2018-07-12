@@ -1,4 +1,4 @@
-import * as amirka from './minimalist-notation-provider/standalone';
+import * as amirka from '../../src/minimalist-notation-provider/standalone';
 
 window.amirka = amirka;
 window.mn = amirka.mn;

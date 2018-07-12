@@ -9,16 +9,19 @@ const {
   forEach,
   lowerCase,
   lowerFirst,
+  upperFirst,
   upperCase,
   kebabCase,
   flags,
   intval,
   joinArrays,
-  css,
+  trim,
+  getBackground,
   mn
 } = amirka;
 
 const __color = amirka.color;
+const __size = amirka.size;
 
 const defaultSides = {
   '': {'': 1},
@@ -34,29 +37,27 @@ const defaultSides = {
   rb: {'-bottom': 1, '-right': 1}
 };
 
-
-
 const mnKeyframes = mn.setKeyframes;
 
-forEach({
-  p: [ 'padding' ],
-  m: [ 'margin' ],
-  b: [ 'border', '-width' ],
-  d: [ '' ]
-}, (args, pfx) => {
-  const propName = args[0];
-  const propSuffix = args[1] || '';
-  forEach(defaultSides, (side, suffix) => {
+forEach(defaultSides, (sides, suffix) => {
+  const priority = suffix ? (4 - __size(sides)) : 0;
+
+
+  forEach({
+    p: [ 'padding' ],
+    m: [ 'margin' ],
+    b: [ 'border', '-width' ],
+    d: [ '' ]
+  }, (args, pfx) => {
+    const propName = args[0];
+    const propSuffix = args[1] || '';
     const propsMap = {};
-    let priority = 4;
-    for (let propSide in side) {
-      propsMap[propName + propSide + propSuffix] = 1;
-      priority--;
+    for (let propSide in sides) {
+      propsMap[ (propName ? (propName + propSide) : trim(propSide, '-')) + propSuffix] = 1;
     }
     mn(pfx + suffix, p => {
-      const value = p.value || 0;
       const camel = p.camel;
-      const v = (camel ? lowerCase(camel) : (value + (p.unit || 'px'))) + p.i;
+      const v = (camel ? lowerCase(camel) : ((p.value || '0') + (p.unit || 'px'))) + p.i;
       const style = {};
       for (let pName in propsMap) style[pName] = v;
       return {
@@ -65,6 +66,58 @@ forEach({
       };
     });
   });
+
+
+
+  /*
+  .dotted{border-style: dotted;}
+  .dashed{border-style: dashed;}
+  .solid{border-style: solid;}
+  */
+  (() => {
+    const propsMap = {};
+    for (let propSide in sides) {
+      propsMap['border' + propSide + '-style'] = 1;
+    }
+    mn('bs' + suffix, p => {
+      const suffix = p.suffix;
+      if (!suffix) return;
+      const v = kebabCase(suffix) + p.i;
+      const style = {};
+      for (let pName in propsMap) style[pName] = v;
+      return {
+        style,
+        priority
+      };
+    });
+  })();
+ 
+
+  /*
+  //border-color
+  @each $key, $value in (
+      (1, transparent),
+  )
+  { @include side-focus('.bc' + $key, border, $value, '-color'); }
+  */
+  (() => {
+    const propsMap = {};
+    for (let propSide in sides) {
+      propsMap['border' + propSide + '-color'] = 1;
+    }
+    mn('bc' + suffix, p => {
+      let alts = __color(p.camel || p.color || '0');
+      const important = p.i;
+      if (important) alts = joinArrays([], alts, [ important ]);
+      const style = {};
+      for (let pName in propsMap) style[pName] = alts;
+      return {
+        style,
+        priority
+      };
+    }, '([A-F0-9]+):color');
+  })();
+
 });
 
 
@@ -143,8 +196,8 @@ forEach({
 }
 @content
 }
-
 */
+
 
 mn('tbl', {
   style: {display: 'table'},
@@ -161,6 +214,84 @@ mn('cfx.pale', {
   selectors: [':before', ':after'], 
   style: {content: '" "', clear: 'both', display: 'table'}
 });
+mn('layout', {
+  style: {
+    boxSizing: 'border-box',
+    display: [ '-webkit-box', '-webkit-flex', 'flex' ]
+  }
+});
+mn('layout-row', {
+  exts: [ 'layout' ],
+  style: {
+    '-webkit-box-direction': 'normal',
+    '-webkit-box-orient': 'horizontal',
+    '-webkit-flex-direction': 'row',
+    'flex-direction': 'row',
+
+    '-webkit-box-pack': 'start', 
+    '-webkit-justify-content': 'flex-start', 
+    'justify-content': 'flex-start',
+
+    '-webkit-box-align': 'center',
+    '-webkit-align-items': 'center',
+    'align-items': 'center',
+    '-webkit-align-content': 'center',
+    'align-content': 'center'
+  }
+});
+
+mn('layout-column', {
+  exts: [ 'layout' ],
+  style: {
+    '-webkit-box-direction': 'normal',
+    '-webkit-box-orient': 'vertical',
+    '-webkit-flex-direction': 'column',
+    'flex-direction': 'column'
+  }
+});
+
+//flex horizontal align
+forEach({
+  start: {'-webkit-box-pack': 'start', '-webkit-justify-content': 'flex-start', 'justify-content': 'flex-start'},
+  center: {'-webkit-box-pack': 'center', '-webkit-justify-content': 'center', 'justify-content': 'center'},
+  end: {'-webkit-box-pack': 'end', '-webkit-justify-content': 'flex-end', 'justify-content': 'flex-end'},
+  around: {'-webkit-justify-content': 'space-around', 'justify-content': 'space-around'},
+  between: {'-webkit-box-pack': 'justify', '-webkit-justify-content': 'space-between', 'justify-content': 'space-between'}
+}, (style, essenceName) => mn('fha' + upperFirst(essenceName), { style, priority: 1 }));
+
+
+//flex vertical align
+forEach({
+  start: {
+    '-webkit-box-align': 'start',
+    '-webkit-align-items': 'flex-start',
+    'align-items': 'flex-start',
+    '-webkit-align-content': 'flex-start',
+    'align-content': 'flex-start'
+  },
+  center: {
+    '-webkit-box-align': 'center',
+    '-webkit-align-items': 'center',
+    'align-items': 'center',
+    '-webkit-align-content': 'center',
+    'align-content': 'center'
+  },
+  end: {
+    '-webkit-box-align': 'end',
+    '-webkit-align-items': 'flex-end',
+    'align-items': 'flex-end',
+    '-webkit-align-content': 'flex-end',
+    'align-content': 'flex-end'
+  },
+  stretch: {
+    '-webkit-box-align': 'stretch',
+    '-webkit-align-items': 'stretch',
+    'align-items': 'stretch',
+    '-webkit-align-content': 'stretch',
+    'align-content': 'stretch'
+  }
+}, (style, essenceName) => mn('fva' + upperFirst(essenceName), { style, priority: 1 }));
+
 
 mn('dn', p => {
   if (p.camel || p.negative) return
@@ -219,7 +350,7 @@ forEach({
 mn('bg', p => {
   const v = p.suffix;
   if (p.negative || !v) return;
-  const bg = __color.getBackground(v);
+  const bg = getBackground(v);
   let alts = bg.alts;
   const important = p.i 
   if (!important) alts = joinArrays([], alts, [ important ]);
@@ -278,10 +409,11 @@ forEach({
 .fw1#{$suffix}{font-weight:100;}
 */
 mn('fw', p => {
-  if (p.camel || p.negative) return;
+  if (p.negative) return;
+  const camel = p.camel;
   return {
     style: {
-      fontWeight: 100 * intval(p.num, 1, 1, 9)
+      fontWeight: camel ? kebabCase(camel) : (100 * intval(p.num, 1, 1, 9))
     }
   };
 });
@@ -341,7 +473,7 @@ mn('x', p => {
     }
   };
 
-}, '^(-?[0-9]+):x?(%):xu?([yY](-?[0-9]+):y(%):yu?)?([sS]([0-9]+):s)$');
+}, '^(-?[0-9]+):x?(%):xu?([yY](-?[0-9]+):y(%):yu?)?([sS]([0-9]+):s)?$');
 
 (() => {
   let uninited = true;
@@ -357,7 +489,7 @@ mn('x', p => {
     }
     
     return {
-      animation: 'spinner-animate ' + v + 'ms infinite linear'
+      style: { animation: 'spinner-animate ' + v + 'ms infinite linear' }
     };
   });
 })();
@@ -401,22 +533,26 @@ mn('break', {
       const repeatCount = intval(p.m, 1, 0);
       const value = p.value;
 
-      if (!value || repeatCount < 1) return null;
+      if (!value || repeatCount < 1) return;
 
+      const important = p.i;
       const colors = __color(p.c || '0');
       const prefixIn = p.in ? 'inset ' : '';
       const colorsLength = colors.length;
       const output = new Array(colorsLength);
-      let sample, v, color, ci = 0;
+      let sample, v, color, i, ci = 0;
 
-      for(;ci < colorsLength; ci++){
+      for (;ci < colorsLength; ci++) {
         color = colors[ci];
-        sample = prefixIn + handler(x , y, value, r, color).join('px ');
+        sample = prefixIn + handler(p.x || 0 , p.y || 0, value, p.r || 0, color).join('px ');
         v = new Array(repeatCount);
         for (i = repeatCount; i--;) v[i] = sample;
-        output[ci] = v.join(',');
+        output[ci] = v.join(',') + important;
       }
 
+      const style = {};
+      style[propName] = output;
+      return { style };
     }, matchs);
   });
 
@@ -463,6 +599,24 @@ mn('z', p => {
 });
 
 
+
+/*
+//opacity
+.o,.o-h:hover{ @include opacity(0); }
+.no-o,.no-o-h:hover{ @include opacity(1); }
+@each $size in 50, 70, 90 {
+  #{'.o' + $size}, #{'.o' + $size + '-h:hover'} { @include opacity( 0.01 * $size ); }
+}
+*/
+mn('o', p => {
+  if (p.camel || p.negative) return;
+  return { 
+    style: { opacity: (p.num || 0) * 0.01 }
+  };
+});
+
+
+
 /*
 .lh{line-height:1;}
 //line-height
@@ -473,10 +627,168 @@ mn('lh', p => {
   const unit = p.unit;
   return p.camel ? null : {
     style: {
-      lineHeight: num ? (unit === '%' ? (num * 0.01) : (num + (unit || 'px'))) : '1'
+      lineHeight: num ? (unit === '%' ? (num * 0.01) : (num + (unit || 'px'))) : '1' + p.i
     }
   };
 });
+
+
+(() => {
+  const replacer = (all, escaped) => escaped ? '_' : ' ';
+  const regexp = /(\\_)|(_)/;
+
+  forEach({
+    tn: 'transition',
+
+    g: 'grid-template',
+    gr: 'grid-template-rows',
+    gc: 'grid-template-columns',
+    gar: 'grid-auto-rows',
+
+    gg: 'grid-gap',
+
+    gRow: 'grid-row',
+    gCol: 'grid-column',
+
+    fx: 'flex',
+
+    tp: 'transition-property',
+  }, (propName, essenceName) => {
+    mn(essenceName, p => {
+      const style = {};
+      style[propName] = lowerFirst(trim(p.suffix || '', '_')).replace(regexp, replacer) + p.i;
+      return { style };
+    });
+  });
+
+  mn('ff', p => {
+    return {
+      style: {
+        fontFamily: trim(p.suffix || '', '_').replace(regexp, replacer)
+          .split(/[\s,]+/).map(v => '"' + v + '"').join(',') + p.i
+      }
+    };
+  });
+
+  mn('cn', p => {
+    return {
+      style: {
+        fontFamily: trim(p.suffix || ' ', '_').replace(regexp, replacer) + p.i
+      }
+    };
+  });
+ 
+
+})();
+
+/*
+.overflow{overflow:hidden;}
+.overflowX{overflow-x:hidden;}
+.overflowY{overflow-y:hidden;}
+.scrollX{overflow-x:scroll;}
+.scrollY{overflow-y:scroll;}
+.autoX{overflow-x:auto;}
+.autoY{overflow-y:auto;}
+*/
+
+//overflow
+forEach({
+  ov: [ 'overflow', 0],
+  ovx: [ 'overflow-x', 1],
+  ovy: [ 'overflow-y', 1]
+}, (opt, essenceName) => {
+  mn(essenceName, p => {
+    const suffix = p.suffix;
+    if (!suffix) return;
+    const style = {};
+    style[opt[0]] = kebabCase(suffix) + p.i;
+    return {
+      style,
+      priority: opt[1]
+    };
+  });
+});
+
+
+forEach({
+  fd: 'flex-direction',
+  fs: 'font-style',
+  jc: 'justify-content',
+  ai: 'align-items',
+  tt: 'text-transform',
+  td: 'text-decoration',
+  to: 'text-overflow',
+  cr: 'cursor',
+  ol: 'outline',
+  ws: 'white-space',
+  va: 'vertical-align',
+  v: 'display'
+}, (propName, essenceName) => {
+  mn(essenceName, p => {
+    const suffix = p.suffix;
+    if (!suffix) return;
+    const style = {};
+    style[propName] = kebabCase(suffix) + p.i;
+    return { style };
+  });
+});
+
+
+/*
+%lt#{$suffix}{float: left;}
+$i: 12;
+@while $i > 0 {
+  .col#{$suffix}-#{$i}{
+    @extend %lt#{$suffix};
+    width: 100 * $i / 12  + %;
+  }
+  .col#{$suffix}-offset-#{$i}{ margin-left: 100 * $i / 12  + %;}
+  $i: $i - 1;
+}
+*/
+mn('col', p => {
+  return p.camel || p.negative ? null : {
+    exts: [ 'hmin1-i' ],
+    style: {
+      width: (100 * (Math.abs(p.num) || 12) / (p.cols || 12)) + '%' + p.i
+    }
+  };
+}, '^(-?[0-9]+(/([0-9]+):cols)?)?(.*)$');
+
+
+/*
+.blur{ @include echo( cross( filter, blur(4px) ) ); }
+*/
+mn('blur', p => {
+  return p.camel || p.negative ? null : {
+    style: {
+      filter: 'blur(' + (p.value || '4') + 'px)'
+    }
+  };
+});
+
+
+mn('ratio', p => {
+  return p.negative || p.camel ? null : {
+    style: {
+      position: 'relative',
+      paddingTop: 'calc(' + (p.v || '100') + '% ' + (p.sign || '+') + ' ' + (p.calc || '0') + 'px)' + p.i
+    },
+    childs: {
+      overlay: {
+        selectors: [ '>*' ],
+        style: {
+          position: 'absolute',
+          top: '0px',
+          bottom: '0px',
+          left: '0px',
+          right: '0px'
+        }
+      }
+    }
+  };
+
+}, '(\\d+):v?(([-+]):sign(\\d+):calc)?');
 
 
 })();

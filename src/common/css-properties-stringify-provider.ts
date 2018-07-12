@@ -1,6 +1,6 @@
 /**
- * @overview css
- * @author Absalyamov Amir <mr.amirka@ya.ru>
+ * @overview cssPropertiesStringifyProvider
+ * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
 

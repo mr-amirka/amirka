@@ -2,7 +2,6 @@
   const {
     extend,
     flags,
-    css,
     mn
   } = amirka;
 
@@ -41,9 +40,9 @@
   }); 
 
 
-  flags(['-webkit-', '-moz-', '-o-',  '-ms-', '-khtml-' ], css.prefixes);
+  flags(['-webkit-', '-moz-', '-o-',  '-ms-', '-khtml-' ], mn.propertiesStringify.prefixes);
   flags([ 
-      'transform', 'transitionDuration', 'pointerEvents', 'userSelect', 'filter', 'boxSizing'
-  ], css.prefixedAttrs);
+    'transform', 'transitionDuration', 'pointerEvents', 'userSelect', 'filter', 'boxSizing'
+  ], mn.propertiesStringify.prefixedAttrs);
 
 })();

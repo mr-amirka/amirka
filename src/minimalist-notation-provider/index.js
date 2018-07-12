@@ -110,7 +110,7 @@ export const minimalistNotationProvider = ($$storage) => {
   let $$classNamesMap;
   let $$attrsMap;
   let $$statics;
-  let $$staticsRoot;
+  let $$assigned;
   let $$staticsEssences;
   let $$keyframes;
   let $$css;
@@ -242,9 +242,9 @@ export const minimalistNotationProvider = ($$storage) => {
   const assign = (essencesNames, selectors) => {
     selectors = __flags(selectors);
     essencesNames = __flags(essencesNames);
-    var essenceName, mediaName, sContext;
+    var essenceName, sContext;
     var mediaName = '';
-    sContext = $$staticsRoot[mediaName] || ($$staticsRoot[mediaName] = {});
+    sContext = $$assigned[mediaName] || ($$assigned[mediaName] = {});
     for (essenceName in essencesNames) {
       extend(sContext[essenceName] || (sContext[essenceName] = {}), selectors);
       updateEssenceWithout(essenceName, selectors, mediaName);
@@ -385,7 +385,7 @@ export const minimalistNotationProvider = ($$storage) => {
     extend(map = contextEssence.map, selectors);
     contextEssence.updated = true; 
     if (
-      (sContext = $$staticsRoot[mediaName]) && (sSelectors = sContext[essenceName])
+      (sContext = $$assigned[mediaName]) && (sSelectors = sContext[essenceName])
     ) extend(map, sSelectors); 
     return __updateEssence(essenceName, selectors, mediaName, excludes || {});
   }
@@ -428,7 +428,7 @@ export const minimalistNotationProvider = ($$storage) => {
     $$attrsMap = $$data.attrsMap || ($$data.attrsMap = {});
 
     $$statics = $$data.statics || ($$data.statics = {});
-    $$staticsRoot = $$statics.root || ($$statics.root = {});
+    $$assigned = $$statics.assigned || ($$statics.assigned = {});
     $$staticsEssences = $$statics.essences || ($$statics.essences = {});
 
     $$keyframes = $$data.keyframes = __ctx($$data.keyframes);
@@ -437,8 +437,8 @@ export const minimalistNotationProvider = ($$storage) => {
     let k, mediaName, sContext;
     for (mediaName in $$cache) storageRemove(mediaName);
     $$cache = mn.$$cache = {};
-    for (mediaName in $$staticsRoot) {
-      sContext = $$staticsRoot[mediaName];
+    for (mediaName in $$assigned) {
+      sContext = $$assigned[mediaName];
       for (k in sContext) updateEssenceWithout(k, sContext[k], mediaName);
     }
 

@@ -1,37 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" m="h hmin">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
-  <title>Minimalist Notation Standalone</title>
-</head>
-<body m="p m">
-  <div 
-    class="block"
-    m="h100vh w100vw tbl bg0 cF tc rt@sm lt@400-768 lt@print bgF00@x600-"
-  >
-    <div class="block__element">
-      Minimalist Notation Standalone
-    </div>
-  </div>
-  <script src="assets/amirka.mn.js"></script>
-  <script src="assets/mn-styles/mn.settings.js"></script>
-  <script src="assets/mn-styles/mn.style.js"></script>
-  <script src="assets/amirka.boot.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <title>Standalone Minimalist Notation</title>  
+<script type="text/javascript" src="/assets/amirka.minimalist-notation.js"></script><script type="text/javascript" src="/assets/mn-styles/mn.settings.js"></script><script type="text/javascript" src="/assets/mn-styles/mn.style.js"></script></head>
+<body m="p m ovyAuto ovxHidden">
   <script>
-    amirkaBoot.polyfill({
+    amirka.polyfill({
       'CSS.escape': 'assets/standalone-shims/css.escape.shim.js',
       'Promise': 'assets/standalone-shims/promise.shim.js',
       'setImmediate': 'assets/standalone-shims/set-immediate.shim.js'
-    }, function(){
-      amirka.ready(() => {
+    }, function() {
+
+       mn.css({
+        '*, *:before, *:after': {
+          boxSizing: 'border-box'
+        },
+        x: {
+          display: 'block'
+        },
+        html: {
+          '-ms-text-size-adjust': '100%',
+          '-webkit-text-size-adjust': '100%',
+          '-webkit-tap-highlight-color': '#000',
+          position: 'relative'
+        }
+      });
+
+      amirka.ready(function() {
+
         mn
           .recursiveCheckNodeByAttr(document)
           .compile();
 
-          console.log('minimalistNotation', mn.data);
+        console.log('minimalistNotation', mn.data);
+
       });  
     });
   </script>
+  <div class="block" m="h100vh w100vw tbl bg0 cF tc rt@sm lt@400-768 lt@print bg6@x600-">
+    <div class="block__element">
+      Standalone Minimalist Notation 
+    </div>
+  </div>
 </body>
 </html>

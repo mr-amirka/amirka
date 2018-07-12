@@ -1,6 +1,4 @@
 
-import { forEach } from 'lodash';
-
 export const mnTheme = (mn: any) => {
   
   /*
@@ -55,11 +53,11 @@ export const mnTheme = (mn: any) => {
 
   const assign = mn.assign;
 
-  forEach([
-    [ [ 'crPointer', 'olNone', 'dn-i', /* 'cInitial', */ 'tdNone' ], [ 'a' ] ],
-    [ [ 'mb5' ], [ 'p' ] ]
+  [
+    [ [ 'crPointer-i', 'olNone-i', 'dn-i', /* 'cInitial-i', */ 'tdNone-i' ], [ 'a' ] ],
+    [ [ 'mb5-i' ], [ 'p' ] ]
     //,[ [ 'bgE', 'cF', 'm0', 'p0', 'ovxHidden' ], [ 'body' ] ]
-  ], ([ essenseNames, selectors ]) => assign(essenseNames, selectors));
+  ].forEach(([ essenseNames, selectors ]) => assign(essenseNames, selectors));
 
 
   /*
