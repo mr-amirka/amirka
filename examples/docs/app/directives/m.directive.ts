@@ -2,7 +2,7 @@ import {Directive, Input} from '@angular/core';
 
 import {mn} from '../../../../src/services/mn';
 
-const checkAttr = <any> mn.checkAttr;
+const checkAttr = mn.checkAttr;
 
 @Directive({selector: '[m]'})
 export class MDirective {

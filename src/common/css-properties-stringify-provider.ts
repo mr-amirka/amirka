@@ -7,15 +7,21 @@
 import {kebabCase, isArrayLikeObject} from "lodash";
 
 export interface cssPropertiesStringify {
-  (props: {[n: string]: string | string[]}): string;
-  prefixedAttrs?: {[n: string]: string};
-  prefixes?: {[n: string]: string};
+  (props: CssProps): string;
+  prefixedAttrs?: flagsMap;
+  prefixes?: flagsMap;
 };
 
+
+export interface CssProps {
+  [n: string]: string | string[];
+}
+
+
 export const cssPropertiesStringifyProvider = (
-    prefixedAttrs: {[n: string]: string}, 
-    prefixes: {[n: string]: string}
-  ) => {
+  prefixedAttrs?: flagsMap, 
+  prefixes?: flagsMap
+) => {
   prefixedAttrs || (prefixedAttrs = {});
   prefixes || (prefixes = {});
   const stringify: cssPropertiesStringify = (props) => {

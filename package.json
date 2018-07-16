@@ -1,6 +1,6 @@
 {
   "name": "amirka",
-  "version": "0.0.14-source",
+  "version": "0.0.15-source",
   "description": "Набор инструментов или татарский ножик в дополнение к Lodash :)",
   "main": "src/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jasmine": "^2.8.8",
-    "@types/lodash": "^4.14.111",
+    "@types/lodash": "^4.14.112",
     "@types/node": "^10.5.2",
     "angular2-template-loader": "^0.6.2",
     "awesome-typescript-loader": "^5.2.0",

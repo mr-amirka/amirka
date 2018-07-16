@@ -1,6 +1,6 @@
 //polyfills
-import "core-js/es6";
-import "core-js/es7/reflect";
+//import "core-js/es6";
+//import "core-js/es7/reflect";
 import "zone.js";
 
 
@@ -22,6 +22,11 @@ import "rxjs";
 import "./global.scss";
 
 
+/*
+import * as amirka from '../../src';
+(<any> window).amirka = amirka;
+*/
+
 import {mn} from '../../src/services/mn';
 import {ready} from "../../src/services/ready";
 
@@ -42,7 +47,6 @@ if(process.env.ENV === "production") {
   enableProdMode();
 }
 */
-
 ready(() => {
   mn
     .recursiveCheckNodeByAttr(document)

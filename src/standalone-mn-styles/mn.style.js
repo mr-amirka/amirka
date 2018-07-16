@@ -4,21 +4,28 @@
  */
 
 (() => {
+
+const amirka = window.amirka;
+
 const {
+  _,
+  flags,
+  intval,
+  joinArrays,
+  getBackground,
+  mn
+} = amirka;
+
+const {
+  trim,
   extend,
   forEach,
   lowerCase,
   lowerFirst,
   upperFirst,
   upperCase,
-  kebabCase,
-  flags,
-  intval,
-  joinArrays,
-  trim,
-  getBackground,
-  mn
-} = amirka;
+  kebabCase
+} = _;
 
 const __color = amirka.color;
 const __size = amirka.size;

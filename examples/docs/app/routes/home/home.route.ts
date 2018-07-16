@@ -10,8 +10,5 @@ export class HomeRoute {
 
 	}
 
-
-	
-
 	
 }

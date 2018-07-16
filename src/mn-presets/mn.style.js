@@ -659,9 +659,10 @@ mn('lh', p => {
   });
 
   mn('cn', p => {
+    let s = p.suffix;
     return {
       style: {
-        fontFamily: trim(p.suffix || ' ', '_').replace(regexp, replacer) + p.i
+        content: (s ? ('"' + (trim(s, '_') || ' ').replace(regexp, replacer) + '"') : 'none') + p.i
       }
     };
   });
