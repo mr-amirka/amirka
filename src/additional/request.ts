@@ -1,6 +1,5 @@
 /**
  * @overview request
- * 
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
@@ -52,7 +51,11 @@ const defaultOptions: RequestOptions = {
 const defaultDepth = 10;
 const noop = () => {};
 
-export const request = (url: RequestOptions | string, options?: RequestOptions): Deal => {
+export interface Request {
+  (url: UrlOptions | string, options?: RequestOptions): Deal;
+}
+
+export const request: Request = (url: UrlOptions | string, options?: RequestOptions): Deal => {
 
   const _options = mergeDepth([ defaultOptions, options ], {}, defaultDepth);
 
@@ -90,10 +93,10 @@ export const request = (url: RequestOptions | string, options?: RequestOptions):
       });
       tryCount++;
       const xhr = new XMLHttpRequest();
-       xhr.open(method, _url, true);
+      xhr.open(method, _url, true);
       const execute = xhr.onload = once(() => {
         const status = xhr.status || 404;
-        if (status > 199 && status < 400) return resolve();
+        if (status > 199 && status < 400) return resolve(xhr.response);
         __reject('status ' + status);
       });
       const __reject = xhr.onerror = once(err => {

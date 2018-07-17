@@ -1,8 +1,9 @@
 {
   "name": "amirka",
-  "version": "0.0.15",
+  "version": "0.0.18",
   "description": "MinimalistNotation и прочие инструменты в дополнение к Lodash :)",
-  "main": "index.js",
+  "main": "index.ts",
+  "types": "global.d.ts",
   "keywords": [
     "CSS",
     "preprocessor",

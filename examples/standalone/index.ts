@@ -4,5 +4,5 @@
  */
 
 
-import * as amirka from '../../src';
+import * as amirka from '../../src/index';
 (<any> window).amirka = amirka;

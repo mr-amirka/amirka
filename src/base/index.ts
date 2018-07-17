@@ -3,13 +3,12 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-export * from './_global';
 export * from './support';
 export * from './aggregate';
 export * from './breakup';
 export * from './any-val'
 export * from './complement';
-export * from './destroy-each';
+export * from './destroy-provider';
 export * from './execute-each';
 export * from './try-each';
 export * from './clone-depth';

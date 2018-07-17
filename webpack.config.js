@@ -22,7 +22,7 @@ module.exports = {
     openPage: 'index.html',
     port: 9000,
   },
-  mode: 'production',
+  mode: 'development',
   resolve: {
     extensions: [ '.ts', '.js' ]
   },
@@ -58,7 +58,7 @@ module.exports = {
           'awesome-typescript-loader?configFileName=tsconfig.json',
           'angular2-template-loader'
         ],
-        exclude: /\.spec\.ts$/
+        exclude: [ /\.spec\.ts$/, /\.d\.ts/, /node_modules/ ]
       },
       {
         test: /\.js$/,
@@ -69,6 +69,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: "style-loader" // creates style nodes from JS strings

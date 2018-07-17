@@ -8,10 +8,12 @@
 import { timeout } from './timeout'
 import { immediate } from './immediate';
 import { executeEach } from './execute-each';
+import { destroyProvider } from './destroy-provider';
 import { tryEach } from './try-each';
 import { subscribleInit } from './subscrible-init';
 import { isPromise } from './is-promise';
 import { reduceAsync } from './reduce-async';
+import { once } from './once';
 
 
 interface onSubject {
@@ -41,60 +43,66 @@ export class Deal {
 	catch: _catch;
 	finally: _finally;
 	progress: _progress;
+
+	resolve: (subject?: any) => fn;
+	reject: (subject?: any) => fn;
+
 	constructor (executor?: executor) {
 		const self = this;
 		let poolResolve: onSubject[] = [];
 		let poolReject: onSubject[] = [];
-		let poolFinally: onFinally[] = [];
 		let poolProgress: onSubject[] = [];
 		let done: boolean;
 		let subject: any;
 		let error: any;
+		let innerCancel: fn = self.cancel = cancelNoop;
+		const normalizeWrap = (onResolve: onSubject, onReject: onSubject) => {
+			return (subject?: any) => {
+				return immediate(() => {
+					if (!isPromise(subject)) return onResolve(subject);
+					const next = subject.then(onResolve, onReject);
+					const _cancel = next && next.cancel;
+					if (_cancel) innerCancel = _cancel;
+				});
+			};
+		};
 		const resolve = (_subject?: any) => {
 			if (done) return;
 			done = true;
 			executeEach(poolResolve, [ subject = _subject ]);
-			tryEach(poolFinally, [ null, _subject ]);
-			poolFinally = poolProgress = poolReject = poolResolve = null;
+			poolProgress = poolReject = poolResolve = null;
 		};
 		const reject = (_subject?: any) => {
 			if (done) return;
 			done = error = true;
 			executeEach(poolReject, [ subject = _subject ]);
-			tryEach(poolFinally, [ _subject ]);
-			poolFinally = poolProgress = poolReject = poolResolve = null;
+			poolProgress = poolReject = poolResolve = null;
 		};
 		const progress = (_subject?: any) => {
 			if (done) return;
 			tryEach(poolProgress, [ _subject ]);
 		};
+
+		const _resolve = self.resolve = normalizeWrap(resolve, reject);
+		const _reject = self.reject = normalizeWrap(reject, reject);
 		const init = subscribleInit(() => {
-	    let canceled = false;
-	    let cancel = done ? cancelNoop : immediate(() => {
-	    	if (canceled) return;
+	    let __cancel = !done && executor ? immediate(() => {
 	    	try {
-					if (executor) {
-						const _cancel = executor(
-							normalizeWrap(resolve, reject),
-							normalizeWrap(reject, reject),
-							progress
-						);
-						if (typeof _cancel === 'function') cancel = _cancel;
-					} else {
-						resolve();
-					}
+					const _cancel = executor(_resolve, _reject, progress);
+					if (typeof _cancel === 'function') __cancel = _cancel;
 				} catch (ex) {
-					reject(ex);
+					_reject(ex);
 				}
-	    });
-	    return () => {
-	      if (canceled) return;
-	      canceled = true;
+	    }) : cancelNoop;
+	    const cancel = () => {
+	      innerCancel();
+	      __cancel();
 	      poolResolve = [];
 	      poolReject = [];
 				poolProgress = [];
-	      cancel();
 	    };
+	    //self.cancel = once(cancel);
+	    return cancel;
 		});
 
 		const __chain = (onResolve: onSubject, onReject: onSubject) => {
@@ -103,55 +111,59 @@ export class Deal {
 			poolReject.push(onReject);
 		};
 		
-		const __deal = (onResolve: onSubject, onReject: onSubject) => {
-			const cancel = init();
-	    const deal = new Deal((_resolve, _reject) => {
-	    	__chain(
-	    		onResolve ? subject => {
-	    			try {
-	  					_resolve(onResolve(subject));
-	  				} catch (ex) {
-	  					_reject(ex);
-	  				}
-	    		} : _resolve,
-	    		onReject ? error => {
-	    			try {
-	  					_resolve(onReject(error));
-	  				} catch (ex) {
-	  					_reject(ex);
-	  				}
-	    		} : _reject
-	    	);
-				return cancel;
-			});
-	    deal.cancel = cancel;
-	    return deal;
-	  };
-
-	  self.cancel = cancelNoop;
-		const __then = self.then = (onResolve: onSubject, onReject: onSubject, onProgress: onSubject) => {
+		const __then = self.then = (onResolve?: onSubject, onReject?: onSubject, onProgress?: onSubject) => {
 	    done || onProgress && poolProgress.push(onProgress);
-    	return __deal(onResolve, onReject);
+	    const cancel = destroyProvider(init());
+    	const deal = new Deal(subscribleProvider((__resolve, __reject) => {
+    		cancel.add(immediate(() => {
+					__chain(
+		    		onResolve ? subject => {
+		    			try {
+		  					__resolve(onResolve(subject));
+		  				} catch (ex) {
+		  					__reject(ex);
+		  				}
+		    		} : __resolve,
+		    		onReject ? error => {
+		    			try {
+		  					__resolve(onReject(error));
+		  				} catch (ex) {
+		  					__reject(ex);
+		  				}
+		    		} : __reject
+		    	);
+				}));
+				return cancel;
+			}));
+			deal.cancel = cancel;
+			return deal;
 	  };
 		self.catch = (onReject, onProgress) => __then(null, onReject, onProgress);
 		self.finally = (onFinally: onFinally, onProgress?: onSubject) => {
-			if (done) {
-				try {
-					error ? onFinally(subject) : onFinally(null, subject);
-				} catch (ex) {
-					console.error(ex);
-				}
-				return self;
-			}
-			poolFinally.push(onFinally);
-			onProgress && poolProgress.push(onProgress);
-			return self;
+			return __then(
+				(subject: any) => {
+					try {
+						onFinally(subject);
+					} catch (ex) {
+						console.error(ex);
+					}
+					return subject;
+				},
+				(subject: any) => {
+					try {
+						onFinally(null, subject);
+					} catch (ex) {
+						console.error(ex);
+					}
+					throw subject;
+				},
+				onProgress
+			);
 	  };
 		self.progress = (onProgress) => {
 			done || poolProgress.push(onProgress);
 			return self;
 		};
-
 		return self;
 	}
 
@@ -280,9 +292,35 @@ export class Deal {
 	}
 }
 
-const normalizeWrap = (onResolve: onSubject, onReject: onSubject) => {
-	return (subject: any) => isPromise(subject)
-		? subject.then(onResolve, onReject) 
-		: onResolve(subject);
-};
 const cancelNoop = () => false;
+
+const subscribleProvider = (executor: executor) => {
+	let _subject: any, _error: boolean, _done: boolean;
+	let __onResolve: fn;
+	let __onReject: fn;
+	const cancel = executor(
+		(subject: any) => {
+			if (_done) return;
+			_done = true;
+			_subject = subject;
+			__onResolve && __onResolve(subject);
+			__onResolve = __onReject = null;
+		}, 
+		(subject: any) => {
+			if (_done) return;
+			_error = _done = true;
+			_subject = subject;
+			__onReject && __onReject(subject);
+			__onResolve = __onReject = null;
+		}
+	);
+	return (onResolve: onSubject, onReject: onSubject) => {
+		if (_done) {
+			(_error ? onReject : onResolve)(_subject);
+		} else {
+			__onReject = onReject;
+			__onResolve = onResolve;
+		}
+		return cancel;
+	};
+};

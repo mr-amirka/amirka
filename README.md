@@ -33,7 +33,7 @@ Demo page: https://dartline.ru/minimalist-notation
 
 Try this test: https://jsfiddle.net/Amirka/j6d8aozy/42/
 
-Home page: http://minimalist-notation.dartline.ru
+Home page: http://minimalist-notation.org
 
 
 PS:   

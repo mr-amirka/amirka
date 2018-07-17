@@ -25,7 +25,7 @@ const defaultOptions: ScriptOptions = {
 
 const noop = () => {};
 
-export const script = (url: ScriptOptions | string, options?: ScriptOptions): Deal => {
+export const script = (url: UrlOptions | string, options?: ScriptOptions): Deal => {
   return new Deal((resolve, reject, progress) => {        
     const _options = mergeDepth([ defaultOptions, options ], {}, defaultDepth);
     const _url = urlExtend(url, _options).href;

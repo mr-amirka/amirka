@@ -42,6 +42,10 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { enableProdMode } from "@angular/core";
 import { AppModule } from "./app/app.module";
 
+
+import {request} from '../../src/additional/request';
+import {Deal} from '../../src/base/deal';
+
 /*
 if(process.env.ENV === "production") {
   enableProdMode();
@@ -55,5 +59,3 @@ ready(() => {
   console.log('minimalistNotation', mn.data);
   platformBrowserDynamic().bootstrapModule(AppModule);
 });
-
-
