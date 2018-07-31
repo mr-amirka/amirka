@@ -1,8 +1,10 @@
+
+
 interface fn {
 	(...args: any[]): any
 }
 
-interface flagsMap {
+interface FlagsMap {
 	[name: string]: boolean;
 }
 

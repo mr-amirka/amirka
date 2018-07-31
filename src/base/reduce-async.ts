@@ -32,8 +32,8 @@ export const reduceAsync = (src: any, reducer: reducer, done?: done, dst?: any, 
 			if (isDone) return;
 			isDone = true;
 			dst[k] = v;
-			progress({loaded, total});
-			++loaded < total || done(dst);
+			(<fn> progress)({loaded, total});
+			++loaded < total || (<fn> done)(dst);
 		});
 	};
   let total = src.length;

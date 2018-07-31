@@ -1,6 +1,12 @@
+@import "~@angular/material/prebuilt-themes/purple-green.css";
+
 /**
  * Global Application Styles
  */
+
+pre {
+    margin: 0px;
+}
 
 @font-face {
     font-family: 'Exo 2';

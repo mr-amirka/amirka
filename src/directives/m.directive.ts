@@ -1,13 +1,17 @@
+/**
+ * @overview MDirective
+ * @author Absolutely Amir <mr.amirka@ya.ru>
+ */
+
 import {Directive, Input} from '@angular/core';
 
-import {mn} from '../../../../src/services/mn';
+import {mn} from '../services/mn';
 
 const checkAttr = mn.checkAttr;
 
 @Directive({selector: '[m]'})
 export class MDirective {
-  @Input('m')
-  set m(v: string) {
+  @Input('m') set m(v: string) {
     checkAttr('m', v).compile();
   }
 }

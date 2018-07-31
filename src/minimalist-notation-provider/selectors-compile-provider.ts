@@ -9,7 +9,6 @@
  */
 
 import {extend} from 'lodash';
-import {isInsignificant} from '../base/is-insignificant';
 import {unslash} from '../common/unslash';
 import {escapeQuote} from '../common/escape-quote';
 import {variance} from '../common/variance';
@@ -22,7 +21,6 @@ const __variance = variance.core;
 const regexpDepth = /^(\d+)(.*)$/;
 const splitParent = escapedSplitProvider(/<|>\-/).core;
 const splitChild = escapedSplitProvider(/>|<\-/).core;
-const splitState = escapedSplitProvider(':').core;
 const splitMedia = escapedSplitProvider('@').core;
 const regexpScope = /^(.*?)\[(.*)\]$/;
 
@@ -32,9 +30,9 @@ export interface essenceOptionsItems {
 
 interface essenceOptions {
   essences: {
-    [suffix: string]: flagsMap
+    [suffix: string]: FlagsMap
   };
-  selectors: flagsMap;
+  selectors: FlagsMap;
   mediaName: string;
 }
 
@@ -42,7 +40,7 @@ interface states {
   [stateName: string]: string[];
 }
 
-interface flagsMap {
+interface FlagsMap {
   [name: string]: boolean;
 }
 
@@ -52,8 +50,8 @@ export interface selectorsCompile {
   classNameCompile: (exp: string) => essenceOptionsItems;
   attrCompile: (exp: string, attrName: string) => essenceOptionsItems;
   getSelectors: (exp: string, targetName: string) => essenceOptionsItems;
-  getParents: (mediaNames: string[], name: string, targetName?: string) => flagsMap;
-  getEssence: (input: string) => { selector: string, states: flagsMap };
+  getParents: (mediaNames: string[], name: string, targetName?: string) => FlagsMap;
+  getEssence: (input: string) => { selector: string, states: FlagsMap };
 }
 
 export interface selectorsCompileProvider {

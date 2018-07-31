@@ -40,7 +40,7 @@ const __build = (<any> variance).build = (childs: varianceAst[]) => {
 		parts = __split(child.prefix);
 		pl = parts.length;
 		end = pl - 1;
-		joinArrays(next = [], [ parts[end] ], __build(child.childs));
+		joinArrays(next = [], [ parts[end] ], __build(<any> child.childs));
 		if (end) {
 			joinArrays(output, prev, [ parts[0] ]);
 			prev = next;

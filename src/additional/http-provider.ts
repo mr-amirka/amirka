@@ -1,12 +1,6 @@
 
-import {request, RequestOptions} from './request';
-import {Deal} from '../base/deal';
-import {mergeDepth} from '../base/merge-depth';
-import {UrlOptions} from '../common/url-extend';
-
-interface Method {
-	(url: string, options?: RequestOptions): Deal;
-}
+import { request, RequestOptions } from './request';
+import { Deal} from '../base/deal';
 
 export interface HttpMethod {
 	(url: string, options?: RequestOptions): Deal;

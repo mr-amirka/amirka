@@ -1,5 +1,4 @@
 
-import {removeOf} from '../base/remove-of';
 import {immediate} from '../base/immediate'
 
 interface watcher {
@@ -7,22 +6,26 @@ interface watcher {
   args?: any[];
   ctx?: any
 }
+interface node {
+  watcher?: watcher | null,
+  next?: node
+}
 
 const LISTENER_METHOD = "addEventListener";
 const ATTACH_METHOD = "attachEvent";
 const isReady = (s: string) => /complete|interactive/.test(s);
 export const readyProvider = (w: Window) => {
   const d = w.document;
-  let readyList: watcher[] = [];
+  let first: node = {};
+  let last = first;
   let hasReady = isReady(d.readyState);
   const onReady = () => {
     if (hasReady) return;
     hasReady = true;
-    for (let item, i = 0; i < readyList.length; i++) {
-      item = readyList[i];
-      item.fn.apply(item.ctx, item.args);
+    for (let item: node, watcher: watcher; item = <node> first.next;) {
+      if (watcher = <watcher> item.watcher) watcher.fn.apply(watcher.ctx, watcher.args);
     }
-    readyList = [];
+    first = {};
   };
   if (d[LISTENER_METHOD]) {
     d[LISTENER_METHOD]("DOMContentLoaded", onReady, false);
@@ -33,13 +36,11 @@ export const readyProvider = (w: Window) => {
   }
   return  (fn: fn, args?: any[], ctx?: any) => {
     if (hasReady) return immediate(fn, args, ctx);
-    let watcher = {fn, args: args || [], ctx: ctx || null};
-    readyList.push(watcher);
+    let watcher: watcher | null = {fn, args: args || [], ctx: ctx || null};
+    let node: node = last.next = { watcher };
+    last = node;
     return () => {
-      if (watcher) {
-        removeOf(readyList, watcher);
-        watcher = null;
-      }
+      if (watcher) node.watcher = watcher = null;
       return true;
     };
   };

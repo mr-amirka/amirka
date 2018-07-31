@@ -3,7 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-export const timeout = (fn: fn, delay?: number, args?: any[], ctx?: any) => {
+export const timeout = (fn: fn | null, delay?: number, args?: any[], ctx?: any) => {
   setTimeout(() => fn && fn.apply(ctx || null, args || []), delay || 0);
-  return () => fn = <fn> null;
+  return () => fn = null;
 };

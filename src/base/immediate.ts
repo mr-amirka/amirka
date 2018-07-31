@@ -5,10 +5,10 @@
 
 import { timeout } from './timeout';
 
-export const immediate = (fn: fn, args?: any[], ctx?: any) => {
+export const immediate = (fn: fn | null, args?: any[], ctx?: any) => {
 	try {
 		setImmediate(() =>  fn && fn.apply(ctx || null, args || []));
-  	return () => fn = <fn> null;
+  	return () => fn = null;
 	} catch {
 		return timeout(fn, 0, args, ctx);
 	}

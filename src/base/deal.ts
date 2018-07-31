@@ -5,6 +5,8 @@
  * 
  */
 
+import { extend } from 'lodash';
+import { support } from './support'
 import { timeout } from './timeout'
 import { immediate } from './immediate';
 import { executeEach } from './execute-each';
@@ -13,7 +15,6 @@ import { tryEach } from './try-each';
 import { subscribleInit } from './subscrible-init';
 import { isPromise } from './is-promise';
 import { reduceAsync } from './reduce-async';
-import { once } from './once';
 
 
 interface onSubject {
@@ -23,7 +24,7 @@ interface onFinally {
 	(error?: any, subject?: any): any;
 }
 interface executor {
-	(resolve: onSubject, reject?: onSubject, progress?: onSubject): fn | void;
+	(resolve: onSubject, reject: onSubject, progress: onSubject): fn | void;
 }
 interface _then {
 	(onResolve: onSubject, onReject?: onSubject, onProgress?: onSubject): Deal;
@@ -37,6 +38,8 @@ interface _finally {
 interface _progress {
 	(onProgress: onSubject): Deal;
 }
+
+
 export class Deal {
 	cancel: fn;
 	then: _then;
@@ -48,6 +51,7 @@ export class Deal {
 	reject: (subject?: any) => fn;
 
 	constructor (executor?: executor) {
+		//super();
 		const self = this;
 		let poolResolve: onSubject[] = [];
 		let poolReject: onSubject[] = [];
@@ -56,6 +60,11 @@ export class Deal {
 		let subject: any;
 		let error: any;
 		let innerCancel: fn = self.cancel = cancelNoop;
+		const clear = () => {
+			poolResolve = [];
+      		poolReject = [];
+			poolProgress = [];
+		};
 		const normalizeWrap = (onResolve: onSubject, onReject: onSubject) => {
 			return (subject?: any) => {
 				return immediate(() => {
@@ -70,13 +79,13 @@ export class Deal {
 			if (done) return;
 			done = true;
 			executeEach(poolResolve, [ subject = _subject ]);
-			poolProgress = poolReject = poolResolve = null;
+			clear();
 		};
 		const reject = (_subject?: any) => {
 			if (done) return;
 			done = error = true;
 			executeEach(poolReject, [ subject = _subject ]);
-			poolProgress = poolReject = poolResolve = null;
+			clear();
 		};
 		const progress = (_subject?: any) => {
 			if (done) return;
@@ -97,9 +106,7 @@ export class Deal {
 	    const cancel = () => {
 	      innerCancel();
 	      __cancel();
-	      poolResolve = [];
-	      poolReject = [];
-				poolProgress = [];
+	      clear();
 	    };
 	    //self.cancel = once(cancel);
 	    return cancel;
@@ -124,6 +131,7 @@ export class Deal {
 		  					__reject(ex);
 		  				}
 		    		} : __resolve,
+		    		// @ts-ignore
 		    		onReject ? error => {
 		    			try {
 		  					__resolve(onReject(error));
@@ -138,12 +146,12 @@ export class Deal {
 			deal.cancel = cancel;
 			return deal;
 	  };
-		self.catch = (onReject, onProgress) => __then(null, onReject, onProgress);
+		self.catch = (onReject, onProgress) => __then(<any> null, onReject, onProgress);
 		self.finally = (onFinally: onFinally, onProgress?: onSubject) => {
 			return __then(
 				(subject: any) => {
 					try {
-						onFinally(subject);
+						onFinally(null, subject);
 					} catch (ex) {
 						console.error(ex);
 					}
@@ -151,7 +159,7 @@ export class Deal {
 				},
 				(subject: any) => {
 					try {
-						onFinally(null, subject);
+						onFinally(subject);
 					} catch (ex) {
 						console.error(ex);
 					}
@@ -267,6 +275,7 @@ export class Deal {
 	 * });
 	 * 
 	 */
+	 /*
 	static doneAll(funcs: fn[]) {
 		return new Deal((resolve, reject, progress) => {
 			let hasError: boolean;
@@ -286,6 +295,7 @@ export class Deal {
 			);
 		});
 	}
+	*/
 
 	static timeout(delay?: number) {
 		return new Deal((resolve) => timeout(resolve, delay));
@@ -294,10 +304,10 @@ export class Deal {
 
 const cancelNoop = () => false;
 
-const subscribleProvider = (executor: executor) => {
+const subscribleProvider = (executor: fn) => {
 	let _subject: any, _error: boolean, _done: boolean;
-	let __onResolve: fn;
-	let __onReject: fn;
+	let __onResolve: fn | null;
+	let __onReject: fn | null;
 	const cancel = executor(
 		(subject: any) => {
 			if (_done) return;
@@ -324,3 +334,13 @@ const subscribleProvider = (executor: executor) => {
 		return cancel;
 	};
 };
+
+
+
+((_Promise) => {
+	if (!_Promise) return;
+	const Prototype = function(){};
+	Prototype.prototype = _Promise.prototype;
+	// @ts-ignore
+	Deal.prototype = extend(new Prototype(), Deal.prototype);
+})(support('Promise'));

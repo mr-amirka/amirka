@@ -5,11 +5,11 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-import {once} from '../base/once';
-import {Deal} from '../base/deal';
-import {immediate} from '../base/immediate';
-import {mergeDepth} from '../base/merge-depth';
-import {urlExtend, UrlOptions} from '../common/url-extend';
+import { once } from '../base/once';
+import { Deal } from '../base/deal';
+import { immediate } from '../base/immediate';
+import { mergeDepth } from '../base/merge-depth';
+import { urlExtend, UrlOptions } from '../common/url-extend';
 
 export interface ScriptOptions extends UrlOptions {
   tryLimit?: number;
@@ -28,7 +28,7 @@ const noop = () => {};
 export const script = (url: UrlOptions | string, options?: ScriptOptions): Deal => {
   return new Deal((resolve, reject, progress) => {        
     const _options = mergeDepth([ defaultOptions, options ], {}, defaultDepth);
-    const _url = urlExtend(url, _options).href;
+    const _url = <string> urlExtend(url, _options).href;
     const tryLimit = _options.tryLimit || 0;
     const tryDelay = _options.tryDelay || 0;
     let abort: fn, remove: fn, tryCount = 1, stop: boolean = false;
@@ -44,7 +44,7 @@ export const script = (url: UrlOptions | string, options?: ScriptOptions): Deal 
       const head = document.getElementsByTagName('head')[0];
       const execute = instance.onload = once(() => {
         immediate(remove);
-        const status = (<any> instance).status || 404;
+        const status = (<any> instance).status || 200;
         if (status > 199 && status < 400) return resolve();
         __reject('status ' + status);
       });

@@ -6,12 +6,18 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <meta name="theme-color" content="#000"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="#000"/>
+  <meta charset="utf-8"/>
   <title>Standalone Minimalist Notation</title>  
 </head>
 <body m="p m ovyAuto ovxHidden">
   <script>
     amirka.polyfill({
       'CSS.escape': 'assets/standalone-shims/css.escape.shim.js'
+      ,'Promise': function() {
+        window.Promise = amirka.Deal;
+      }
       //,'Promise': 'assets/standalone-shims/promise.shim.js',
       //'setImmediate': 'assets/standalone-shims/set-immediate.shim.js'
     }, function() {

@@ -842,117 +842,39 @@ mn('x', p => {
 Для добавления статической эссенции и создания правил генерации эссенций используется метод ``` mn ```
 
 ```ts 
-interface storage {
-  set: (name: string, value: string, priority?: number) => any;
-  remove: (name: string) => any;
-  render: fn;
-}
-
-interface minimalistNotation extends selectorsCompile {
-  (essencePrefix: string, essenceOptions: EssenceOptions): minimalistNotation;
-  (essencePrefix: string, handler: EssenceHandler, matches?: string | string[]): minimalistNotation;
-  (essences: EssenceMapOptions): minimalistNotation;
+interface MinimalistNotation extends selectorsCompile {
+  (essencePrefix: string, essenceOptions: EssenceOptions): MinimalistNotation;
+  (essencePrefix: string, handler: EssenceHandler, matches?: string | string[]): MinimalistNotation;
+  (essences: EssenceMapOptions): MinimalistNotation;
   $$storage: storage;
   propertiesStringify: cssPropertiesStringify;
-  checkAttrs: flagsMap;
-  data: minimalistNotationData;
-  $$cache: flagsMap;
+  checkAttrs: FlagsMap;
+  data: MinimalistNotationData;
+  $$cache: FlagsMap;
   media: {[mediaName: string]: media};
   handlerMap: handlerMap;
   contextMode: string;
   disabled: boolean;
-  recursiveCheckNodeByAttr: (nodes: Element[] | Element | Document) => minimalistNotation;
-  recursiveCheckNodeByClassName: (nodes: Element[] | Element | Document) => minimalistNotation;
-  checkClassName: (className: string) => minimalistNotation;
-  checkClassNames: (classNamesValue: string) => minimalistNotation;
-  checkAttrOne: (attrName: string, attrValue: string) => minimalistNotation;
-  checkAttr: (attrName: string, attrValue: string) => minimalistNotation;
-  ngCheck: (ngClass: string) => minimalistNotation;
-  checkNodeByClassName: (node: Element) => minimalistNotation;
-  checkNodeByAttr: (node: Element) => minimalistNotation;
-  css: (selector: string | {[n: string]: CssProps}, css?: CssProps) => minimalistNotation;
-  assign: (essencesNames: string[], selectors: string[]) => minimalistNotation;
+  recursiveCheckNodeByAttr: (nodes: Element[] | Element | Document) => MinimalistNotation;
+  recursiveCheckNodeByClassName: (nodes: Element[] | Element | Document) => MinimalistNotation;
+  checkClassName: (className: string) => MinimalistNotation;
+  checkClassNames: (classNamesValue: string) => MinimalistNotation;
+  checkAttrOne: (attrName: string, attrValue: string) => MinimalistNotation;
+  checkAttr: (attrName: string, attrValue: string) => MinimalistNotation;
+  ngCheck: (ngClass: string) => MinimalistNotation;
+  checkNodeByClassName: (node: Element) => MinimalistNotation;
+  checkNodeByAttr: (node: Element) => MinimalistNotation;
+  css: (selector: string | {[n: string]: CssProps}, css?: CssProps) => MinimalistNotation;
+  assign: (essencesNames: string[], selectors: string[]) => MinimalistNotation;
   parseMediaName: (mediaName: string) => media;
-  compile: () => minimalistNotation; //перекомиплировать стили для новых классов
-  recompile: () => minimalistNotation; //полностью перекомиплировать все стили
-  setKeyframes: (name: string, body: keyframes | string) => minimalistNotation;
-  set: minimalistNotation;
+  clear: () => MinimalistNotation;
+  compile: () => MinimalistNotation; //перекомиплировать стили для новых классов
+  recompile: () => MinimalistNotation; //полностью перекомиплировать все стили
+  deferCompile: () => MinimalistNotation;
+  deferRecompile: () => MinimalistNotation;
+  setKeyframes: (name: string, body: keyframes | string) => MinimalistNotation;
+  set: MinimalistNotation;
 }
-
-interface handlerMap {
-  [name: string]: EssenceHandler;
-}
-
-interface minimalistNotationData {
-  keyframes: keyframesData;
-  classNamesMap: flagsMap;
-  root: root;
-  essences: essencesMap;
-  statics: statics;
-  attrsMap: attrsMap;
-  css: cssData;
-}
-
-interface statics {
-  assigned: assigned;
-  essences: {[essenceName: string]: flagsMap};
-}
-
-interface attrsMap {
-  [name: string]: flagsMap;
-}
-
-interface EssenceMapOptions {
-  [essencePrefix: string]: EssenceOptions | EssenceHandler;
-}
-
-//функция-генератор эссенции
-interface EssenceHandler {
-  (params: EssenceParams): EssenceOptions
-}
-
-interface EssenceParams {
-  name: string;
-  input: string;
-  suffix: string;
-  negative: string;
-  value: string;
-  camel: string;
-  num: string;
-  other: string;
-  i: string;
-  ni: string;
-  [name: string]: string;
-}
-
-//Опции эссенции
-interface EssenceOptions {
-  inited?: boolean;
-  priority?: number;
-  style?: CssProps;
-  exts?: string[] | flagsMap;
-  include?: string[];
-  selectors?: string[];
-  childs?: essencesMap,
-  media?: {
-    [mediaName: string]: EssenceOptions
-  };
-
-  rules?: rule[];
-  updated?: boolean;
-  content?: string;
-}
-
-interface media {
-  priority?: number;
-  query?: string;
-}
-
-interface assigned {
-  [mediaName: string]: {[essenceName: string]: flagsMap}
-}
-
-
 ```
 
 
@@ -1274,7 +1196,7 @@ Output:
 
 
 
+Если Вы заинтересованы в более подробной документации и заинтересованы в развитии проекта, внесите свою лепту https://www.paypal.me/mnotation
 
-Продолжение статьи в разработке... :(
 
 Предшествующая версия: https://github.com/mr-amirka/minimalist

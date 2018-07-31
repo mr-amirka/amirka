@@ -45,6 +45,20 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.locale\.json$/,
+        type: 'javascript/auto',
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              //name: 'assets/[path][name].[hash].[ext]'
+              name: '[name].[hash].[ext]',
+              outputPath: 'assets/'
+            }
+          }
+        ]
+      },
+      {
         test: /\.rs$/,
         type: 'webassembly/experimental',
         use: {
@@ -58,23 +72,23 @@ module.exports = {
           'awesome-typescript-loader?configFileName=tsconfig.json',
           'angular2-template-loader'
         ],
-        exclude: [ /\.spec\.ts$/, /\.d\.ts/, /node_modules/ ]
+        exclude: [ /\.spec\.ts$/, /\.d\.ts/ /*, /node_modules/ */ ]
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        //exclude: /node_modules/,
         use: {
           loader: "babel-loader"
         }
       },
       {
         test: /\.css$/,
-        exclude: /node_modules/,
+        //exclude: /node_modules/,
         use: [
           {
-            loader: "style-loader" // creates style nodes from JS strings
+            loader: "style-loader"
           }, {
-            loader: "css-loader", // translates CSS into CommonJS
+            loader: "css-loader",
             options: {
               minimize: true
             }
@@ -83,17 +97,17 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        exclude: /node_modules/,
+        //exclude: /node_modules/,
         use: [
           {
-            loader: "style-loader" // creates style nodes from JS strings
+            loader: "style-loader"
           }, {
-            loader: "css-loader", // translates CSS into CommonJS
+            loader: "css-loader",
             options: {
               minimize: true
             }
           }, {
-            loader: "sass-loader" // compiles Sass to CSS
+            loader: "sass-loader"
           }
         ]
       },
@@ -112,7 +126,20 @@ module.exports = {
           }
         ]
       },
-      { test: /\.(jpg|jpeg|png|svg|gif|woff|woff2|otf|ttf)$/, loader: 'url-loader?limit=100000' },
+      {
+        test: /\.(jpg|jpeg|png|svg|gif|woff|woff2|otf|ttf|mp3)$/, 
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              //name: 'assets/[path][name].[hash].[ext]'
+              name: '[name].[hash].[ext]',
+              outputPath: 'assets/'
+            }
+          }
+        ]
+      },
+      //{ test: /\.(jpg|jpeg|png|svg|gif|woff|woff2|otf|ttf)$/, loader: 'url-loader?limit=100000' },
       {
         test: /\.html?$/,
         use: [
@@ -123,10 +150,23 @@ module.exports = {
               removeComments: false,
               collapseWhitespace: false
             }
-          }, {
-            loader: 'highlightjs-loader'
           }
         ],
+      },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: "html-loader"
+          },
+          {
+            loader: "markdown-loader",
+            options: {
+              langPrefix: ''
+              /* your options here */
+            }
+          }
+        ]
       }
     ]
   },

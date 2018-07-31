@@ -14,12 +14,12 @@
  *
  */
 import {set} from 'lodash';
-export const flags = (flags: string[], dst?: any): flagsMap => {
+export const flags = (flags: string[], dst?: any): FlagsMap => {
   dst || (dst = {});
   for (let l = flags.length, i = 0; i < l; i++) set(dst, flags[i], true);
   return dst;
 };
-export const flagsSimple = (flags: string[], dst?: any): flagsMap => {
+export const flagsSimple = (flags: string[], dst?: any): FlagsMap => {
   dst || (dst = {});
   for (let l = flags.length, i = 0; i < l; i++) dst[ flags[i] ] = true;
   return dst;

@@ -14,11 +14,10 @@ var data = {};
     })
 */
 
-import {now} from 'lodash';
-import {script, ScriptOptions} from './script';
-import {globalNameProvider} from './global-name-provider';
-import {Deal} from '../base/deal';
-import {mergeDepth} from '../base/merge-depth';
+import { script, ScriptOptions } from './script';
+import { globalNameProvider } from './global-name-provider';
+import { Deal } from '../base/deal';
+import { mergeDepth } from '../base/merge-depth';
 
 const globalName = globalNameProvider(window, 'JSONP_');
 
@@ -29,7 +28,7 @@ export const jsonp = (url: ScriptOptions | string, options?: ScriptOptions): Dea
       {
         query: {
           hostname: location.hostname,
-          timestamp: now(),
+          timestamp: (new Date).getTime(),
           callback: globalName(resolve)
         }
       }

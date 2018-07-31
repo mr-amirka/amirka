@@ -8,8 +8,8 @@ import {kebabCase, isArrayLikeObject} from "lodash";
 
 export interface cssPropertiesStringify {
   (props: CssProps): string;
-  prefixedAttrs?: flagsMap;
-  prefixes?: flagsMap;
+  prefixedAttrs?: FlagsMap;
+  prefixes?: FlagsMap;
 };
 
 
@@ -19,20 +19,20 @@ export interface CssProps {
 
 
 export const cssPropertiesStringifyProvider = (
-  prefixedAttrs?: flagsMap, 
-  prefixes?: flagsMap
+  prefixedAttrs?: FlagsMap, 
+  prefixes?: FlagsMap
 ) => {
   prefixedAttrs || (prefixedAttrs = {});
   prefixes || (prefixes = {});
   const stringify: cssPropertiesStringify = (props) => {
-    let output = [], vs, vl, vi, prop, prefix, propPrefix, propertyName;
+    let output: string[] = [], vs, vl, vi, prop: string, prefix: string, propPrefix: string, propertyName: string;
     for (propertyName in props) {
       propPrefix = (propertyName[0] === '-' ? '-' : '') + kebabCase(propertyName) + ':';
       if (!isArrayLikeObject(vs = props[propertyName])) vs = [ vs ];
-      if (prefixedAttrs[propertyName]) {
+      if ((<any> prefixedAttrs)[propertyName]) {
         for (vi = 0, vl = vs.length; vi < vl; vi++) {
           prop = propPrefix + vs[vi];
-          for (prefix in prefixes) output.push(prefix + prop);
+          for (prefix in (<any> prefixes)) output.push(prefix + prop);
           output.push(prop);
         }
         continue;

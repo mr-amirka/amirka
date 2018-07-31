@@ -3,11 +3,11 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-import {param} from '../common/param';
-import {once} from '../base/once';
-import {Deal} from '../base/deal';
-import {mergeDepth} from '../base/merge-depth';
-import {urlExtend, UrlOptions} from '../common/url-extend';
+import { param } from '../common/param';
+import { once } from '../base/once';
+import { Deal } from '../base/deal';
+import { mergeDepth } from '../base/merge-depth';
+import { urlExtend, UrlOptions } from '../common/url-extend';
 
 export interface RequestOptions extends UrlOptions {
   tryLimit?: number;
@@ -55,6 +55,7 @@ export interface Request {
   (url: UrlOptions | string, options?: RequestOptions): Deal;
 }
 
+
 export const request: Request = (url: UrlOptions | string, options?: RequestOptions): Deal => {
 
   const _options = mergeDepth([ defaultOptions, options ], {}, defaultDepth);
@@ -66,8 +67,6 @@ export const request: Request = (url: UrlOptions | string, options?: RequestOpti
   const responseType = _options.responseType;
   const type = _options.type.toLowerCase();
   const typeConfig = defaultTypes[type];
-  const tryLimit = options.tryLimit;
-  const tryDelay = options.tryDelay;
 
   return new Deal((resolve, reject, progress) => {        
     
@@ -80,7 +79,7 @@ export const request: Request = (url: UrlOptions | string, options?: RequestOpti
       if (typeof encode === 'function') encodedBody = encode(encodedBody);
     }
 
-    const _url = urlExtend(url, _options).href;
+    const _url = <string> urlExtend(url, _options).href;
     const tryLimit = _options.tryLimit || 0;
     const tryDelay = _options.tryDelay || 0;
     let abort: fn, remove: fn, tryCount = 1, stop: boolean = false;
@@ -95,7 +94,7 @@ export const request: Request = (url: UrlOptions | string, options?: RequestOpti
       const xhr = new XMLHttpRequest();
       xhr.open(method, _url, true);
       const execute = xhr.onload = once(() => {
-        const status = xhr.status || 404;
+        const status = xhr.status || 200;
         if (status > 199 && status < 400) return resolve(xhr.response);
         __reject('status ' + status);
       });

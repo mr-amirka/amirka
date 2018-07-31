@@ -17,7 +17,7 @@ interface item {
   priority: number;
 }
 
-interface StyleStorage {
+export interface StyleStorage {
   set: (name: string, value: string, priority?: number) => StyleStorage;
   remove: (name: string) => StyleStorage;
   render: () => StyleStorage;
@@ -26,7 +26,7 @@ interface StyleStorage {
 export const styleProvider = (document: Document, containerId: string, prefix?: string):  StyleStorage => {
   const __escape = CSS.escape;
 
-  let $$container: Element = null;
+  let $$container: Element | null = null;
   const $$cache = {};
 
   const domFind = (selector: string) => document.querySelector(selector);
@@ -37,7 +37,7 @@ export const styleProvider = (document: Document, containerId: string, prefix?: 
     return node;
   };
 
-  const getNode = (id: string) => domFind('#' + __escape(id)) || domCreate($$container, 'style', id);
+  const getNode = (id: string) => domFind('#' + __escape(id)) || domCreate(<Element> $$container, 'style', id);
   const styleSheet = (node: HTMLStyleElement, text: string) => {
     const styleSheet = (<any> node).styleSheet;
     if (styleSheet) {
@@ -53,7 +53,7 @@ export const styleProvider = (document: Document, containerId: string, prefix?: 
 
   const render = () => {
     const items: item[] = sortBy(__values($$cache), (item: item) => -item.priority);
-    for (let i = items.length, item; i--;) $$container.appendChild(items[i].node);
+    for (let i = items.length; i--;) (<Element> $$container).appendChild(items[i].node);
     return instance;    
   };
 

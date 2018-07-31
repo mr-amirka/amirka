@@ -4,11 +4,10 @@
  */
 
 import { Injector } from '@angular/core';
-import { Transition, UIRouterModule, UIRouter } from "@uirouter/angular";
+import { UIRouterModule, UIRouter } from "@uirouter/angular";
 
 //ROUTES
-import { HomeRoute } from './routes/home/home.route';
-
+import { HomeRoute } from './home/home.route';
 
 
 const states = [
@@ -33,4 +32,4 @@ export const RouterModule = UIRouterModule.forRoot({
     // If no URL matches, go to the `hello` state by default
     router.urlService.rules.otherwise({ state: 'home' });
   }
-})
+});

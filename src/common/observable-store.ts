@@ -44,15 +44,15 @@ interface emit {
 
 export class ObservableStore {
 
-  _loopLocked: {
+  private _loopLocked: {
     [name: string]: boolean
   };
-  _source: {
+  private _source: {
     [name: string]: any
   };
-  _mergeDepth = defaultMergeDepth;
-  _scope: scope;
-  _delegates: delegate[];
+  private _mergeDepth = defaultMergeDepth;
+  private _scope: scope;
+  private _delegates: delegate[];
   _lastOff: fn;
   emit: emit;
   set: emit;
@@ -76,7 +76,7 @@ export class ObservableStore {
     const __subcheck = (path: string[], changed?: any) => {
       let scope = self._scope;
       let childs: scopeChilds, subscribers = scope.subscribers;
-      let callbacks = subscribers ? [].concat(subscribers) : [];
+      let callbacks = subscribers ? [].concat(<any> subscribers) : [];
       let pi = 0, pl = path.length || 0, k;
       for (; pi < pl; pi++) {
         if (!(childs = scope.childs)) return executeEach(callbacks);
@@ -181,7 +181,7 @@ export class ObservableStore {
       return unsubscribe;
     };
     const __emit = (eventArgs: any[]) => {
-      let w = [].concat(self._delegates), i = w.length;
+      let w: delegate[] = [].concat(<any> self._delegates), i = w.length;
       for(; i--;){
         try {
           w[i].callback.apply(self, eventArgs);
@@ -206,7 +206,7 @@ export class ObservableStore {
         let path = toPath(key);
         let dstValue = get(source, path);
         let isObj = isPlainObject(value);
-        if (mergeDepth > -1 && isObj) {
+        if ((<number> mergeDepth) > -1 && isObj) {
           if (!isOwner(dstValue)) set(source, path, dstValue = {});
           extendDepth(dstValue, value, mergeDepth);
         } else {
@@ -272,7 +272,7 @@ export class ObservableStore {
       const oldArgs = __getAll(paths);
       __ex(subscriber, oldArgs);
       return subscribeCore(paths, forever ? subscriber : function() {
-        let i = arguments.length, isChanged: boolean, arg: any;
+        let i = arguments.length, isChanged = false, arg: any;
         for (; i--;) {
           if ((arg = arguments[i]) === oldArgs[i]) continue;
           oldArgs[i] = arg;

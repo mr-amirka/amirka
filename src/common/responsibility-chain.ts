@@ -2,8 +2,6 @@
  * @overview responsibilityChain
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
-import {once} from 'lodash';
-
 
 interface ChainHandler {
   (req: any, next: ChainHandler): any;

@@ -5,14 +5,33 @@
 	cF lh
 ">
 
-	<x m="bg2-0r h50 sh5 cfx rlv z1 rlv (h50|tbl|lt)>1">
-		<x>
+	<x m="bg2-0r h50 sh5 cfx rlv z1 rlv (h50|tbl)>1">
+		<x m="lt">
 			<x m="lay f20">
 				<x m="rlv dt-2">Minimalist Notation</x>
 			</x>
 		</x>
-	</x>
+		<x m="rt">
+			<x m="lay f20">
+				<button
+					mat-button [mat-menu-trigger-for]="menu"
+					m="pr0"
+				>
+				{{ 
+					locale({
+						en: 'Select language',
+						ru: 'Выбрать язык'
+					}) | async 
+				}}
+				</button>
+				<mat-menu #menu="matMenu">
+				  <button mat-menu-item (click)="setLang('en')">English</button>
+				  <button mat-menu-item (click)="setLang('ru')">Русский</button>
+				</mat-menu>
 
+			</x>
+		</x>
+	</x>
 	<x m="fx1 rlv">
 		<ui-view m="overlay vBlock ovyScroll"></ui-view>
 	</x>

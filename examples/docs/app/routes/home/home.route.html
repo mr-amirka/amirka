@@ -7,25 +7,60 @@
     ">
       <x>
         <x>
-          <b>Minimalist Notation (MN) (минималистическая нотация)</b> - это технология генерации стилей, основанная на парсинге разметки. 
+          <b>Minimalist Notation (MN)</b> 
+          {{
+            locale({
+              en: 'is a technology for generating styles based on parsing markup.',
+              ru: '(минималистическая нотация) - это технология генерации стилей, основанная на парсинге разметки.'
+            }) | async
+          }}
         </x>
         <x>
-          В текущей версии для веб-приложений генерация осуществляется непосредственно в СSS.
+          {{
+            locale({
+              en: 'In the current version for web applications, the generation is done directly in the CSS.',
+              ru: 'В текущей версии для веб-приложений генерация осуществляется непосредственно в СSS.'
+            }) | async
+          }}
         </x>
         <x>
-          Технология колоссально ускоряет процесс верстки и может использоваться дополнительно с традиционными технологиями, либо заменять их полностью.
+          {{
+            locale({
+              en: 'Technology tremendously speeds up the layout process and can be used additionally with traditional technologies, or replace them completely.',
+              ru: 'Технология колоссально ускоряет процесс верстки и может использоваться дополнительно с традиционными технологиями, либо заменять их полностью.'
+            }) | async
+          }}
         </x>
         <x>
-          Преимущество перед традиционными технологиями CSS-препроцессинга в том, что разработчик избавляется от необходимости писать CSS. 
-          CSS генерируется автоматически на основании нотации и заданных разработчиком правил генерации стилей. 
+          {{
+            locale({
+              en: 'The advantage over the traditional technologies of CSS-preprocessing is that the developer gets rid of the need to write CSS. CSS is generated automatically based on the notation and  the style generate rules specified by the developer.',
+              ru: 'Преимущество перед традиционными технологиями CSS-препроцессинга в том, что разработчик избавляется от необходимости писать CSS. CSS генерируется автоматически на основании нотации и заданных разработчиком правил генерации стилей.'
+            }) | async
+          }}
         </x>
-        <x>Разработчику больше не нужно контролировать, какие стили используются в его разметке, а какие - нет, ибо отныне стили генерируются динамически только для того, что присутствует в разметке.
+        <x>
+          {{
+            locale({
+              en: 'The developer no longer needs to control which styles are used in his markup and which ones are not, for from now on the styles are generated dynamically only for what is present in the markup.',
+              ru: 'Разработчику больше не нужно контролировать, какие стили используются в его разметке, а какие - нет, ибо отныне стили генерируются динамически только для того, что присутствует в разметке.'
+            }) | async
+          }}
         </x>
-          
       </x>
+      <!--
       <x>
         <x>
-          <x>Проект на github:</x>
+          <pre code="ts">
+            const length = 10;
+            const x2 = length * length;
+          </pre>
+        </x>
+      </x>
+    -->
+      <x>
+        <x>
+          <x>Github:</x>
           <x>
             <a href="https://github.com/mr-amirka/amirka">
             	https://github.com/mr-amirka/amirka
@@ -35,17 +70,17 @@
       </x>
       <x>
       	<x>
-	        <x>Пакет NPM:</x>
+	        <x>NPM package:</x>
 	        <x><b>amirka</b></x>
         </x>
       </x>
       <x>
       	<x>
 	        <x>
-	          Контакты:
+	          Contacts:
 	        </x>
 	        <x>
-	        	<a href="https://vk.com/mr.amirka">Aбсалямов Амир</a>
+	        	<a href="https://vk.com/mr.amirka">Absolutely Amir</a>
 	        </x>
 	        <x>
 	          <a href="mailto:mr.amirka@ya.ru">mr.amirka@ya.ru</a>
@@ -53,9 +88,7 @@
         </x>
       </x>
     </x>
-    <x>
-      <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%9D%D0%B0%20%D1%80%D0%B0%D0%B7%D0%B2%D0%B8%D1%82%D0%B8%D0%B5%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0&targets-hint=%D0%9D%D0%B0%20%D1%80%D0%B0%D0%B7%D0%B2%D1%82%D0%B8%D0%B5%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0&default-sum=15000&button-text=14&payment-type-choice=on&fio=on&comment=on&mail=on&hint=%D0%9C%D0%BE%D0%B6%D0%B5%D1%82%D0%B5%20%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%20%D1%81%D0%B2%D0%BE%D0%B8%20%D0%BF%D1%80%D0%B5%D0%B4%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B8%20%D0%BF%D0%BE%D0%B6%D0%B5%D0%BB%D0%B0%D0%BD%D0%B8%D1%8F&successURL=http%3A%2F%2Fminimalist-notation.dartline.ru%2F&quickpay=shop&account=410013414058982" width="100%" height="313" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
-    </x>
+    <x donate></x>
 
   </x>
 </x>

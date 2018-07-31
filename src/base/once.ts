@@ -1,4 +1,4 @@
-export const once = (fn: fn): any => {
+export const once = (fn: fn | null): any => {
   let result: any;
   return function () {
     if (fn) {

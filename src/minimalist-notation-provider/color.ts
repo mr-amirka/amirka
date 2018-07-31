@@ -183,7 +183,7 @@ const getBackgroundParams = (_color: string, i: number, end: number) => {
 
 
 export const getBackground = (<any> color).getBackground = <getBackground> ((v: string) => {
-  let radial: string, repeating, matches;
+  let radial = '', repeating, matches;
   if (matches = /^(.*)rpt$/i.exec(v)) {
     repeating = true;
     v = matches[1];

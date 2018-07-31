@@ -8,7 +8,7 @@ import {set, get, extend, isPlainObject} from "lodash";
 export const extendByPathsMap = (dst: object, src: object, map: Map<string, string>) => {
   if (!map) return dst;
   if (typeof map !== 'object') return get(src, map);
-  let to, from, v, i;
+  let to, from, v;
   for (to in map) {
     from = map[to];
     if ((v = from === '' ? src : get(src, from)) === undefined) continue;

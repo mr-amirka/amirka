@@ -43,6 +43,7 @@ export const escapedBreakupProvider = (separator: string | RegExp): escapedBreak
       suffix = _suffix;
       value = _value;
       prefix = input.substr(0, offset);
+      return '';
     });
     return {prefix, suffix, value};
   };
