@@ -31,7 +31,7 @@ Minimalist Notation (MN) (минималистическая нотация) - �
 
 Demo page: https://dartline.ru/minimalist-notation
 
-Try this test: https://jsfiddle.net/Amirka/j6d8aozy/42/
+Try this test: https://jsfiddle.net/j6d8aozy/44/
 
 Home page: http://minimalist-notation.org
 

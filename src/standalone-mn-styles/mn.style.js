@@ -28,7 +28,7 @@ const {
 } = _;
 
 const __color = amirka.color;
-const __size = amirka.size;
+const __size = _.size;
 
 const defaultSides = {
   '': {'': 1},

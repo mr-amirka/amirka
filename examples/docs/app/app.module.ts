@@ -12,7 +12,7 @@ import { RouterModule, ROUTES_DECLARATIONS } from './routes';
 //DIRECTIVES
 import { XDirective } from '../../../src/directives/x.directive';
 import { MDirective } from '../../../src/directives/m.directive';
-import { CodeDirective } from '../../../src/directives/code.directive';
+//import { CodeDirective } from '../../../src/directives/code.directive';
 //import { TranslateDirective } from '../../../src/directives/translate.directive';
 
 //COMPONENTS
@@ -20,7 +20,7 @@ import { RootComponent } from './components/root/root.component';
 import { DonateComponent } from './components/donate/donate.component';
 
 //PIPES
-//import { LocalePipe } from './pipes/locale.pipe';
+//import { LodashPipe } from '../../../src/pipes/lodash.pipe';
 
 @NgModule({
   imports: [
@@ -36,8 +36,7 @@ import { DonateComponent } from './components/donate/donate.component';
 
     XDirective,
     MDirective,
-    //TranslateDirective,
-    CodeDirective,
+    //CodeDirective,
 
     RootComponent,
     DonateComponent,

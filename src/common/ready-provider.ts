@@ -22,7 +22,7 @@ export const readyProvider = (w: Window) => {
   const onReady = () => {
     if (hasReady) return;
     hasReady = true;
-    for (let item: node, watcher: watcher; item = <node> first.next;) {
+    for (let item: node = first, watcher: watcher; item = <node> item.next;) {
       if (watcher = <watcher> item.watcher) watcher.fn.apply(watcher.ctx, watcher.args);
     }
     first = {};

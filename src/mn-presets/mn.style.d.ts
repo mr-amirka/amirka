@@ -1,1 +1,1 @@
-export declare const mnStyle: any;
+export const mnStyle: (mn: any) => any;

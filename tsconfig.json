@@ -10,7 +10,7 @@
         "suppressImplicitAnyIndexErrors": true,
 
         "strictNullChecks": true,
-        "declaration": true,
+        //"declaration": true,
         "removeComments": false,
         "noUnusedLocals": true,
         //"importHelpers": true,

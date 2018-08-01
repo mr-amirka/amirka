@@ -13,6 +13,7 @@
 </head>
 <body m="p m ovyAuto ovxHidden">
   <script>
+
     amirka.polyfill({
       'CSS.escape': 'assets/standalone-shims/css.escape.shim.js'
       ,'Promise': function() {
@@ -20,7 +21,7 @@
       }
       //,'Promise': 'assets/standalone-shims/promise.shim.js',
       //'setImmediate': 'assets/standalone-shims/set-immediate.shim.js'
-    }, function() {
+    }).finally(function() {
 
        mn.css({
         '*, *:before, *:after': {

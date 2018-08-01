@@ -1,1 +1,1 @@
-export declare const mnSettings: any;
+export const mnSettings: (mn: any) => any;

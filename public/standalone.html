@@ -16,9 +16,12 @@
 
     amirka.polyfill({
       'CSS.escape': 'assets/standalone-shims/css.escape.shim.js'
+      ,'Promise': function() {
+        window.Promise = amirka.Deal;
+      }
       //,'Promise': 'assets/standalone-shims/promise.shim.js',
       //'setImmediate': 'assets/standalone-shims/set-immediate.shim.js'
-    }, function() {
+    }).finally(function() {
 
        mn.css({
         '*, *:before, *:after': {

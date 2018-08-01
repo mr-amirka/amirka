@@ -45,7 +45,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.locale\.json$/,
+        test: /\.(locale|xhr)\.json$/,
         type: 'javascript/auto',
         use: [
           {
@@ -53,7 +53,7 @@ module.exports = {
             options: {
               //name: 'assets/[path][name].[hash].[ext]'
               name: '[name].[hash].[ext]',
-              outputPath: 'assets/'
+              outputPath: 'assets/xhr/'
             }
           }
         ]
@@ -69,16 +69,33 @@ module.exports = {
       {
         test: /\.ts$/,
         use: [
-          'awesome-typescript-loader?configFileName=tsconfig.json',
-          'angular2-template-loader'
+          {
+            loader: "awesome-typescript-loader",
+            options: {
+              configFileName: 'tsconfig.json',
+              useBabel: true,
+              babelOptions: {
+                babelrc: false, /* Important line */
+                presets: [ "@babel/preset-env" ]
+              },
+              babelCore: "@babel/core", // needed for Babel v7
+            }
+          },
+          {
+            loader: 'angular2-template-loader'
+          }
+          
         ],
-        exclude: [ /\.spec\.ts$/, /\.d\.ts/ /*, /node_modules/ */ ]
+        exclude: [ /\.spec\.ts$/ /*, /\.d\.ts/ , /node_modules/ */ ]
       },
       {
         test: /\.js$/,
         //exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: "babel-loader",
+          options: {
+            presets: [ "es2015-without-strict" ]
+          }
         }
       },
       {
@@ -132,9 +149,8 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              //name: 'assets/[path][name].[hash].[ext]'
               name: '[name].[hash].[ext]',
-              outputPath: 'assets/'
+              outputPath: 'assets/static/'
             }
           }
         ]

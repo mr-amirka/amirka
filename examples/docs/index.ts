@@ -12,7 +12,7 @@ import "@angular/platform-browser";
 import "@angular/platform-browser-dynamic";
 import "@angular/core";
 import "@angular/common";
-import "@angular/http";
+//import "@angular/http";
 
 
 import "@uirouter/angular";
@@ -26,11 +26,6 @@ import "./global.scss";
 
 import 'hammerjs';
 
-
-/*
-import * as amirka from '../../src';
-(<any> window).amirka = amirka;
-*/
 
 import { mn } from '../../src/services/mn';
 import { ready } from "../../src/services/ready";
@@ -50,12 +45,12 @@ import { polyfill } from '../../src/additional/polyfill';
 import { Deal } from '../../src/base/deal';
 
 
-/*
-import { enableProdMode } from "@angular/core";
-if(process.env.ENV === "production") {
-  enableProdMode();
-}
-*/
+
+// import { enableProdMode } from "@angular/core";
+// if(process.env.ENV === "production") {
+//   enableProdMode();
+// }
+
 
 
 Deal.all([
@@ -70,8 +65,8 @@ Deal.all([
     	.recursiveCheckNodeByAttr(document)
     	.compile();
 
-  console.log('minimalistNotation', mn.data);
-  platformBrowserDynamic().bootstrapModule(AppModule);
+  	console.log('minimalistNotation', mn.data);
+  	platformBrowserDynamic().bootstrapModule(AppModule);
   
 });
 
@@ -101,5 +96,6 @@ cities({
 }).finally((err, response) => {
 	console.log('err, response', err, response);
 });
+
 
 */
