@@ -761,7 +761,7 @@ mn('ratio', p => {
   return p.negative || p.camel ? null : {
     style: {
       position: 'relative',
-      paddingTop: 'calc(' + (100 * intval(p.h, 1, 1) / intval(p.w || 100, 1, 1))  + '% ' + (p.sign || '+') + ' ' + (p.add || '0') + 'px)' + p.i
+      paddingTop: 'calc(' + (100 * intval(p.oh || p.h, 1, 1) / intval(p.w || 100, 1, 1))  + '% ' + (p.sign || '+') + ' ' + (p.add || '0') + 'px)' + p.i
     },
     childs: {
       overlay: {
@@ -777,7 +777,7 @@ mn('ratio', p => {
     }
   };
 
-}, '((\\d+):w?x(\\d+):h|(\\d+):h)?(([-+]):sign(\\d+):add)?');
+}, '((((\\d+):w)x((\\d+):h))|(\\d+):oh)?(([-+]):sign(\\d+):add)?');
 
 /*
 Оптимизировать обновление эссенций

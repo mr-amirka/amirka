@@ -10,11 +10,11 @@ import {ready} from "../../src/services/ready";
 import {mn} from "../../src/services/mn";
 import {mnSettings} from "../../src/mn-presets/mn.settings";
 import {mnStyle} from "../../src/mn-presets/mn.style";
-//import {mnTheme} from "../../src/mn-presets/mn.theme"
+import {mnTheme} from "../../src/mn-presets/mn.theme"
 
 mnSettings(mn);
 mnStyle(mn);
-//mnTheme(mn);
+mnTheme(mn);
 mn.checkAttrs.m = true;
 
 Deal.all([

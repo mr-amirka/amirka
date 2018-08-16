@@ -16,14 +16,7 @@
 				<button
 					mat-button [mat-menu-trigger-for]="menu"
 					m="pr0"
-				>
-				{{ 
-					locale({
-						en: 'Select language',
-						ru: 'Выбрать язык'
-					}) | async 
-				}}
-				</button>
+				>Language</button>
 				<mat-menu #menu="matMenu">
 				  <button mat-menu-item (click)="setLang('en')">English</button>
 				  <button mat-menu-item (click)="setLang('ru')">Русский</button>

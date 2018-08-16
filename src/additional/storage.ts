@@ -9,5 +9,7 @@ export interface Storage {
   set: (key: string, value: any) => Storage;
   get: (key: string) => any;
   remove: (key: string) => Storage;
-  subject: (key: string, defaultValue?: any) => BehaviorSubject <any>;
+  getKeys: () => string[];
+  clear: () => Storage;
+  observable: (key: string, defaultValue?: any) => BehaviorSubject <any>;
 }

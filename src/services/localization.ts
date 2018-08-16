@@ -6,9 +6,9 @@
  */
 
 import { request } from '../additional/request';
-import { cookieStorage } from '../additional/cookie-storage';
+import { localStorage } from '../additional/local-storage';
 import { localizationProvider, Localization } from '../additional/localization-provider';
 
 //const storage$
-const lang$ = cookieStorage.subject('locale', 'en');
+const lang$ = localStorage.observable('locale', 'en');
 export const localization: Localization = localizationProvider(lang$, request);
