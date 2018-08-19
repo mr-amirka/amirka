@@ -1,6 +1,4 @@
-# Amirka
-
-MinimalistNotation и прочие инструменты :)
+# Amirka: MinimalistNotation и прочие инструменты.
   
 
 Буду благодарен за Ваши отзывы и замечания. Пишите мне в telegram https://t.me/mr_amirka .  
