@@ -51,14 +51,17 @@ export const mnTheme = (mn: any) => {
     }
   });
 
+
+  /*  
   const assign = mn.assign;
 
   [
-    [ [ 'crPointer-i', 'olNone-i', 'dn-i', /* 'cInitial-i', */ 'tdNone-i' ], [ 'a' ] ],
+    [ [ 'crPointer-i', 'olNone-i', 'dn-i', 'tdNone-i' ], [ 'a' ] ],
     [ [ 'mb5-i' ], [ 'p' ] ]
     //,[ [ 'bgE', 'cF', 'm0', 'p0', 'ovxHidden' ], [ 'body' ] ]
   ].forEach(([ essenseNames, selectors ]) => assign(essenseNames, selectors));
 
+  */
 
   /*
    
@@ -66,34 +69,9 @@ export const mnTheme = (mn: any) => {
     добавить взможность принимать строки вместо массивов строк
   mn.assign('[m~="container"]', '(mhAuto-i|ph10-i|w970-i@md|w1170-i@lg|w1570-i@ll)');
   */
+
+  /*
   mn({
-    /* 
-    container: {
-      style: {
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        paddingLeft: '10px',
-        paddingRight: '10px'
-      },
-      media: {
-        md: {
-          style: {
-            width: '970px'
-          }
-        },
-        lg: {
-          style: {
-            width: '1170px'
-          }
-        },
-        ll: {
-          style: {
-            width: '1570px'
-          }
-        }
-      }
-    },
-    */
     ffTheme: {
       style: {
         fontFamily: "'Exo Two', 'Open Sans', 'Roboto', Arial, sans-serif"
@@ -105,7 +83,7 @@ export const mnTheme = (mn: any) => {
 
   });
 
-
+  */
 
 
 };

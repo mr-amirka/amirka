@@ -711,7 +711,9 @@ forEach({
   ol: 'outline',
   ws: 'white-space',
   va: 'vertical-align',
-  v: 'display'
+  v: 'display',
+  e: 'pointer-events',
+  select: 'user-select'
 }, (propName, essenceName) => {
   mn(essenceName, p => {
     const suffix = p.suffix;
@@ -778,6 +780,7 @@ mn('ratio', p => {
   };
 
 }, '((((\\d+):w)x((\\d+):h))|(\\d+):oh)?(([-+]):sign(\\d+):add)?');
+
 
 /*
 Оптимизировать обновление эссенций

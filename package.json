@@ -1,6 +1,6 @@
 {
   "name": "amirka",
-  "version": "0.0.21-source",
+  "version": "0.0.22-source",
   "description": "Набор инструментов или татарский ножик в дополнение к Lodash :)",
   "main": "./src/index.ts",
   "types": "./src/global.d.ts",
