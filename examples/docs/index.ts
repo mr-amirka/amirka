@@ -1,6 +1,3 @@
-//polyfills
-//import "core-js/es6";
-//import "core-js/es7/reflect";
 
 import "zone.js";
 
@@ -45,14 +42,6 @@ import { polyfill } from '../../src/additional/polyfill';
 import { Deal } from '../../src/base/deal';
 
 
-
-// import { enableProdMode } from "@angular/core";
-// if(process.env.ENV === "production") {
-//   enableProdMode();
-// }
-
-
-
 Deal.all([
 	new Deal((resolve) => ready(resolve)),
 	polyfill({
@@ -70,32 +59,3 @@ Deal.all([
   
 });
 
-
-//import {request} from '../../src/additional/request';
-//import {jsonp} from '../../src/additional/jsonp';
-
-
-/*
-const vkApi = (methodName: string) => {
-	return (options: any) => {
-		options || (options = {});
-		const query = options.query || (options.query = {});
-		query.v = '5.80';
-		query.access_token =  '7062bd687062bd687062bd6885702219af770627062bd682b218a5db20c26a46235e64e';
-		return jsonp('https://api.vk.com/method/' + methodName, options);
-	};
-};
-const cities = vkApi('database.getCities');
-
-cities({
-	query: {
-		country_id: 1,
-		need_all: 1,
-		offset: 0
-	}
-}).finally((err, response) => {
-	console.log('err, response', err, response);
-});
-
-
-*/
