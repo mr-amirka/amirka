@@ -1,6 +1,4 @@
-# Amirka
-
-MinimalistNotation и прочие инструменты :)
+# Amirka: MinimalistNotation и прочие инструменты
   
 
 Буду благодарен за Ваши отзывы и замечания. Пишите мне в telegram https://t.me/mr_amirka .  
@@ -199,13 +197,13 @@ amirka.polyfill({
 Input:
 
 ```html
-<x m="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</x>
+<div m="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</div>
 ```
 
 Output:
 
 ```html
-<x id="mn-styles">
+<div id="mn-styles">
   <style id="mn.media.mediaName">@media mediaName{[m~='c0F0@mediaName']{color:rgb(0,255,0)!important}}</style>
   <style id="mn.media.">
     [m~='f12']{font-size:12px}
@@ -216,7 +214,7 @@ Output:
     [m~='p10']{padding:10px!important}
     [m~='mb10']{margin-bottom:10px!important}
   </style>
-</x>
+</div>
 ```
 
 ### Example with mn.recursiveCheckNodeByClassName
@@ -224,13 +222,13 @@ Output:
 Input:
 
 ```html
-<x class="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</x>
+<div class="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</div>
 ```
 
 Output:
 
 ```html
-<x id="mn-styles">
+<div id="mn-styles">
   <style id="mn.media.mediaName">@media mediaName{.c0F0\@mediaName{color:rgb(0,255,0)!important}}</style>
   <style id="mn.media.">
     .f12{font-size:12px}
@@ -241,7 +239,7 @@ Output:
     .p10{padding:10px!important}
     .mb10{margin-bottom:10px!important}
   </style>
-</x>
+</div>
 ```
 
 
@@ -322,11 +320,11 @@ Example 3:
 Таким образом сделано для удобства использования нотации, например в случах, когда мы задаем общий медиа-запрос для нескольких атрибутов дочернего элемента, но для некоторых атрибутов этот медиа-запрос должен отличаться:
 ```html
 
-<x m="(sq200|f20|f14@sm)>.child1@md">
-  <x class="child1">
+<div m="(sq200|f20|f14@sm)>.child1@md">
+  <div class="child1">
     текст
-  </x>
-</x>
+  </div>
+</div>
   
 ```
 
@@ -352,11 +350,11 @@ Example:
 
 Вместо этого
 ```html
-<x m="bc00F>input:h bc00F>input:a bg0>input:h bg0>input:a"></x>
+<div m="bc00F>input:h bc00F>input:a bg0>input:h bg0>input:a"></div>
 ```
 Вы можете сделать так:
 ```html
-<x m="(bc00F|bg0)>input:(h|a)"></x>
+<div m="(bc00F|bg0)>input:(h|a)"></div>
 ```
 
 Т.е., эти записи эквивалентны:  
@@ -379,7 +377,7 @@ Example 3:
 
 В процессе применения MN могут возникать ситуации, когда Вам нужно экранировать служебные символы, например в таком случае:
 ```html
-<x m="pt33.3%"></x>
+<div m="pt33.3%"></div>
 ```
 Мы получим не то, чего ожидаем, так как точка является служебным символом
 ``` pt33.3%  ```  ->  
@@ -390,7 +388,7 @@ Example 3:
 
 Если мы хотим, чтобы точка попала в параметры эссенции, то мы должны экранировать её так:
 ```html
-<x m="pt33\.3%"></x>
+<div m="pt33\.3%"></div>
 ```
 Таким образом, получим желаемое:
 ``` pt33\.3% ``` ->  
@@ -406,7 +404,7 @@ Example 3:
 По умолчанию имя медиа-запроса генерируется в CSS как есть, например:  
 INPUT:  
 ```html
-<x m="f20@sm f10@print">текст</x>
+<div m="f20@sm f10@print">текст</div>
 ```  
 
 OUTPUT:  
@@ -443,7 +441,7 @@ mn.media.xs = {
 ```  
 
 ```html
-<x m="f18@sm f16@xs">текст</x>
+<div m="f18@sm f16@xs">текст</div>
 ```  
 
 OUTPUT:  
@@ -473,7 +471,7 @@ OUTPUT:
 Тогда будут сгенерированы соответствующие медиа-запросы, например:  
 INPUT:  
 ```html
-<x m="f20@768-992x300-600">текст</x>
+<div m="f20@768-992x300-600">текст</div>
 ```  
 
 OUTPUT:  
@@ -491,7 +489,7 @@ OUTPUT:
 Параметры шаблона сокращенной записи медиа-запроса в нотации не явлюятся обязательными и некоторые из них можно опустить, например:  
 INPUT:  
 ```html
-<x m="f20@768 f30@992- f40@x600 f50@1000-1200 f3@x10-60">текст</x>
+<div m="f20@768 f30@992- f40@x600 f50@1000-1200 f3@x10-60">текст</div>
 ```  
 
 OUTPUT:  
@@ -618,9 +616,9 @@ mn('tbl.cell',  {
 Example 1.  
 Вы просто пишите в разметку:
 ```html
-<x m="tbl">
-  <x>текст</x>
-</x>
+<div m="tbl">
+  <div>текст</div>
+</div>
 
 ```  
 CSS для этой разметки генерируется автоматически:
@@ -632,14 +630,14 @@ CSS для этой разметки генерируется автоматич
 Example 2.
 Как это работает с контекстами эссенций:
 ```html
-<x m="tbl>.example2__item">
-  <x class="example2__item">
-    <x>текст</x>
-  </x>
-  <x class="example2__item">
-    <x>текст</x>
-  </x>
-</x>
+<div m="tbl>.example2__item">
+  <div class="example2__item">
+    <div>текст</div>
+  </div>
+  <div class="example2__item">
+    <div>текст</div>
+  </div>
+</div>
 ```
 Сгенерированный CSS:
 ```css
@@ -651,11 +649,11 @@ Example 2.
 Example 3.  
 Более практичeский пример:
 ```html
-<x m="mb10 lh">
+<div m="mb10 lh">
   <a class="example__button" m="tbl w200 h50 tc cF bg0">
-    <x>центрированный текст</x>
+    <div>центрированный текст</div>
   </a>
-</x>
+</div>
 ```
 Сгенерированный CSS:
 ```css
@@ -694,7 +692,7 @@ Example 1:
 
 INPUT:  
 ```html
-<x m="p20 mb20 dt5 br2">...</x> 
+<div m="p20 mb20 dt5 br2">...</div> 
 ```
 ```js
 mn('p', p => {
@@ -754,7 +752,7 @@ mn('x', p => {
   
   
 ```html
-<x m="x10y5">...</x>
+<div m="x10y5">...</div>
 ```
 ```css
 [m~='x10y5']{
@@ -769,7 +767,7 @@ mn('x', p => {
   
   
 ```html
-<x m="x12">...</x>
+<div m="x12">...</div>
 ```
 ```css
 [m~='x12']{
@@ -784,7 +782,7 @@ mn('x', p => {
   
   
 ```html
-<x m="x0y20%">...</x>
+<div m="x0y20%">...</div>
 ```
 ```css
 [m~='x0y20%']{
@@ -799,7 +797,7 @@ mn('x', p => {
   
   
 ```html
-<x m="x0y20">...</x>
+<div m="x0y20">...</div>
 ```
 ```css
 [m~='x0y20']{
@@ -814,7 +812,7 @@ mn('x', p => {
   
   
 ```html
-<x m="x7%y20%">...</x>
+<div m="x7%y20%">...</div>
 ```
 ```css
 [m~='x7%y20%']{
@@ -829,7 +827,7 @@ mn('x', p => {
   
   
 ```html
-<x m="x0y20s90">...</x>
+<div m="x0y20s90">...</div>
 ```
 ```css
 [m~='x0y20s90']{
@@ -1135,10 +1133,10 @@ Input:
     m="x10<a:h cF00:a"
   ></i> 
 </a>
-<x m="c0F0:a<.parent1">...</x>
-<x m="bg02<.parent1<.parent2">...</x>
-<x m="c065:a<0.parent1">...</x>
-<x m="bgD852<3.parent1<.parent2:h">...</x>
+<div m="c0F0:a<.parent1">...</div>
+<div m="bg02<.parent1<.parent2">...</div>
+<div m="c065:a<0.parent1">...</div>
+<div m="bgD852<3.parent1<.parent2:h">...</div>
 ```
 
 Output:
@@ -1176,8 +1174,8 @@ Example 2:
 
 Input:
 ```html
-<x m="(sq50|bg0)<2.anyClass"></x>
-<x m="(w50|h5|bg00F8)>5.innerItem"></x>
+<div m="(sq50|bg0)<2.anyClass"></div>
+<div m="(w50|h5|bg00F8)>5.innerItem"></div>
 ```
 Output:
 ```css
@@ -1209,7 +1207,6 @@ Output:
 ```ts
 
 //DIRECTIVES
-import { XDirective } from 'amirka/directives/x.directive';
 import { MDirective } from 'amirka/directives/m.directive';
 
 @NgModule({
@@ -1217,7 +1214,6 @@ import { MDirective } from 'amirka/directives/m.directive';
     /* ... */
   ],
   declarations: [
-    XDirective,
     MDirective,
     /* ... */
   ],
