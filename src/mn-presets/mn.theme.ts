@@ -48,13 +48,13 @@ export const mnTheme = (mn: any) => {
       '-webkit-text-size-adjust': '100%',
       '-webkit-tap-highlight-color': '#000',
       position: 'relative'
+    },
+    body: {
+      margin: '0px'
     }
   });
-
-
   /*  
   const assign = mn.assign;
-
   [
     [ [ 'crPointer-i', 'olNone-i', 'dn-i', 'tdNone-i' ], [ 'a' ] ],
     [ [ 'mb5-i' ], [ 'p' ] ]

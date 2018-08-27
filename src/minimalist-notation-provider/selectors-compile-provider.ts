@@ -48,6 +48,7 @@ export interface selectorsCompile {
   (value: string, targetName: string): essenceOptionsItems;
   states: states;
   classNameCompile: (exp: string) => essenceOptionsItems;
+  mCompile: (exp: string) => essenceOptionsItems;
   attrCompile: (exp: string, attrName: string) => essenceOptionsItems;
   getSelectors: (exp: string, targetName: string) => essenceOptionsItems;
   getParents: (mediaNames: string[], name: string, targetName?: string) => FlagsMap;
@@ -71,6 +72,9 @@ export const selectorsCompileProvider = <selectorsCompileProvider> (instance: an
 
   const attrCompile = (exp: string, attrName: string) => 
     getSelectors(exp, '[' + attrName + '~=\'' + escapeQuote(exp) + '\']');
+
+  const mCompile = (exp: string) => 
+    getSelectors(exp, '[m~=\'' + escapeQuote(exp) + '\']');
 
   const getSelectors = (value: string, targetName: string) => {
     $$states = <states> instance.states || {};
@@ -166,6 +170,7 @@ export const selectorsCompileProvider = <selectorsCompileProvider> (instance: an
     states: {}, 
     classNameCompile,
     attrCompile,
+    mCompile,
     getSelectors,
     getParents, 
     getEssence

@@ -24,12 +24,13 @@ module.exports = {
   },
   mode: 'development',
   resolve: {
-    extensions: [ '.ts', '.js' ]
+    extensions: [ '.ts', '.js', '.jsx' ]
   },
   entry: {
-    'assets/docs': './examples/docs/index.ts',
-    'assets/simple': './examples/simple/index.ts',
-    'assets/amirka': './examples/standalone/index.ts',
+    'angular': './examples/angular/index.ts',
+    'react': './examples/react/index.jsx',
+    'simple': './examples/simple/index.ts',
+    'amirka': './examples/standalone/index.ts',
     'assets/amirka.minimalist-notation': './examples/standalone/minimalist-notation.ts',
     'assets/mn-styles/mn.settings': './src/standalone-mn-styles/mn.settings.ts',
     'assets/mn-styles/mn.style': './src/standalone-mn-styles/mn.style.js',
@@ -75,10 +76,10 @@ module.exports = {
               configFileName: 'tsconfig.json',
               useBabel: true,
               babelOptions: {
-                babelrc: false, /* Important line */
+                babelrc: false,
                 presets: [ "@babel/preset-env" ]
               },
-              babelCore: "@babel/core", // needed for Babel v7
+              babelCore: "@babel/core", 
             }
           },
           {
@@ -86,21 +87,19 @@ module.exports = {
           }
           
         ],
-        exclude: [ /\.spec\.ts$/ /*, /\.d\.ts/ , /node_modules/ */ ]
+        exclude: [ /\.spec\.ts$/ ]
       },
       {
-        test: /\.js$/,
-        //exclude: /node_modules/,
+        test: /\.jsx?$/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: [ "es2015-without-strict" ]
+            presets: [ "react", "latest" ]
           }
         }
       },
       {
         test: /\.css$/,
-        //exclude: /node_modules/,
         use: [
           {
             loader: "style-loader"
@@ -114,7 +113,6 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        //exclude: /node_modules/,
         use: [
           {
             loader: "style-loader"
@@ -132,14 +130,14 @@ module.exports = {
         test: /\.less$/,
         use: [
           {
-            loader: "style-loader" // creates style nodes from JS strings
+            loader: "style-loader"
           }, {
-            loader: "css-loader", // translates CSS into CommonJS
+            loader: "css-loader",
             options: {
               minimize: true
             }
           }, {
-            loader: "less-loader" // compiles Less to CSS
+            loader: "less-loader"
           }
         ]
       },
@@ -189,14 +187,21 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       inject: 'head',
-      template: 'examples/docs/index.html',
-      chunks: [ 'assets/docs' ]
+      template: 'examples/angular/index.html',
+      filename: 'index.html',
+      chunks: [ 'angular' ]
+    }),
+    new HtmlWebpackPlugin({
+      inject: 'head',
+      template: 'examples/react/index.html',
+      filename: 'react.html',
+      chunks: [ 'react' ]
     }),
     new HtmlWebpackPlugin({
       inject: 'head',
       filename: 'simple.html',
       template: 'examples/simple/index.html',
-      chunks: [ 'assets/simple' ]
+      chunks: [ 'simple' ]
     }),
     new HtmlWebpackPlugin({
       inject: 'head',

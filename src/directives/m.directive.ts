@@ -7,12 +7,12 @@ import {Directive, Input} from '@angular/core';
 
 import {mn} from '../services/mn';
 
-const checkAttr = mn.checkAttr;
+const check = mn.check;
 
 @Directive({selector: '[m]'})
 export class MDirective {
   @Input('m') set m(v: string) {
-    checkAttr('m', v).compile();
+    check(v).compile();
   }
 }
 

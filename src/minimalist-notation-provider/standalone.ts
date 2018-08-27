@@ -21,8 +21,6 @@ export const ready = readyProvider(window);
 export const style = styleProvider(document, 'mn-styles', 'mn.');
 export const mn = minimalistNotationProvider(style);
 
-mn.checkAttrs.m = true;
-
 export {
 	_,
   minimalistNotationProvider,

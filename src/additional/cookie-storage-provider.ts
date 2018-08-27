@@ -25,7 +25,7 @@ const storageInit = (cookie: string) => {
 	const l = w.length;
 	const output = {};
     for(let i = 0, parts, k; i < l; i++){
-        k = decodeURIComponent((parts = w[l].split('='))[0]);
+        k = decodeURIComponent((parts = w[i].split('='))[0]);
         output[k] = fromJson(decodeURIComponent(parts[1]));
     }
     return output;

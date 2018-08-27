@@ -7,7 +7,6 @@ import {
   extend,
   sortBy,
   isString,
-  isEmpty,
   isLength,
   isArrayLikeObject,
   map as __map,
@@ -43,7 +42,6 @@ export interface MinimalistNotation extends selectorsCompile {
   (essences: EssenceMapOptions): MinimalistNotation;
   $$storage: storage;
   propertiesStringify: cssPropertiesStringify;
-  checkAttrs: FlagsMap;
   data: MinimalistNotationData;
   $$cache: FlagsMap;
   media: {[mediaName: string]: media};
@@ -54,8 +52,8 @@ export interface MinimalistNotation extends selectorsCompile {
   recursiveCheckNodeByClassName: (nodes: Element[] | Element | Document) => MinimalistNotation;
   checkClassName: (className: string) => MinimalistNotation;
   checkClassNames: (classNamesValue: string) => MinimalistNotation;
-  checkAttrOne: (attrName: string, attrValue: string) => MinimalistNotation;
-  checkAttr: (attrName: string, attrValue: string) => MinimalistNotation;
+  checkOne: (attrValue: string) => MinimalistNotation;
+  check: (attrValue: string) => MinimalistNotation;
   ngCheck: (ngClass: string) => MinimalistNotation;
   checkNodeByClassName: (node: Element) => MinimalistNotation;
   checkNodeByAttr: (node: Element) => MinimalistNotation;
@@ -81,17 +79,13 @@ interface MinimalistNotationData {
   root: root;
   essences: essencesMap;
   statics: statics;
-  attrsMap: attrsMap;
+  attr: FlagsMap;
   css: cssData;
 }
 
 interface statics {
   assigned: assigned;
   essences: {[essenceName: string]: FlagsMap};
-}
-
-interface attrsMap {
-  [name: string]: FlagsMap;
 }
 
 interface EssenceMapOptions {
@@ -262,7 +256,7 @@ export const minimalistNotationProvider = ($$storage: storage) => {
 
   selectorsCompileProvider(mn);
   const classNameCompile = mn.classNameCompile;
-  const attrCompile = mn.attrCompile;
+  const mCompile = mn.mCompile;
  
   mn.$$storage = $$storage;
   let storageSet = $$storage.set;
@@ -271,7 +265,7 @@ export const minimalistNotationProvider = ($$storage: storage) => {
   let $$essences: {[essenceName: string]: EssenceOptions};
   let $$root: root;
   let $$classNamesMap: FlagsMap;
-  let $$attrsMap: {[name: string]: FlagsMap};
+  let $$attr: FlagsMap;
   let $$statics: statics;
   let $$assigned: assigned;
   let $$staticsEssences: {[essenceName: string]: EssenceOptions};
@@ -281,12 +275,12 @@ export const minimalistNotationProvider = ($$storage: storage) => {
   let $$cache = mn.$$cache = <FlagsMap> {};
   let $$media = mn.media = <{[name: string]: media}> {};
   let $$handlerMap = mn.handlerMap = <handlerMap> {};
-  let $$checkAttrs = mn.checkAttrs = {};
   let cssPropertiesStringify = mn.propertiesStringify = cssPropertiesStringifyProvider();
 
-  let $$deferred = <{force: boolean, apply: boolean}> {};
+  let $$force: boolean;
+  let $$apply: boolean;
   let $$newClassNames: string[] = [];
-  let $$newAttrsMap = {};  
+  let $$newAttr: string[] = [];  
   
   const parseMediaName = (mediaName: string) => {
     if (!mediaName) return {
@@ -413,23 +407,6 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     return mn;
   };
 
-  /*
-  const mnExtend = (_essencesNames: string[], _xtsEssencesNames?: string[]) => {
-    const essencesNames = __flags(_essencesNames);
-    const xtsEssencesNames = _xtsEssencesNames ? __flags(_xtsEssencesNames) : null;
-    let staticsEssence: EssenceOptions;
-    for (let essenceName in essencesNames) {
-      staticsEssence = $$staticsEssences[essenceName] || ($$staticsEssences[essenceName] = {});
-      if (xtsEssencesNames) {
-        extend(staticsEssence.exts || (staticsEssence.exts = {}), xtsEssencesNames);
-      } else {
-        staticsEssence.exts = {};
-      }
-    }
-    return mn;
-  };
-  */
- 
   const __getRules = (
     rules: rule[], selectors: string[],
     style: CssProps, 
@@ -522,7 +499,7 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     }
 
     return essence;
-  }
+  };
 
 
   const updateEssence = (essenceName: string, selectors: FlagsMap, mediaName: string, excludes?: FlagsMap) => {
@@ -535,14 +512,14 @@ export const minimalistNotationProvider = ($$storage: storage) => {
       (sContext = $$assigned[mediaName]) && (sSelectors = sContext[essenceName])
     ) extend(map, sSelectors); 
     return __updateEssence(essenceName, selectors, mediaName, excludes || {});
-  }
+  };
   const updateEssenceWithout = (essenceName: string, selectors: FlagsMap, mediaName: string) => {
     const context = $$root[mediaName] || ($$root[mediaName] = <MediaContext> {});
     const contextEssence = context[essenceName] || (context[essenceName] = { map: {} });
     extend(contextEssence.map, selectors);
     contextEssence.updated = true; 
     return __updateEssence(essenceName, selectors, mediaName, {});
-  }
+  };
   
   const updateSelector = (map: essenceOptionsItems) => {
     let suffix, essenceName, rule, essencesNames, selectors, mediaName;
@@ -562,6 +539,7 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     src.map || (src.map = {});
     return <T> src;
   };
+
   const __reflect = () => {
 
     $$media = mn.media || (mn.media = {});
@@ -572,7 +550,7 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     $$root = $$data.root = {};
 
     $$classNamesMap = $$data.classNamesMap || ($$data.classNamesMap = {});
-    $$attrsMap = $$data.attrsMap || ($$data.attrsMap = <attrsMap> {});
+    $$attr = $$data.attr || ($$data.attr = <FlagsMap> {});
 
     $$statics = $$data.statics || ($$data.statics = <statics> {});
     $$assigned = $$statics.assigned || ($$statics.assigned = <assigned> {});
@@ -593,16 +571,13 @@ export const minimalistNotationProvider = ($$storage: storage) => {
       updateSelector(classNameCompile(k));
     }
 
-    let attrValues, l;
-    for (k in $$attrsMap) {
-      attrValues = $$newAttrsMap[k];
-      for (l = attrValues.length; l--;) {
-        updateSelector(attrCompile(attrValues[l], k));
-      }
+    for (let l = $$newAttr.length; l--;) {
+      updateSelector(mCompile($$newAttr[l]));
     }
+    
 
     for (mediaName in $$root) $$mode(mediaName, $$root[mediaName]);
-  }
+  };
   __reflect();
   const __update = () => {
     const modeName = mn.contextMode;
@@ -619,9 +594,9 @@ export const minimalistNotationProvider = ($$storage: storage) => {
   };
   const clear = () => {
     $$classNamesMap = $$data.classNamesMap = {};
-    $$attrsMap = $$data.attrsMap = {};
+    $$attr = $$data.attr = {};
     $$newClassNames = [];
-    $$newAttrsMap = {};
+    $$newAttr = [];
     __update();
   };
 
@@ -647,56 +622,50 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     if (mn.disabled) return;
     if (force) {
       __update();
-    } else {
-      let l;
-      const newClassNames = $$newClassNames;
-      $$newClassNames = [];
-      for (l = newClassNames.length; l--;) {
-        updateSelector(classNameCompile(newClassNames[l]));
-      }
-
-      const newAttrsMap = $$newAttrsMap;
-      $$newAttrsMap = {};
-      let attrValues;
-      for (k in newAttrsMap) {
-        attrValues = newAttrsMap[k];
-        for (l = attrValues.length; l--;) {
-          updateSelector(attrCompile(attrValues[l], k));
-        }
-      }
-      
-      for (let mediaName in $$root) {
-        $$mode(mediaName, $$root[mediaName]);
-      }
+      $$storage.render();
+      return;
     }
+
+    const newClassNames = $$newClassNames;
+    $$newClassNames = [];
+    for (let l = newClassNames.length; l--;) {
+      updateSelector(classNameCompile(newClassNames[l]));
+    }
+
+    const attrValues = $$newAttr;
+    $$newAttr = [];
+    for (let l = attrValues.length; l--;) {
+      updateSelector(mCompile(attrValues[l]));
+    }
+    
+    for (let mediaName in $$root) {
+      $$mode(mediaName, $$root[mediaName]);
+    }
+    
     $$storage.render();
-  }
+  };
 
   const __render = (force?: boolean) => {
-    onRender(force || $$deferred.force);
-    $$deferred.apply = $$deferred.force = false;
-    return mn;
+    onRender(force || $$force);
+    $$apply = $$force = false;
   };
-  const __deferApply = () => {
-    if ($$deferred.apply) __render($$deferred.force);
-  };
+  const __deferReApply = () => __render($$force);
+  const __deferApply = () => ($$newClassNames.length || $$newAttr.length) && __render($$force);
   const deferCompile = () => {
-    if ($$deferred.apply) return mn;
-    $$deferred.apply = true;
+    if ($$apply) return mn;
+    $$apply = true;
     immediate(__deferApply);
     return mn;
   };
   const deferRecompile = () => {
-    $$deferred.force = true;
-    if ($$deferred.apply) return mn;
-    $$deferred.apply = true;
-    immediate(__deferApply);
+    $$force = true;
+    if ($$apply) return mn;
+    $$apply = true;
+    immediate(__deferReApply);
     return mn;
   };
   const compile = () => {
-    if ($$newClassNames.length || !isEmpty($$newAttrsMap)) {
-      __render();
-    }
+    if ($$newClassNames.length || $$newAttr.length) __render();
     return mn;
   };
   const recompile = () => {
@@ -710,24 +679,20 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     $$newClassNames.push(className);
     return mn;
   };
-  const checkAttrOne = (attrName: string, attrValue: string) => {
-    if (!attrValue) return mn;
-    const attrValuesMap = $$attrsMap[attrName] || ($$attrsMap[attrName] = {});
-    if (attrValuesMap[attrValue]) return mn;
-    attrValuesMap[attrValue] = true;
-    ($$newAttrsMap[attrName] || ($$newAttrsMap[attrName] = [])).push(attrValue);
+  const checkOne = (attrValue: string) => {
+    if (!attrValue || $$attr[attrValue]) return mn;
+    $$attr[attrValue] = true;
+    $$newAttr.push(attrValue);
     return mn;
   };
-  const checkAttr = (attrName: string, attrValue: string) => {
+  const check = (attrValue: string) => {
     if (!attrValue) return mn;
-    const attrValuesMap = $$attrsMap[attrName] || ($$attrsMap[attrName] = {});
-    const newAttrs = $$newAttrsMap[attrName] || ($$newAttrsMap[attrName] = []);
     const vls = attrValue.split(regexpDelimiter);
     for (let v, i = vls.length; i--; ) {
       v = vls[i];
-      if (attrValuesMap[v]) continue;
-      attrValuesMap[v] = true;
-      newAttrs.push(v);
+      if ($$attr[v]) continue;
+      $$attr[v] = true;
+      $$newAttr.push(v);
     }
     return mn;
   };
@@ -755,18 +720,13 @@ export const minimalistNotationProvider = ($$storage: storage) => {
   };
   const checkNodeByAttr = (node: Element) => {
     if (!node.getAttribute) return mn;
-    let attrValue, attrValuesMap, attrValues, newAttrs, v, i;
-    for (let attrName in $$checkAttrs) {
-      if (v = node.getAttribute(attrName)) {
-        newAttrs = ($$newAttrsMap[attrName] || ($$newAttrsMap[attrName] = []));
-        attrValuesMap = $$attrsMap[attrName] || ($$attrsMap[attrName] = {});
-        attrValues = v.split(regexpDelimiter);
-        for (i = attrValues.length; i--;) {
-          if (!(attrValue = attrValues[i]) || attrValuesMap[attrValue]) continue;
-          attrValuesMap[attrValue] = true;
-          newAttrs.push(attrValue);
-        }
-      }
+    const v = node.getAttribute('m');
+    if (!v) return mn;
+    const attrValues = v.split(regexpDelimiter);
+    for (let attrValue, i = attrValues.length; i--;) {
+      if ($$attr[attrValue = attrValues[i]]) continue;
+      $$attr[attrValue] = true;
+      $$newAttr.push(attrValue);
     }
     return mn;
   };
@@ -818,7 +778,7 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     }
     $$keyframes.updated = true;
     return mn;
-  }
+  };
   
   const setCSS = (selector: string | {[n: string]: CssProps}, css?: CssProps) => {
     const map = $$css.map;
@@ -841,13 +801,23 @@ export const minimalistNotationProvider = ($$storage: storage) => {
     return mn;
   };
 
+  const mnDecorate = (vNode: any) => {
+    const props = vNode.props;
+    if (!props) return;
+    const m = props.m;
+    m && check(m);
+    const children = props.children;
+    const length = children.length;
+    for (let i = 0; i < length; i++) mnDecorate(children[i]);
+  };
+
   extend(mn, {
     contextMode: 'media-queries', // 'media-queries-essences', //
     disabled: false,
     checkClassName,
     checkClassNames,
-    checkAttrOne,
-    checkAttr,
+    checkOne,
+    check,
     ngCheck,
     
     checkNodeByClassName,

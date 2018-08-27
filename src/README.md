@@ -157,8 +157,6 @@ const ready = readyProvider(window);
 const style = styleProvider(document, 'mn-styles', 'mn.');
 const mn = minimalistNotationProvider(style);
 
-mn.checkAttrs.m = true;
-
 ready(() => {
   mn
     .recursiveCheckNodeByAttr(document)
@@ -177,10 +175,16 @@ ready(() => {
 <script src="https://dartline.ru/assets/mn-styles/mn.settings.js"></script>
 <script src="https://dartline.ru/assets/mn-styles/mn.style.js"></script>
 <script>
+/*
+  Если в глобальном пространстве указанные переменные не будут найдены,
+  то подгрузятся сопостваленные скрипты
+*/
 amirka.polyfill({
   'CSS.escape': 'https://dartline.ru/assets/standalone-shims/css.escape.shim.js'
-  //,'Promise': 'https://dartline.ru/assets/standalone-shims/promise.shim.js'
-  //,'setImmediate': 'https://dartline.ru/assets/standalone-shims/set-immediate.shim.js'
+  /*
+  'Promise': 'https://dartline.ru/assets/standalone-shims/promise.shim.js',
+  'setImmediate': 'https://dartline.ru/assets/standalone-shims/set-immediate.shim.js'
+  */
 }).finally(() => {
   mn.checkAttrs.m = true;
   amirka.ready(() => {
@@ -851,7 +855,6 @@ interface MinimalistNotation extends selectorsCompile {
   (essences: EssenceMapOptions): MinimalistNotation;
   $$storage: storage;
   propertiesStringify: cssPropertiesStringify;
-  checkAttrs: FlagsMap;
   data: MinimalistNotationData;
   $$cache: FlagsMap;
   media: {[mediaName: string]: media};
@@ -1201,7 +1204,7 @@ Output:
 
 
 
-## Как портировать "Minimalist Notation" в Angular 5
+## Как интегрировать "Minimalist Notation" в Angular 5
 
 
 ```ts
@@ -1222,6 +1225,64 @@ import { MDirective } from 'amirka/directives/m.directive';
   ]
 })
 export class AppModule {}
+
+
+```
+
+
+## Как интегрировать "Minimalist Notation" в React
+
+
+```jsx
+// root.jsx
+import React, { Component } from 'react';
+import { mnSettings } from 'amirka/mn-presets/mn.settings';
+import { mnStyle } from 'amirka/mn-presets/mn.style';
+import { mnTheme } from 'amirka/mn-presets/mn.theme';
+import { Mn, MnConsumer } from 'amirka/react-mn-component';
+import { MyComponent } from './my-component';
+
+export class Root extends Component {
+  render() {
+    return (
+      <Mn>
+        <MnConsumer>
+        {
+          ({ mn }) => {
+            mnSettings(mn)
+            mnStyle(mn);
+            mnTheme(mn);
+          }
+        }
+        </MnConsumer>
+        <MyComponent></MyComponent>
+      </Mn>
+    );
+  }
+}
+
+
+// my-component.jsx
+import React, { Component } from 'react';
+import { MnConsumer } from 'amirka/react-mn-component';
+
+export class MyComponent extends Component {
+  render() {
+    return (
+      <MnConsumer>
+      {
+        ({ m }) => (
+          <div m={m('tbl c0F0 bg0 w h100vh tc f40')}>
+            <div>
+              Hello React!
+            </div>
+          </div>
+        )
+      }
+      </MnConsumer>
+    );
+  }
+}
 
 
 ```
@@ -1328,7 +1389,7 @@ style="text-align: center;"
 Как известно, разметка имеет смысл без CSS, но сам по себе CSS не имеет смысла без разметки. В нашем же случае всё нужное в одном месте. Разметка автономна и вся информация о её внешнем виде находится в ней самой.
 В этом подходе есть нечто общее с директивным подходом Angular. Разница между чистым CSS и MN, примерно такая же как между VanillaJS и Angular, или как между jQuery и Angular. В первом случае Вы манипулируете DOM-элементами вручную, вручную прописываете в JS селекторы элементов, для которых нужно инициализировать какой-либо плагин или повесить событие. Во втором случае Вы просто пишите на нужном элементе в разметке директиву, которая инициализирует компонент или устанавливает выполняемое выражение по наступлению какого-либо события.  
 
-2. Избежать коллизий с именами классов. Предусмотрена возможность, помимо традиционных классов, настроить библиотеку на генерацию стилей для определенного атрибута в ращметке - в моих примерах выше это атрибут ``` m ```. В нотации нахальным образом эксплуатируется использование служебных символов, которые, вряд ли, кто-то станет использовать добровольно, так как их ручное экранирование в CSS достаточно накладно и напряжно для чтения. На служебные символы опирается жесткий каркас нотации в MN, которая позволяет Вам минимально ограничиваться в параметризации эссенций нотации. Также имеется удобная возможность при необходимости экранировать символы, являющиеся служебными, если они должны находится в параметрах эссенции.
+2. Избежать коллизий с именами классов. Предусмотрена генерация стилей для отдельного кастомного атрибута ``` m ``` в ращметке. В нотации нахальным образом эксплуатируется использование служебных символов, которые, вряд ли, кто-то станет использовать добровольно, так как их ручное экранирование в CSS достаточно накладно и напряжно для чтения. На служебные символы опирается жесткий каркас нотации в MN, которая позволяет Вам минимально ограничиваться в параметризации эссенций нотации. Также имеется удобная возможность при необходимости экранировать символы, являющиеся служебными, если они должны находится в параметрах эссенции.
 
 3. Разработать максимально адаптивную и лаконичную систему нотации, учитывающую мутабельность стилей в зависимости от изменения состояния, атрибутов и классов как на самом элементе, так и на его родительских элементах, и в зависимости от изменения медиа-запросов.  
 C технологией MN у Вас может возникнуть ощущение, что каскады стилей переместились непосредственно в саму разметку. MN выглядит как более лаконичный аналог и альтернатива инлайновых стилей с мутабельностью в зависимости от медиа-запроса, состояния, атрибутов и классов как на самом элементе, так и на его родительских элементах. 
@@ -1394,7 +1455,7 @@ C технологией MN у Вас может возникнуть ощуще
 
 
 
-PS: Технология "Minimalist Notation" - это основная фича библиотеки "Minimalist". Помимо неё есть ещё множество инструментов.
+PS: Технология "Minimalist Notation" - это основная фича библиотеки "amirka". Помимо неё есть ещё множество инструментов.
 
 
 

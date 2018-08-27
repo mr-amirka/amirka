@@ -9,29 +9,42 @@
  * polyfill({
  *   'CSS.escape': 'assets/standalone-shims/css.escape.shim.js',
  *   'Promise': 'assets/standalone-shims/promise.shim.js'
- * });
+ * }, window);
  * 
  */
 
-import { support } from '../base/support';
+import { get, set } from 'lodash';
 import { script } from './script';
 import { Deal } from '../base/deal';
 import { isPromise } from '../base/is-promise';
 
-export const polyfill = (map: {[name: string]: string | fn}) => {
+export const polyfill = (map: {[name: string]: any}, _global?: any) => {
+	_global || (_global = window);
 	const promises: Deal[] = [];
 	let value, promise;
+	const __set = (k: string, v: any) => v && set(_global, k, v);
 	for (let subjectPath in map) {
-		if (support(subjectPath)) continue;
+		if (get(_global, subjectPath)) continue;
 		value = map[subjectPath];
 		if (!value) continue;
-		if (typeof value === 'function') {
+		const type = typeof value;
+		if (type === 'function') {
 			if (isPromise(promise = value())) {
-				promises.push(promise)
+				promises.push(promise.finally((err: any, v: any) => __set(subjectPath, v)));
+				continue;
 			}
+			__set(subjectPath, promise);
+			continue;
+		} 
+		if (type === 'string') {
+			promises.push(script(value));
 			continue;
 		}
-		promises.push(script(value));
+		if (isPromise(value)) {
+			promises.push(promise.finally((err: any, v: any) => __set(subjectPath, v)));
+			continue;
+		}
+		set(_global, subjectPath, value);
 	}
 	return Deal.all(promises);
 };

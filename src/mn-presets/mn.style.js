@@ -711,7 +711,7 @@ forEach({
   ol: 'outline',
   ws: 'white-space',
   va: 'vertical-align',
-  v: 'display',
+  d: 'display',
   e: 'pointer-events',
   select: 'user-select'
 }, (propName, essenceName) => {
