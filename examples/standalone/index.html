@@ -16,9 +16,6 @@
 
     amirka.polyfill({
       'CSS.escape': 'assets/standalone-shims/css.escape.shim.js'
-      ,'Promise': function() {
-        window.Promise = amirka.Deal;
-      }
       //,'Promise': 'assets/standalone-shims/promise.shim.js',
       //'setImmediate': 'assets/standalone-shims/set-immediate.shim.js'
     }).finally(function() {
@@ -38,15 +35,12 @@
         }
       });
 
-      amirka.ready(function() {
+      mn
+        .recursiveCheckNodeByAttr(document)
+        .compile();
 
-        mn
-          .recursiveCheckNodeByAttr(document)
-          .compile();
-
-        console.log('minimalistNotation', mn.data);
-
-      });  
+      console.log('minimalistNotation', mn.data);
+  
     });
   </script>
   <div 

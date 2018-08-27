@@ -13,14 +13,21 @@
  * 
  */
 
-import { get, set } from 'lodash';
+import { get, set, extend } from 'lodash';
 import { script } from './script';
 import { Deal } from '../base/deal';
 import { isPromise } from '../base/is-promise';
+import { ready } from './ready';
+import { _global as gl } from './_global';
 
-export const polyfill = (map: {[name: string]: any}, _global?: any) => {
-	_global || (_global = window);
-	const promises: Deal[] = [];
+export const polyfill = (_map: {[name: string]: any}, _global?: any) => {
+	_global || (_global = gl);
+	const map = extend({
+		'Promise': Deal
+	}, _map);
+	const promises: Deal[] = [
+		new Deal((resolve) => ready(resolve))
+	];
 	let value, promise;
 	const __set = (k: string, v: any) => v && set(_global, k, v);
 	for (let subjectPath in map) {

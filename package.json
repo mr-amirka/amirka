@@ -1,6 +1,6 @@
 {
   "name": "amirka",
-  "version": "0.0.24-source",
+  "version": "0.0.25-source",
   "description": "Набор инструментов",
   "main": "./src/index.ts",
   "types": "./src/global.d.ts",

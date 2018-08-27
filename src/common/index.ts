@@ -5,7 +5,6 @@
 
 export * from './css-properties-stringify-provider';
 export * from './css-properties-parse';
-export * from './observable-store';
 export * from './param';
 export * from './ready-provider';
 export * from './style-provider';

@@ -8,18 +8,21 @@ import { Mn, MnConsumer } from '../../../src/react-mn-component';
 import { MyComponent } from './my-component';
 
 export class Root extends Component {
+	constructor(props) {
+		super(props);
+		let inited;
+		this.init = ({ mn }) => {
+			if (inited) return;
+			inited = true;
+			mnSettings(mn)
+			mnStyle(mn);
+			mnTheme(mn);
+		};
+	}
 	render() {
 		return (
 			<Mn>
-				<MnConsumer>
-				{
-					({ mn }) => {
-						mnSettings(mn)
-						mnStyle(mn);
-						mnTheme(mn);
-					}
-				}
-				</MnConsumer>
+				<MnConsumer>{this.init}</MnConsumer>
 				<MyComponent></MyComponent>
 			</Mn>
 		);

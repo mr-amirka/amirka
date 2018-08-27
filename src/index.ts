@@ -5,7 +5,7 @@
 
 export * from './base';
 export * from './common';
-export * from './additional';
+export * from './services';
 
 import * as _ from 'lodash';
 

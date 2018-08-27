@@ -5,9 +5,9 @@
  * 
  */
 
-import { request } from '../additional/request';
-import { localStorage } from '../additional/local-storage';
-import { localizationProvider, Localization } from '../additional/localization-provider';
+import { request } from './request';
+import { localStorage } from './local-storage';
+import { localizationProvider, Localization } from './localization-provider';
 
 //const storage$
 const lang$ = localStorage.observable('locale', 'en');

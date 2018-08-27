@@ -3,9 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-import {Deal} from '../../src/base/deal';
-import {polyfill} from '../../src/additional/polyfill';
-import {ready} from "../../src/services/ready";
+import {polyfill} from '../../src/services/polyfill';
 import {mn} from "../../src/services/mn";
 import {mnSettings} from "../../src/mn-presets/mn.settings";
 import {mnStyle} from "../../src/mn-presets/mn.style";
@@ -15,13 +13,9 @@ mnSettings(mn);
 mnStyle(mn);
 mnTheme(mn);
 
-Deal.all([
-	new Deal((resolve) => ready(resolve)),
-	polyfill({
-		'CSS.escape': 'assets/standalone-shims/css.escape.shim.js',
-		'Promise': Deal
-	})
-]).finally(() => {
+polyfill({
+	'CSS.escape': 'assets/standalone-shims/css.escape.shim.js'
+}).finally(() => {
 	mn
     .recursiveCheckNodeByAttr(document)
     .compile();
