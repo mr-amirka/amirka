@@ -51,7 +51,6 @@ export class Deal {
 	reject: (subject?: any) => fn;
 
 	constructor (executor?: executor) {
-		//super();
 		const self = this;
 		let poolResolve: onSubject[] = [];
 		let poolReject: onSubject[] = [];
@@ -95,21 +94,20 @@ export class Deal {
 		const _resolve = self.resolve = normalizeWrap(resolve, reject);
 		const _reject = self.reject = normalizeWrap(reject, reject);
 		const init = subscribleInit(() => {
-	    let __cancel = !done && executor ? immediate(() => {
-	    	try {
+		    let __cancel = !done && executor ? immediate(() => {
+		    	try {
 					const _cancel = executor(_resolve, _reject, progress);
 					if (typeof _cancel === 'function') __cancel = _cancel;
 				} catch (ex) {
 					_reject(ex);
 				}
-	    }) : cancelNoop;
-	    const cancel = () => {
-	      innerCancel();
-	      __cancel();
-	      clear();
-	    };
-	    //self.cancel = once(cancel);
-	    return cancel;
+		    }) : cancelNoop;
+		    const cancel = () => {
+		      	innerCancel();
+		      	__cancel();
+		      	clear();
+		    };
+		    return cancel;
 		});
 
 		const __chain = (onResolve: onSubject, onReject: onSubject) => {
@@ -145,7 +143,7 @@ export class Deal {
 			}));
 			deal.cancel = cancel;
 			return deal;
-	  };
+	  	};
 		self.catch = (onReject, onProgress) => __then(<any> null, onReject, onProgress);
 		self.finally = (onFinally: onFinally, onProgress?: onSubject) => {
 			return __then(
@@ -259,44 +257,6 @@ export class Deal {
 			return clear;
 		});
 	}
-
-	/**
-	 * @description Deal.doneAll
-	 * Принимает массив асинхронные функции и
-	 * выполняет их, затем по завершении вызывает колбэк
-	 *
-	 * @example
-	 * 
-	 * Deal.doneAll([
-	 *   done => support('CSS.escape') ? done() : scriptLoad('assets/standalone-shims/css.escape.shim.js', done);
-	 * 	
-	 * ]).finally(() => {
-	 *   console.log('done!');
-	 * });
-	 * 
-	 */
-	 /*
-	static doneAll(funcs: fn[]) {
-		return new Deal((resolve, reject, progress) => {
-			let hasError: boolean;
-			reduceAsync(
-				funcs,
-				(fn, key, done) => {
-					try {
-						fn(() => done(null));
-					} catch (ex) {
-						hasError = true;
-						done(ex);
-					}
-				},
-				(errors) => hasError ? reject(errors) : resolve(),
-				null,
-				progress
-			);
-		});
-	}
-	*/
-
 	static timeout(delay?: number) {
 		return new Deal((resolve) => timeout(resolve, delay));
 	}
@@ -334,7 +294,6 @@ const subscribleProvider = (executor: fn) => {
 		return cancel;
 	};
 };
-
 
 
 ((_Promise) => {

@@ -94,7 +94,7 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: [ "react", "latest" ]
+            presets: [ "react", "latest", "stage-2" ]
           }
         }
       },

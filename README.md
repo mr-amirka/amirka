@@ -1249,25 +1249,14 @@ import React, { Component } from 'react';
 import { mnSettings } from 'amirka/mn-presets/mn.settings';
 import { mnStyle } from 'amirka/mn-presets/mn.style';
 import { mnTheme } from 'amirka/mn-presets/mn.theme';
-import { Mn, MnConsumer } from 'amirka/react-mn-component';
+import { Mn } from 'amirka/react-mn-component';
 import { MyComponent } from './my-component';
 
+const presets = [ mnSettings, mnStyle, mnTheme ];
 export class Root extends Component {
-  constructor(props) {
-    super(props);
-    let inited;
-    this.init = ({ mn }) => {
-      if (inited) return;
-      inited = true;
-      mnSettings(mn)
-      mnStyle(mn);
-      mnTheme(mn);
-    };
-  }
   render() {
     return (
-      <Mn>
-        <MnConsumer>{this.init}</MnConsumer>
+      <Mn presets={presets}>
         <MyComponent></MyComponent>
       </Mn>
     );
