@@ -222,7 +222,7 @@ PS: MnFrame - компонент, который отображается в ifr
 
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/44/
+Try this test: https://jsfiddle.net/j6d8aozy/46/
 
 Home page: http://minimalist-notation.org
 

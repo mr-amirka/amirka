@@ -1,4 +1,4 @@
-[English](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)
+[Русский](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
 
 
 # Minimalist Notation Default Presets
@@ -301,11 +301,11 @@ Try this test: https://jsfiddle.net/j6d8aozy/46/
 
 Home page: http://minimalist-notation.org
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)
+[Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)
 
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
+[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README.md)
 
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)
+[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)
 
 
 

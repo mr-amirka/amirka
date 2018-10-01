@@ -1244,7 +1244,7 @@ mn('container', {
 
 ## Links
 
-Try this test: https://jsfiddle.net/j6d8aozy/44/
+Try this test: https://jsfiddle.net/j6d8aozy/46/
 
 Home page: http://minimalist-notation.org
 

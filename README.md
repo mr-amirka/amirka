@@ -25,8 +25,8 @@ module.exports = {
     //...
     new MnWebpackPlugin({
       input: {
-        './dist/styles.css': './src',
-        './dist/other.css': './other'
+        './dist/styles': './src',
+        './dist/other': './other'
       },
       include: [ /^.*\.(html?|jsx?)$/ ],
       exclude: [ /\/node_modules\// ],
@@ -222,7 +222,7 @@ PS: MnFrame - компонент, который отображается в ifr
 
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/44/
+Try this test: https://jsfiddle.net/j6d8aozy/46/
 
 Home page: http://minimalist-notation.org
 
