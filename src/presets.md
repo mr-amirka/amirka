@@ -253,7 +253,6 @@ Base format: {baseAttrName}{sideName}{value}
 | Essence name  | css                                                                | Description           |
 | ------------- | ------------------------------------------------------------------ | --------------------- |
 | tbl           | &{display: table} &>*{display: table-cell; vertical-align: middle} |                       |
-| cfx           | &:before,&:after{content: " "; clear: both; display: table}        |                       |
 | tbl           | &{display: table} &>*{display: table-cell; vertical-align: middle} |                       |
 | layout        | &{display: [ -webkit-box, -webkit-flex, flex ]}                    |                       |
 | layoutRow     | &{exts layout; box-direction: normal; box-orient: horizontal; flex-direction: row; box-pack: start; justify-content: flex-start; box-align: center; align-items: center; align-content: center} |                       |
