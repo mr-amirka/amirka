@@ -1,55 +1,31 @@
 <!DOCTYPE html>
-<html
-  lang="en"
-  m="h hmin"
->
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
-  <meta name="theme-color" content="#000"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="#000"/>
-  <meta charset="utf-8"/>
-  <title>Standalone Minimalist Notation</title>  
-</head>
-<body m="p m ovyAuto ovxHidden">
-  <script>
+<html lang="en-EN">
+  <head>
+    <base href="/"/>
+    <meta charset="UTF-8"/>
+    <meta name="theme-color" content="#000"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000"/>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+    <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Minimalist Notation for Standalone Example</title>
+    <script src="/standalone-mn.js" async></script>
+  </head>
+  <body m="bgE rlv">
 
-    amirka.polyfill({
-      'CSS.escape': 'assets/standalone-shims/css.escape.shim.js'
-      //,'Promise': 'assets/standalone-shims/promise.shim.js',
-      //'setImmediate': 'assets/standalone-shims/set-immediate.shim.js'
-    }).finally(function() {
 
-       mn.css({
-        '*, *:before, *:after': {
-          boxSizing: 'border-box'
-        },
-        x: {
-          display: 'block'
-        },
-        html: {
-          '-ms-text-size-adjust': '100%',
-          '-webkit-text-size-adjust': '100%',
-          '-webkit-tap-highlight-color': '#000',
-          position: 'relative'
-        }
-      });
+    <div m="h100vh">
+      <div m="tbl sq">
+        <div>
+          <div m="sq200 bg0 mhAuto"></div>
+        </div>
+      </div>
 
-      mn
-        .recursiveCheckNodeByAttr(document)
-        .compile();
-
-      console.log('minimalistNotation', mn.data);
-  
-    });
-  </script>
-  <div 
-    class="block"
-    m="h100vh w100vw tbl bg0 cF tc rt@sm lt@400-768 lt@print bg6@x600-"
-  >
-    <div class="block__element">
-      Standalone Minimalist Notation 
     </div>
-  </div>
-</body>
+
+
+  </body>
 </html>

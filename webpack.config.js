@@ -8,6 +8,9 @@ const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const MnWebpackPlugin = require('./src/webpack-plugin');
 
 module.exports = {
   watch: true,
@@ -16,85 +19,71 @@ module.exports = {
     poll: 1000
   },
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
+    contentBase: path.join(__dirname, 'dist'),
     compress: true,
     open: true,
     openPage: 'index.html',
     port: 9000,
   },
-  mode: 'development',
+  mode:
+    //'production',
+    'development',
   resolve: {
     extensions: [ '.ts', '.js', '.jsx' ]
   },
   entry: {
-    'angular': './examples/angular/index.ts',
-    'react': './examples/react/index.jsx',
-    'simple': './examples/simple/index.ts',
-    'amirka': './examples/standalone/index.ts',
-    'assets/amirka.minimalist-notation': './examples/standalone/minimalist-notation.ts',
-    'assets/mn-styles/mn.settings': './src/standalone-mn-styles/mn.settings.ts',
-    'assets/mn-styles/mn.style': './src/standalone-mn-styles/mn.style.js',
-    'assets/standalone-shims/promise.shim': './src/standalone-shims/promise.shim.js',
-    'assets/standalone-shims/css.escape.shim': './src/standalone-shims/css.escape.shim.js',
-    'assets/standalone-shims/set-immediate.shim': './src/standalone-shims/set-immediate.shim.js'
+    'react': './examples/react/index',
+    'standalone-mn': './examples/standalone/index',
+    'ff.app': './examples/ff.tmp.app/embed.js',
+    'ff.admin': './examples/ff.tmp.app/admin.jsx',
+    'frame': './examples/ff.tmp.app/frame.jsx',
+
+    //'assets/promise.shim': './src/standalone-shims/promise.shim.js',
+    'assets/css.escape.shim': './src/standalone-shims/css.escape.shim.js',
+    'assets/set-immediate.shim': './src/standalone-shims/set-immediate.shim.js',
+
+    'mn-presets/mn.settings': './examples/mn-presets/mn.settings.js',
+    'mn-presets/mn.styles': './examples/mn-presets/mn.styles.js',
+    'mn-presets/mn.theme': './examples/mn-presets/mn.theme.js'
   },
   output: {
     filename: '[name].js',
-    path: __dirname + '/public',
+    path: __dirname + '/dist',
     publicPath: '/'
   },
   module: {
     rules: [
-      {
-        test: /\.(locale|xhr)\.json$/,
-        type: 'javascript/auto',
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              //name: 'assets/[path][name].[hash].[ext]'
-              name: '[name].[hash].[ext]',
-              outputPath: 'assets/xhr/'
-            }
-          }
-        ]
-      },
-      {
-        test: /\.rs$/,
-        type: 'webassembly/experimental',
-        use: {
-          loader: 'rust-native-wasm-loader',
-          options: { gc: true, release: true }
-        }
-      },
       {
         test: /\.ts$/,
         use: [
           {
             loader: "awesome-typescript-loader",
             options: {
+              cacheDirectory: true,
               configFileName: 'tsconfig.json',
               useBabel: true,
               babelOptions: {
                 babelrc: false,
                 presets: [ "@babel/preset-env" ]
               },
-              babelCore: "@babel/core", 
+              babelCore: "@babel/core",
             }
-          },
-          {
-            loader: 'angular2-template-loader'
           }
-          
         ],
-        exclude: [ /\.spec\.ts$/ ]
+        exclude: [ /\.spec\.ts$/, /\.tmp\.ts$/  ]
       },
       {
         test: /\.jsx?$/,
         use: {
           loader: "babel-loader",
           options: {
-            presets: [ "react", "latest", "stage-2" ]
+            cacheDirectory: true,
+            presets: [ "@babel/preset-env", "@babel/preset-react" ],
+            plugins: [
+              "@babel/syntax-dynamic-import",
+              "@babel/plugin-proposal-class-properties",
+              [ "@babel/plugin-proposal-decorators", { legacy: true } ]
+           ]
           }
         }
       },
@@ -127,22 +116,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.less$/,
-        use: [
-          {
-            loader: "style-loader"
-          }, {
-            loader: "css-loader",
-            options: {
-              minimize: true
-            }
-          }, {
-            loader: "less-loader"
-          }
-        ]
-      },
-      {
-        test: /\.(jpg|jpeg|png|svg|gif|woff|woff2|otf|ttf|mp3)$/, 
+        test: /\.(jpg|jpeg|png|svg|gif|woff|woff2|otf|ttf|eot|mp3)$/,
         use: [
           {
             loader: 'file-loader',
@@ -153,7 +127,19 @@ module.exports = {
           }
         ]
       },
-      //{ test: /\.(jpg|jpeg|png|svg|gif|woff|woff2|otf|ttf)$/, loader: 'url-loader?limit=100000' },
+      /*
+      {
+        test: /\.(jpg|jpeg|png|svg|gif|woff|woff2|otf|ttf|eot|mp3)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 100000
+            }
+          }
+        ]
+      },
+      */
       {
         test: /\.html?$/,
         use: [
@@ -166,31 +152,11 @@ module.exports = {
             }
           }
         ],
-      },
-      {
-        test: /\.md$/,
-        use: [
-          {
-            loader: "html-loader"
-          },
-          {
-            loader: "markdown-loader",
-            options: {
-              langPrefix: ''
-              /* your options here */
-            }
-          }
-        ]
       }
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      inject: 'head',
-      template: 'examples/angular/index.html',
-      filename: 'index.html',
-      chunks: [ 'angular' ]
-    }),
+    new HardSourceWebpackPlugin(),
     new HtmlWebpackPlugin({
       inject: 'head',
       template: 'examples/react/index.html',
@@ -199,62 +165,95 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       inject: 'head',
-      filename: 'simple.html',
-      template: 'examples/simple/index.html',
-      chunks: [ 'simple' ]
+      template: 'examples/standalone/index.html',
+      filename: 'standalone.html',
+      chunks: [ ]
     }),
     new HtmlWebpackPlugin({
       inject: 'head',
-      filename: 'standalone.html',
-      template: 'examples/standalone/index.html',
-      chunks: [ 
-        'assets/amirka.minimalist-notation', 
-        'assets/mn-styles/mn.settings',
-        'assets/mn-styles/mn.style'
-      ]
+      template: 'examples/ff.tmp.app/admin.html',
+      filename: 'index.html',
+      chunks: [ 'ff.admin' ]
     }),
+    new HtmlWebpackPlugin({
+      inject: 'head',
+      template: 'examples/ff.tmp.app/frame.html',
+      filename: 'frame.html',
+      chunks: [ 'frame' ]
+    })
+
+    ,new MnWebpackPlugin({
+      input: {
+        './dist/ff-mn-styles': './examples/ff.tmp.app'
+      },
+      include: [ /^.*\.(html?|jsx?)$/ ],
+      exclude: [ /\/node_modules\// ],
+      hideInfo: true
+    })
+
+  ],
+  optimization: {
+
+    minimizer: [
+      new UglifyJsPlugin({
+        extractComments: false,
+        sourceMap: false,
+        uglifyOptions: {
+          warnings: false,
+          ie8: false,
+          safari10: false,
+          compress: {
+            //drop_console: false,
+            //unsafe_proto: true,
+            unsafe_math: true,
+            //hoist_vars: true
+          },
+          output: {
+            comments: false,
+            beautify: false
+          }
+        }
+      })
+    ]
     /*
-    new webpack.ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)@angular/,
-      __dirname + '/examples',
-      {}
-    ),
-    */
-    new webpack.LoaderOptionsPlugin({
-      debug: false,
-      options: {
-        htmlLoader: {
-          // minimize: false // workaround for ng2
-          // see https://github.com/angular/angular/issues/10618#issuecomment-250322328
-          minimize: false,
-          removeAttributeQuotes: false,
-          caseSensitive: true
-          // customAttrSurround: [
-          //   [/#/, /(?:)/],
-          //   [/\*/, /(?:)/],
-          //   [/\[?\(?/, /(?:)/]
-          // ],
-          // customAttrAssign: [/\)?\]?=/]
+    ,splitChunks: {
+      name: true,
+      cacheGroups: {
+        src: {
+          test: /[\\/]src[\\/]/,
+          name: 'src',
+          chunks: 'all'
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
         }
       }
-    })
+    }
     /*
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'ENV': JSON.stringify(ENV)
-      }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      options: {
-        htmlLoader: {
-          minimize: false // workaround for ng2
+    splitChunks: {
+      chunks: 'async',
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: '~',
+      name: true,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
         }
       }
-    })
+    }
     */
-  ]
+  }
 
 };
-
-  

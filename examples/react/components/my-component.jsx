@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { MnConsumer } from '../../../src/react-mn-component';
+import { withMn, MnFrame } from '../../../src/react-mn';
 
-export class MyComponent extends Component {
+
+class _MyComponent extends Component {
 	render() {
 		return (
-			<MnConsumer>
-			{
-				({ m }) => (
-					<div m={m('tbl c0F0 bg0 w h100vh tc f40')}>
-						<div>
-							Hello React!
-						</div>
-					</div>
-				)
-			}
-			</MnConsumer>
+			<div m="tbl c0F0 bg0 w h100vh tc f40">
+				<div>
+					<div>Hello React!</div>
+					<MnFrame m="b0 bc00 bsSolid">
+						<div m="sq10 bgF"></div>
+					</MnFrame>
+				</div>
+			</div>
 		);
 	}
 }
+
+export const MyComponent = withMn(_MyComponent);

@@ -3,7 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-import { BehaviorSubject } from 'rxjs';
+import * as Emitter from '../utils/emitter';
 
 export interface Storage {
   set: (key: string, value: any) => Storage;
@@ -11,5 +11,5 @@ export interface Storage {
   remove: (key: string) => Storage;
   getKeys: () => string[];
   clear: () => Storage;
-  observable: (key: string, defaultValue?: any) => BehaviorSubject <any>;
+  getEmitter: (key: string, defaultValue?: any) => Emitter<any>;
 }

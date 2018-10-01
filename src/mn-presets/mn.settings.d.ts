@@ -1,1 +1,0 @@
-export const mnSettings: (mn: any) => any;
