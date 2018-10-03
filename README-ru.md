@@ -1,20 +1,54 @@
 [English](https://github.com/mr-amirka/amirka/blob/master/README.md)
 
 
-# Minimalist Notation.
+# Minimalist Notation
 
 Minimalist Notation (MN) (минималистическая нотация) - это технология генерации стилей, основанная на парсинге разметки. Генерация осуществляется непосредственно в СSS. Технология колоссально ускоряет процесс верстки и может использоваться дополнительно с традиционными технологиями, либо заменять их полностью.  
 
-## Install
+[CLI](#cli)  
+[Webpack Plugin](#webpack-plugin)  
+[Runtime](#runtime)  
+    [Standalone](#standalone)  
+    [Integration](#integration)  
+        [Как интегрировать "Minimalist Notation" в Angular 6](#Как-интегрировать-minimalist-notation-в-angular-6)  
+        [Как интегрировать "Minimalist Notation" в AngularJS](#Как-интегрировать-minimalist-notation-в-angularjs)  
+        [Как интегрировать "Minimalist Notation" в React](#Как-интегрировать-minimalist-notation-в-react)  
 
-Библиотека:
+[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
+[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
+[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)
+
+Try this test: https://jsfiddle.net/j6d8aozy/46/
+Home page: http://minimalist-notation.org
+
+
+Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka) .  
+С любовью, Ваш mr.Amirka :)
+
+
+Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation).
+
+
+
+### CLI
+```sh
+npm install -g mn-cli
 ```
+
+```sh
+mn --compile ./src --output ./dist/styles.css
+```
+
+[More about CLI](https://github.com/mr-amirka/mn-cli)
+
+
+
+### Webpack Plugin
+
+```sh
 npm install amirka --save
 ```
 
-## Usage
-
-### Webpack Plugin
 
 ```js
 const MnWebpackPlugin = require('amirka/webpack-plugin');
@@ -49,38 +83,26 @@ PS: см. amirka/node-mn.d.ts
 
 
 
-### CLI
-
-[cli утилита](https://github.com/mr-amirka/mn-cli):
-```sh
-npm install -g mn-cli
-```
-
-Example:
-```sh
-mn --compile ./src --output ./dist/styles.css
-```
-
 
 ## Runtime
 
 ```js
 const mn = require("amirka/services/mn")
   .setPresets([
-  	require('amirka/mn-presets/mn.medias'),
-  	require('amirka/mn-presets/mn.runtime-prefixes'),
-  	require('amirka/mn-presets/mn.styles'),
-  	require('amirka/mn-presets/mn.states'),
-  	require('amirka/mn-presets/mn.theme')
+    require('amirka/mn-presets/mn.medias'),
+    require('amirka/mn-presets/mn.runtime-prefixes'),
+    require('amirka/mn-presets/mn.styles'),
+    require('amirka/mn-presets/mn.states'),
+    require('amirka/mn-presets/mn.theme')
   ]);
 require('amirka/services/polyfill').andReady({
-	'CSS.escape': 'assets/css.escape.shim.js',
-	'setImmediate': 'assets/set-immediate.shim.js'
+  'CSS.escape': 'assets/css.escape.shim.js',
+  'setImmediate': 'assets/set-immediate.shim.js'
 }).finally(() => {
-	mn.getCompiler('m').recursiveCheck(document)
-	mn.compile();
+  mn.getCompiler('m').recursiveCheck(document)
+  mn.compile();
 
-	console.log('minimalistNotation', mn.data);
+  console.log('minimalistNotation', mn.data);
 });
 
 ```
@@ -103,10 +125,10 @@ require('amirka/services/polyfill').andReady({
 ```ts
 
 require("amirka/services/mn").setPresets([
-	require('amirka/mn-presets/mn.medias'),
-	require('amirka/mn-presets/mn.runtime-prefixes'),
-	require('amirka/mn-presets/mn.styles'),
-	require('amirka/mn-presets/mn.states'),
+  require('amirka/mn-presets/mn.medias'),
+  require('amirka/mn-presets/mn.runtime-prefixes'),
+  require('amirka/mn-presets/mn.styles'),
+  require('amirka/mn-presets/mn.states'),
 	require('amirka/mn-presets/mn.theme'),
 ]);
 
@@ -141,7 +163,7 @@ require("amirka/services/mn").setPresets([
 	require('amirka/mn-presets/mn.runtime-prefixes'),
 	require('amirka/mn-presets/mn.styles'),
 	require('amirka/mn-presets/mn.states'),
-	require('amirka/mn-presets/mn.theme'),
+	require('amirka/mn-presets/mn.theme')
 ]);
 
 const app = angular.module('app', [ /* ...*/ ]);
@@ -164,14 +186,14 @@ import { render } from 'react-dom';
 import { Root } from './components/root';
 
 require("amirka/services/mn").setPresets([
-	require('amirka/mn-presets/mn.medias'),
-	require('amirka/mn-presets/mn.runtime-prefixes'),
-	require('amirka/mn-presets/mn.styles'),
-	require('amirka/mn-presets/mn.states'),
-	require('amirka/mn-presets/mn.theme')
+  require('amirka/mn-presets/mn.medias'),
+  require('amirka/mn-presets/mn.runtime-prefixes'),
+  require('amirka/mn-presets/mn.styles'),
+  require('amirka/mn-presets/mn.states'),
+  require('amirka/mn-presets/mn.theme')
 ]);
 require('amirka/services/polyfill').andReady({
-	'CSS.escape': 'assets/css.escape.shim.js'
+  'CSS.escape': 'assets/css.escape.shim.js'
 }).finally(() => [].forEach.call(
 	document.querySelectorAll('[root]'),
 	(node) => render(<Root/>, node)
@@ -213,33 +235,3 @@ export const MyComponent = withMn(_MyComponent);
 ```
 
 PS: MnFrame - компонент, который отображается в iframe
-
-
-
-
-## Links
-
-
-
-
-Try this test: https://jsfiddle.net/j6d8aozy/46/
-
-Home page: http://minimalist-notation.org
-
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
-
-[Пресеты](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
-
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)
-
-
-
-
-
-Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka) .  
-С любовью, Ваш mr.Amirka :)
-
-
-
-
-Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation).

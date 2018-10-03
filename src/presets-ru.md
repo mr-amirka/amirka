@@ -4,9 +4,46 @@
 # Minimalist Notation Default Presets
 
 
-#### Библиотека MN включает в себя предустановленные настройки включенные в cli-версию по-умолчанию.
+**Библиотека MN включает в себя предустановленные настройки включенные в cli-версию по умолчанию.**
 
-#### Медиа-запросы (amirka/mn-presets/mn.medias.js):
+
+[CLI](#cli)  
+[Медиа-запросы](#Медиа-запросы)   
+[Состояния](#Состояния)  
+[Другие настройки по умолчанию](#Другие-настройки-по-умолчанию)  
+[Side names](#side-names)  
+[Эссенции стилей](#Эссенции-стилей)  
+    [Dynamic essences](#dynamic-essences)  
+    [Static essences](#static-essences)   
+
+
+
+
+
+[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)
+[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
+[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)
+
+
+Try this test: https://jsfiddle.net/j6d8aozy/46/  
+Home page: http://minimalist-notation.org  
+
+
+Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka) .  
+С любовью, Ваш mr.Amirka :)
+
+
+Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation).
+
+
+
+
+
+
+#### Медиа-запросы
+
+[https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.medias.js](amirka/mn-presets/mn.medias.js)
+
 
 | Media name | Priority | Media-query                                 |
 | ---------- | -------- | ------------------------------------------- |
@@ -48,7 +85,10 @@ Output:
 ```
 
 
-#### Состояния (amirka/mn-presets/mn.states.js):
+#### Состояния
+
+[https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.states.js](amirka/mn-presets/mn.states.js)
+
 
 | State name | Selectors                                        |
 | ---------- | ------------------------------------------------ |
@@ -79,7 +119,11 @@ Output:
 ```
 
 
-#### Прочие настройки по умолчанию (amirka/mn-presets/mn.theme.js):
+#### Другие настройки по умолчанию
+
+
+[https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.theme.js](amirka/mn-presets/mn.theme.js)
+
 
 ```js
 mn.css({
@@ -99,10 +143,13 @@ mn.assign({
 ```
 
 
-#### Именование сторон в имени эссенции, если такое уточнение может иметь место для рассматриваемого атрибута
+#### Side names
 
 
-Base format: {baseAttrName}{sideName}{value}
+**Именование сторон в имени эссенции, если такое уточнение может иметь место для рассматриваемого атрибута**
+
+
+Base format: ``` {baseName}{sideName}{value} ```
 
 | Side suffix | Sides         | Description |
 | ----------- | ------------- | ----------- |
@@ -128,6 +175,7 @@ Base format: {baseAttrName}{sideName}{value}
   padding: 5px;
 }
 ```
+-------------------------
 
 
 ```html
@@ -138,7 +186,7 @@ Base format: {baseAttrName}{sideName}{value}
   padding-left: 10px;
 }
 ```
-
+-------------------------
 
 
 
@@ -151,7 +199,7 @@ Base format: {baseAttrName}{sideName}{value}
   padding-bottom: 15px;
 }
 ```
-
+-------------------------
 
 
 
@@ -169,86 +217,92 @@ Base format: {baseAttrName}{sideName}{value}
 
 
 
-#### Эссенции стилей (amirka/mn-presets/mn.styles.js):
-
-**Dynamic essences:**
+#### Эссенции стилей
 
 
-| Essence name | Style attrubute name    | Description | Value format                   | Default       |
-| ----------- | ------------------------ | ----------- | ------------------------------ | ------------- |
-| p           | padding                  |             | {side:lowerCase}{number}{unit} | 0px           |
-| m           | margin                   |             | {side:lowerCase}{number}{unit} | 0px           |
-| pn          | top, bottom, left, right | position    | {side:lowerCase}{number}{unit} | 0px           |
-| b           | border-width             |             | {side:lowerCase}{number}{unit} | 0px           |
-| bs          | border-style             |             | {camleCase}                    |               |
-| bc          | border-color             |             | {camleCase/([A-F0-9]+)}        | #000          |
-| sq          | width, height            | square      | {number}{unit}                 | 100%, 100%    |
-| w           | width                    |             | {number}{unit}                 | 100%          |
-| h           | height                   |             | {number}{unit}                 | 100%          |
-| sqmin       | min-width, min-height    | square      | {number}{unit}                 | 100%, 100%    |
-| wmin        | min-width                |             | {number}{unit}                 | 100%          |
-| hmin        | min-height               |             | {number}{unit}                 | 100%          |
-| sqmax       | max-width, max-height    | square      | {number}{unit}                 | 100%, 100%    |
-| wmax        | max-width                |             | {number}{unit}                 | 100%          |
-| hmax        | max-height               |             | {number}{unit}                 | 100%          |
-| dn          | transition-duration      |             | {number(ms)}                   | 250ms         |
-| c           | color                    |             | {camleCase/([A-F0-9]+)}        | #000          |
-| stroke      | stroke                   |             | {camleCase/([A-F0-9]+)}        | #000          |
-| bg          | background               |             | {camleCase/([A-F0-9]+)}[ ...-{camleCase/([A-F0-9]+)} ] | #000          |
-| x           | transform: translate({x}, {y}) scale({s}) |             | {number}{%}y{number}{%}s{number(*0.01)} | 0, 0, none    |
-| spnr        | animation: spinner-animate {speed} ms infinite linear | spiner      | {number(ms)}                   | 3000          |
-| rx          | transform: rotateX({v})  |             | {number(deg)}                  | 180           |
-| ry          | transform: rotateY({v})  |             | {number(deg)}                  | 180           |
-| rz          | transform: rotateZ({v})  |             | {number(deg)}                  | 180           |
-| sh          | box-shadow               | shadow      | {number(px)}r{number(px)}x{number(px)}y{number(px)}m{number(repeat)}c{([A-F0-9]+)}{in} | 0, 0, 0, 0, 1, #000, none |
-| tsh         | text-shadow              | text-shadow | {number(px)}x{number(px)}y{number(px)}m{number(repeat)}c{([A-F0-9]+)}{in} | 0, 0, 0, 1, #000, none |
-| f           | font-size                | font        | {number}{unit}                 | 180           |
-| fw          | font-weight              |             | {camleCase/number(*100)}       | 14px          |
-| ff          | font-family              |             | {snackCase}                    |               |
-| fs          | font-style               |             | {camelCase}                    |               |
-| r           | border-radius            | radius      | {number}{unit}                 | 10000px       |
-| z           | z-index                  |             | {number}                       | 1             |
-| o           | opacity                  |             | {number(*0.01)}                | 0             |
-| lh          | line-height              |             | {number}{unit}                 | 1             |
-| tn          | transition               |             | {snackCase}                    |               |
-| g           | grid-template            |             | {snackCase}                    |               |
-| gr          | grid-template-rows       |             | {snackCase}                    |               |
-| gc          | grid-template-columns    |             | {snackCase}                    |               |
-| gar         | grid-auto-rows           |             | {snackCase}                    |               |
-| gg          | grid-gap                 |             | {snackCase}                    |               |
-| gRow        | grid-row                 |             | {snackCase}                    |               |
-| gCol        | grid-column              |             | {snackCase}                    |               |
-| fx          | flex                     |             | {snackCase}                    |               |
-| tp          | transition-property      |             | {snackCase}                    |               |
-| ctt         | content                  |             | {snackCase}                    | none          |
-| rs          | border-radius            | radius      | {snackCase}                    |               |
-| ov          | overflow                 |             | {camelCase}                    |               |
-| ovx         | overflow-x               |             | {camelCase}                    |               |
-| ovy         | overflow-y               |             | {camelCase}                    |               |
-| fd          | flex-direction           |             | {camelCase}                    |               |
-| jc          | justify-content          |             | {camelCase}                    |               |
-| ai          | align-items              |             | {camelCase}                    |               |
-| tt          | text-transform           |             | {camelCase}                    |               |
-| td          | text-decoration          |             | {camelCase}                    |               |
-| to          | text-overflow            |             | {camelCase}                    |               |
-| cr          | cursor                   |             | {camelCase}                    |               |
-| ol          | outline                  |             | {camelCase}                    |               |
-| ws          | white-space              |             | {camelCase}                    |               |
-| va          | vertical-align           |             | {camelCase}                    |               |
-| d           | display                  |             | {camelCase}                    |               |
-| e           | pointer-events           |             | {camelCase}                    |               |
-| us          | user-select              |             | {camelCase}                    |               |
-| v           | visibility               |             | {camelCase}                    |               |
-| col         | width                    | column      | {number(*100%)}/{number}       | (12, 12) 100% |
-| blur        | filter: blur({v}px)      |             | {number}                       | 4             |
-| ratio       | &{position: relative; padding-top: calc({h}/{w}% + {add}px)} &>*{position: absolute; top: 0; bottom: 0; left: 0; right: 0} |             | {number}x{number}[-+]{number} | (1, 1, 0) 100% |
+[https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.styles.js](amirka/mn-presets/mn.styles.js)
 
 
 
+##### Dynamic essences
+
+
+| Essence name | CSS                                     | Description | Value format                                     | Default            |
+| ----------- | ---------------------------------------- | ----------- | ------------------------------------------------ | ------------------ |
+| p           | &{padding:{value}{unit}}                 |             | {side:([a-z]+)}{value:([0-9]+)}{unit:([a-z]+)}   | 0px ('', 0, 'px')  |
+| m           | &{margin:{value}{unit}}                  |             | {side:([a-z]+)}{value:(-?[0-9]+)}{unit:([a-z]+)} | 0px ('', 0, 'px')  |
+| pn          | &{top?:{value}{unit}; bottom?:{value}{unit}; left?:{value}{unit}; right?:{value}{unit};} | position    | {side:([a-z]+)}{value:(-?[0-9])}{unit:([a-z]+)} | 0px ('', 0, 'px')  |
+| b           | &{border-width:{value}{unit}}            |             | {side:([a-z]+)}{value:([0-9]+)}{unit:([a-z]+)}   | 0px ('', 0, 'px')  |
+| bs          | &{border-style:{value}}                  |             | {value:camleCase}                                |                    |
+| bc          | &{border-color:{value}}                  |             | {value:camleCase|([A-F0-9]+)}                    | #000 (0)           |
+| sq          | &{width:{value}; height:{value}}         | square      | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| w           | &{width:{value}}                         |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| h           | &{height:{value}}                        |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| sqmin       | &{min-width:{value}{unit}; min-height:{value}{unit}} | square      | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| wmin        | &{min-width:{value}{unit}}               |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| hmin        | &{min-height:{value}{unit}}              |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| sqmax       | &{max-width:{value}{unit}; max-height:{value}{unit}} | square      | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| wmax        | &{max-width:{value}{unit}}               |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| hmax        | &{max-height:{value}{unit}}              |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
+| dn          | &{transition-duration:{value}ms}         |             | {value:([0-9]+)}                                 | 250ms (250)        |
+| c           | &{color:{value}}                         |             | {value:camleCase/([A-F0-9]+)}                    | #000 (0)           |
+| stroke      | &{stroke:{value}}                        |             | {value:camleCase/([A-F0-9]+)}                    | #000 (0)           |
+| bg          | &{background:{value}}                    |             | {value:camleCase/([A-F0-9]+)}[ ...-{value:camleCase/([A-F0-9]+)} ] | #000 (0)           |
+| x           | &{transform: translate({x}{x-unit}, {y}{y-unit}) scale({s*0.01})} |             | {x:([0-9]+)}{x-unit:([a-z]+)}y{y:([0-9]+)}{y-unit:([a-z]+)}s{s:([0-9]+)} | 0, 0, _ (0, 'px', 0, 'px', _) |
+| spnr        | &{animation: spinner-animate {speed}ms infinite linear} | spinner     | {speed:([0-9]+)}                                | 3000ms (3000)      |
+| rx          | &{transform: rotateX({value}deg)}        |             | {value:(-?[0-9]+)}                               | 180deg (180)       |
+| ry          | &{transform: rotateY({value}deg)}        |             | {value:(-?[0-9]+)}                               | 180deg (180)       |
+| rz          | &{transform: rotateZ({value}deg)}        |             | {value:(-?[0-9]+)}                               | 180deg (180)       |
+| sh          | &{box-shadow: [ {inset} {x}px {y}px {value}px {r}px {color} ] * repeat} | shadow      | {value:([0-9]+)}r{r:([0-9]+)}x{x:(-?[0-9]+)}y{y:(-?[0-9]+)}m{repeat:([0-9]+)}c{color:([A-F0-9]+)}in{inset:boolean} | 0, 0, 0, 0, 1, #000, '' |
+| tsh         | &{text-shadow: [ {inset} {x}px {y}px {value}px {color} ] * repeat} | text-shadow | {value:([0-9]+)}x{x:(-?[0-9]+)}y{y:(-?[0-9]+)}m{repeat:([0-9]+)}c{color:([A-F0-9]+)}in{inset:boolean} | 0, 0, 0, 1, #000, '' |
+| f           | &{font-size:{value}{unit}}               | font        | {value:([0-9]+)}{unit:([a-z]+)}                  | 14px                |
+| fw          | &{font-weight:{value is camleCase ? value : value *100}} |             | {value:camleCase/([A-F0-9]+)}      | 100 (1)             |
+| ff          | &{font-family:{value}}                   |             | {value:snackCase}                                    |                     |
+| fs          | &{font-style:{value}}                    |             | {value:camelCase}                                    |                     |
+| r           | &{border-radius:{value}{unit}}           | radius      | {value:([0-9]+)}{unit:([a-z]+)}                      | 10000px (10000, 'px') |
+| z           | &{z-index:{value}}                       |             | {value:(-?[0-9]+)}}                                  | 1                   |
+| o           | &{opacity:{value * 0.01}}                |             | {value:([0-9]+)}}                                    | 0                   |
+| lh          | &{line-height:{value * 0.01}{unit == '%' ? '' : 'px'}} |             | {value:([0-9]+)}{unit:([a-z]+)}                      | 1  (100, '%')       |
+| tn          | &{transition:{value}}                              |             | {value:snackCase}                                    |                     |
+| g           | &{grid-template:{value}}                 |             | {value:snackCase}                                    |                     |
+| gr          | &{grid-template-rows:{value}}            |             | {value:snackCase}                                    |                     |
+| gc          | &{grid-template-columns:{value}}         |             | {value:snackCase}                                    |                     |
+| gar         | &{grid-auto-rows:{value}}                |             | {value:snackCase}                                    |                     |
+| gg          | &{grid-gap:{value}}                      |             | {value:snackCase}                                    |                     |
+| gRow        | &{grid-row:{value}}                      |             | {value:snackCase}                                    |                     |
+| gCol        | &{grid-column:{value}}                   |             | {value:snackCase}                                    |                     |
+| fx          | &{flex:{value}}                          |             | {value:snackCase}                                    |                     |
+| tp          | &{transition-property:{value}}           |             | {value:snackCase}                                    |                     |
+| ctt         | &{content:{value}}                       |             | {value:snackCase}                                    |                     |
+| rs          | &{border-radius:{value}}                 | radius      | {value:snackCase}                                    |                     |
+| ov          | &{overflow:{value}}                      |             | {value:snackCase}                                    |                     |
+| ovx         | &{overflow-x:{value}}                    |             | {value:snackCase}                                    |                     |
+| ovy         | &{overflow-y:{value}}                    |             | {value:snackCase}                                    |                     |
+| fd          | &{flex-direction:{value}}                |             | {value:snackCase}                                    |                     |
+| jc          | &{justify-content:{value}}               |             | {value:snackCase}                                    |                     |
+| ai          | &{align-items:{value}}                   |             | {value:snackCase}                                    |                     |
+| tt          | &{text-transform:{value}}                |             | {value:snackCase}                                    |                     |
+| td          | &{text-decoration:{value}}               |             | {value:snackCase}                                    |                     |
+| to          | &{text-overflow:{value}}                 |             | {value:snackCase}                                    |                     |
+| cr          | &{cursor :{value}}                       |             | {value:snackCase}                                    |                     |
+| ol          | &{outline:{value}}                       |             | {value:snackCase}                                    |                     |
+| ws          | &{white-space:{value}}                   |             | {value:snackCase}                                    |                     |
+| va          | &{vertical-align:{value}}                |             | {value:snackCase}                                    |                     |
+| d           | &{display:{value}}                       |             | {value:snackCase}                                    |                     |
+| e           | &{pointer-events:{value}}                |             | {value:snackCase}                                    |                     |
+| us          | &{user-select:{value}}                   |             | {value:snackCase}                                    |                     |
+| v           | &{visibility:{value}}                    |             | {value:snackCase}                                    |                     |
+| col         | &{width:{100 * colSize / fullSize}%}     | column      | {colSize:([0-9]+)}/{fullSize:([0-9]+)}               | 100% (12, 12)       |
+| blur        | &{filter: blur({value}px)}               |             | {value:([0-9]+)}                                     | 4px (4)             |
+| ratio       | &{position: relative; padding-top: calc({height}/{width}% + {addition}px)} &>*{position: absolute; top: 0; bottom: 0; left: 0; right: 0} |             | {width:([0-9]+)}x{height:([0-9]+)}[-+]{addition([0-9]+)} | 100% (1, 1, 0)      |
 
 
 
-**Static essences:**  
+
+
+
+##### Static essences  
+
 
 | Essence name  | css                                                                | Description           |
 | ------------- | ------------------------------------------------------------------ | --------------------- |
@@ -287,31 +341,3 @@ Base format: {baseAttrName}{sideName}{value}
 | srt           | &{right: 0; top: 0;}                                               | side-right-top        |
 | srb           | &{right: 0; bottom: 0}                                             | side-right-bottom     |
 | break         | &{white-space: normal; word-break: break-word}                     |                       |
-
-
-
-
-
-## Links
-
-
-
-Try this test: https://jsfiddle.net/j6d8aozy/46/
-
-Home page: http://minimalist-notation.org
-
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)
-
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
-
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)
-
-
-
-
-Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka) .  
-С любовью, Ваш mr.Amirka :)
-
-
-
-Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation)

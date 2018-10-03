@@ -1,6 +1,6 @@
 {
   "name": "amirka",
-  "version": "0.0.40-source",
+  "version": "1.0.0-source",
   "description": "Minimalist Notation",
   "main": "./src/utils/index.js",
   "types": "./src/global.d.ts",

@@ -17,13 +17,15 @@ const {
   variance,
   reduce,
   push,
-  escapeQuote
+  escapeQuote,
+  intval
 } = require('../utils');
 const baseVariance = variance.core;
 const regexpDepth = /^(\d+)(.*)$/;
 const splitParent = escapedSplitProvider(/<|>\-/).core;
 const splitChild = escapedSplitProvider(/>|<\-/).core;
 const splitMedia = escapedSplitProvider('@').core;
+const splitMultiplier = escapedSplitProvider('*').core;
 const regexpScope = /^(.*?)\[(.*)\]$/;
 
 const selectorsCompileProvider = module.exports = (instance) => {
@@ -41,6 +43,14 @@ const selectorsCompileProvider = module.exports = (instance) => {
   const parseComboNameProvider = (attrName) => $$parsers[attrName] || ($$parsers[attrName] = parseAttrProvider(attrName));
   const parseComboName = (comboName, targetName) => {
     $$states = instance.states || {};
+    const multiplierParts = splitMultiplier(comboName);
+    if (multiplierParts.length > 1) {
+      const multiplier = parseInt(multiplierParts.pop());
+      if (!isNaN(multiplier)) {
+        comboName = multiplierParts.join('*');
+        targetName = targetName.repeat(multiplier > 0 ? multiplier : 0);
+      }
+    }
     return reduce(
       reduce(baseVariance(comboName), suffixesReduce, {}),
       (items, essences, suffix) => {

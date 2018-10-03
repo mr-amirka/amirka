@@ -46,13 +46,12 @@ module.exports = (mn) => {
       p: [ 'padding' ],
       m: [ 'margin' ],
       b: [ 'border', '-width' ],
-      pn: [ '' ]
     }, (args, pfx) => {
       const propName = args[0];
       const propSuffix = args[1] || '';
       const propsMap = {};
       for (let propSide in sides) {
-        propsMap[ (propName ? (propName + propSide) : propSide.replace(reTrimKebabLeft, '')) + propSuffix] = 1;
+        propsMap[ propName + propSide + propSuffix] = 1;
       }
       mn(pfx + suffix, p => {
         const camel = p.camel;
@@ -66,6 +65,26 @@ module.exports = (mn) => {
       });
     });
 
+    (() => {
+      const propsMap = {};
+      if (suffix) {
+        for (let propSide in sides) {
+          propsMap[ propSide.replace(reTrimKebabLeft, '') ] = 1;
+        }
+      } else {
+        propsMap.top = propsMap.bottom = propsMap.left = propsMap.right = 1;
+      }
+      mn('pn' + suffix, p => {
+        const camel = p.camel;
+        const v = (camel ? camel.toLowerCase() : ((p.value || '0') + (p.unit || 'px'))) + p.i;
+        const style = {};
+        for (let pName in propsMap) style[pName] = v;
+        return {
+          style,
+          priority
+        };
+      });
+    })();
 
 
     /*
