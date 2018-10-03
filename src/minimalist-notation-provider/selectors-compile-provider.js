@@ -48,7 +48,7 @@ const selectorsCompileProvider = module.exports = (instance) => {
       const multiplier = parseInt(multiplierParts.pop());
       if (!isNaN(multiplier)) {
         comboName = multiplierParts.join('*');
-        targetName = targetName.repeat(multiplier > 0 ? multiplier : 0);
+        if (multiplier > 1) targetName = targetName.repeat(multiplier);
       }
     }
     return reduce(

@@ -14,24 +14,24 @@
 [Escaping](#escaping)  
 [Media-queries generation](#media-queries-generation)  
 [Essences of styles](#essences-of-styles)  
-[Dynamic essences](#dynamic-essences)
+[Dynamic essences](#dynamic-essences)  
 [Generating the essences of styles](#generating-the-essences-of-styles)  
 [Auto prefixes](#auto-prefixes)  
 [States](#states)  
 [Parent/child selectors](#parent/child-selectors)  
-[Depth](#depth)
-[Complex selectors](#complex-selectors)
-[Essences assignment (Example with container)](#essences-assignment)
-[Priority multiplier](#priority-multiplier)
+[Depth](#depth)  
+[Complex selectors](#complex-selectors)  
+[Essences assignment (Example with container)](#essences-assignment)  
+[Priority multiplier](#priority-multiplier)  
 
 
 
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)
-[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)
+[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)  
+[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)  
+[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)  
 
 
 Try this test: https://jsfiddle.net/j6d8aozy/46/  
@@ -1281,7 +1281,7 @@ Format:
 Example 1:  
 
 ```html
-<div m="h40"></div>
+<div m="h40*3"></div>
 ```
 Output:  
 ```css

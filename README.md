@@ -20,22 +20,22 @@ The developer no longer needs to control which styles are used in his markup and
         [Integrating "Minimalist Notation" into AngularJS](#integrating-minimalist-notation-into-angularjs)  
         [Integrating "Minimalist Notation" into React](#integrating-minimalist-notation-into-react)  
 
-[More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)
-[Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)
-[From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)
+[More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)  
+[Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)  
+[From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
 
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/46/
-Home page: http://minimalist-notation.org
+Try this test: https://jsfiddle.net/j6d8aozy/46/  
+Home page: http://minimalist-notation.org  
 
 
 
-I would be grateful for your feedback and comments. Write me in a [telegram](https://t.me/mr_amirka).
+I would be grateful for your feedback and comments. Write me in a [telegram](https://t.me/mr_amirka).  
 With love, your mr.Amirka :)
 
 
-Are you interested in the development of this project? Do your [bit](https://yasobe.ru/na/notation).
+Are you interested in the development of this project? Do your [bit](https://yasobe.ru/na/notation).  
 
 
 

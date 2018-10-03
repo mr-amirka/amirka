@@ -14,19 +14,19 @@ Minimalist Notation (MN) (минималистическая нотация) - �
         [Как интегрировать "Minimalist Notation" в AngularJS](#Как-интегрировать-minimalist-notation-в-angularjs)  
         [Как интегрировать "Minimalist Notation" в React](#Как-интегрировать-minimalist-notation-в-react)  
 
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
-[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)
+[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)  
+[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)  
+[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)  
 
-Try this test: https://jsfiddle.net/j6d8aozy/46/
-Home page: http://minimalist-notation.org
-
-
-Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka) .  
-С любовью, Ваш mr.Amirka :)
+Try this test: https://jsfiddle.net/j6d8aozy/46/  
+Home page: http://minimalist-notation.org  
 
 
-Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation).
+Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka).    
+С любовью, Ваш mr.Amirka :)  
+
+
+Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation).  
 
 
 
