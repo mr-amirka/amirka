@@ -68,8 +68,8 @@ module.exports = {
     //...
     new MnWebpackPlugin({
       input: {
-        './dist/styles.css': './src',
-        './dist/other.css': './other'
+        './dist/styles': './src',
+        './dist/other': './other'
       },
       include: [ /^.*\.(html?|jsx?)$/ ],
       exclude: [ /\/node_modules\// ],
