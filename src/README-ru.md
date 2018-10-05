@@ -1167,7 +1167,7 @@ Output:
 
 Example 1.
 ```js
-mn.assign('.container', '(mhAuto-i|ph15-i|w750-i@xs|w970-i@md|w1170-i@lg)');
+mn.assign('.container', '(mhAuto-i|ph15-i|w750-i@sm-md|w970-i@md|w1170-i@lg)');
 ```
 
 Example 2. Без использования предустановленных синонимов по умолчанию для медиа-запросов:  
@@ -1223,12 +1223,12 @@ Output:
 
 Этот приведенный пример
 ```js
-mn('container', '(mhAuto-i|ph15-i|w750-i@xs|w970-i@md|w1170-i@lg)');
+mn('container', '(mhAuto-i|ph15-i|w750-i@sm-md|w970-i@md|w1170-i@lg)');
 ```
 является сокращенным способом такой декларации:
 ```js
 mn('container', {
- exts: '(mhAuto-i|ph15-i|w750-i@xs|w970-i@md|w1170-i@lg)'
+ exts: '(mhAuto-i|ph15-i|w750-i@sm-md|w970-i@md|w1170-i@lg)'
 });
 ```
 
@@ -1275,7 +1275,7 @@ mn('container', {
 
 Format:
 ```
-{notation}{multiplier:([0-9]+)}
+{notation}*{multiplier:([0-9]+)}
 ```
 
 Example 1:  

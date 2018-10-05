@@ -597,7 +597,7 @@ module.exports = (mn) => {
     mn(pfx, p => {
       if (p.camel || p.negative) return null;
       const style = {};
-      style[propName] = (p.num || val) + (p.unit || 'px');
+      style[propName] = (p.num || val) + (p.unit || 'px') + p.i;
       return {style};
     });
   });

@@ -12,6 +12,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const MnWebpackPlugin = require('./src/webpack-plugin');
 
+
 module.exports = {
   watch: true,
   watchOptions: {
@@ -37,6 +38,7 @@ module.exports = {
     'ff.app': './examples/ff.tmp.app/embed.js',
     'ff.admin': './examples/ff.tmp.app/admin.jsx',
     'frame': './examples/ff.tmp.app/frame.jsx',
+    'market': './examples/market.tmp.app/components/app.jsx',
 
     //'assets/promise.shim': './src/standalone-shims/promise.shim.js',
     'assets/css.escape.shim': './src/standalone-shims/css.escape.shim.js',
@@ -180,15 +182,30 @@ module.exports = {
       template: 'examples/ff.tmp.app/frame.html',
       filename: 'frame.html',
       chunks: [ 'frame' ]
+    }),
+    new HtmlWebpackPlugin({
+      inject: 'head',
+      template: 'examples/market.tmp.app/index.html',
+      filename: 'market.html',
+      chunks: [ 'market' ]
     })
 
     ,new MnWebpackPlugin({
       input: {
-        './dist/ff-mn-styles': './examples/ff.tmp.app'
+        './dist/ff-mn-styles': './examples/ff.tmp.app',
+        './dist/market-styles': './examples/market.tmp.app'
       },
       include: [ /^.*\.(html?|jsx?)$/ ],
       exclude: [ /\/node_modules\// ],
-      hideInfo: true
+      hideInfo: true,
+      presets: [
+        require('./src/mn-presets/mn.medias'),
+      	require('./src/mn-presets/mn.prefixes'),
+      	require('./src/mn-presets/mn.styles'),
+      	require('./src/mn-presets/mn.states'),
+      	require('./src/mn-presets/mn.theme'),
+        require('./examples/common.tmp.app/mn.theme')
+      ]
     })
 
   ],

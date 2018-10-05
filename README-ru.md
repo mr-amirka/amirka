@@ -129,7 +129,7 @@ require("amirka/services/mn").setPresets([
   require('amirka/mn-presets/mn.runtime-prefixes'),
   require('amirka/mn-presets/mn.styles'),
   require('amirka/mn-presets/mn.states'),
-	require('amirka/mn-presets/mn.theme'),
+  require('amirka/mn-presets/mn.theme')
 ]);
 
 //DIRECTIVES
@@ -159,11 +159,11 @@ export class AppModule {}
 ```js
 
 require("amirka/services/mn").setPresets([
-	require('amirka/mn-presets/mn.medias'),
-	require('amirka/mn-presets/mn.runtime-prefixes'),
-	require('amirka/mn-presets/mn.styles'),
-	require('amirka/mn-presets/mn.states'),
-	require('amirka/mn-presets/mn.theme')
+  require('amirka/mn-presets/mn.medias'),
+  require('amirka/mn-presets/mn.runtime-prefixes'),
+  require('amirka/mn-presets/mn.styles'),
+  require('amirka/mn-presets/mn.states'),
+  require('amirka/mn-presets/mn.theme')
 ]);
 
 const app = angular.module('app', [ /* ...*/ ]);
@@ -195,8 +195,8 @@ require("amirka/services/mn").setPresets([
 require('amirka/services/polyfill').andReady({
   'CSS.escape': 'assets/css.escape.shim.js'
 }).finally(() => [].forEach.call(
-	document.querySelectorAll('[root]'),
-	(node) => render(<Root/>, node)
+  document.querySelectorAll('[root]'),
+  (node) => render(<Root/>, node)
 ));
 
 
@@ -212,22 +212,22 @@ export class Root extends Component {
 
 // my-component.jsx
 import React, { Component } from 'react';
-import { withMn, MnFrame } from '../../../src/react-mn';
+import { withMn, MnFrame } from 'amirka/react-mn';
 
 
 class _MyComponent extends Component {
-	render() {
-		return (
-			<div m="tbl c0F0 bg0 w h100vh tc f40">
-				<div>
-					<div>Hello React!</div>
-					<MnFrame m="b0 bc00 bsSolid">
-						<div m="sq10 bgF"></div>
-					</MnFrame>
-				</div>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div m="tbl c0F0 bg0 w h100vh tc f40">
+        <div>
+          <div>Hello React!</div>
+          <MnFrame m="b0 bc00 bsSolid">
+            <div m="sq10 bgF"></div>
+          </MnFrame>
+        </div>
+      </div>
+    );
+  }
 }
 
 export const MyComponent = withMn(_MyComponent);
