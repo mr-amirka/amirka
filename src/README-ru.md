@@ -7,12 +7,12 @@
 
 
 * [About](#about)  
-*    [Example for class name](#example-for-class-name)   
-*    [Example for attr](#example-for-attr)  
+    * [Example for class name](#example-for-class-name)   
+    * [Example for attr](#example-for-attr)  
 * [Notation](#notation)  
-*    [Имя эссенции](#Имя-эссенции)  
-*    [Контекст эссенции](#Контекст-эссенции)  
-*    [Медиа-запросы в нотации](#Медиа-запросы-в-нотации)  
+    * [Имя эссенции](#Имя-эссенции)  
+    * [Контекст эссенции](#Контекст-эссенции)  
+    * [Медиа-запросы в нотации](#Медиа-запросы-в-нотации)  
 * [Grouping](#grouping)  
 * [Media-queries generation](#media-queries-generation)  
 * [Escaping](#escaping)  
@@ -32,9 +32,9 @@
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)  
-[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)  
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)  
+* [Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)  
+* [Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)  
+* [От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)  
 
 
 Try this tests:

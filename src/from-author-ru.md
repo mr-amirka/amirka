@@ -4,14 +4,14 @@
 # From the author
 
 
-[Начало](#Начало)  
-[Минимализм](#Минимализм)   
+* [Начало](#Начало)  
+* [Минимализм](#Минимализм)   
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
-[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
+* [Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)
+* [Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)
+* [Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
 
 
 Try this tests:

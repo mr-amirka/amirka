@@ -5,14 +5,14 @@
 
 
 
-[How it started](#how-it-started)  
-[Minimalism](#minimalism)   
+* [How it started](#how-it-started)  
+* [Minimalism](#minimalism)   
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)
-[More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)
-[Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)
+* [Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)
+* [More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)
+* [Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)
 
 
 

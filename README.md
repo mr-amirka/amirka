@@ -16,18 +16,18 @@ The developer no longer needs to control which styles are used in his markup and
 
 
 
-[CLI](#cli)  
-[Webpack Plugin](#webpack-plugin)  
-[Runtime](#runtime)  
-    [Standalone](#standalone)  
-    [Integration](#integration)  
-        [Integrating "Minimalist Notation" into Angular 6](#integrating-minimalist-notation-into-angular-6)  
-        [Integrating "Minimalist Notation" into AngularJS](#integrating-minimalist-notation-into-angularjs)  
-        [Integrating "Minimalist Notation" into React](#integrating-minimalist-notation-into-react)  
+* [CLI](#cli)  
+* [Webpack Plugin](#webpack-plugin)  
+* [Runtime](#runtime)  
+    * [Standalone](#standalone)  
+    * [Integration](#integration)  
+        * [Integrating "Minimalist Notation" into Angular 6](#integrating-minimalist-notation-into-angular-6)  
+        * [Integrating "Minimalist Notation" into AngularJS](#integrating-minimalist-notation-into-angularjs)  
+        * [Integrating "Minimalist Notation" into React](#integrating-minimalist-notation-into-react)  
 
-[More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)  
-[Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)  
-[From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
+* [More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)  
+* [Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)  
+* [From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
 
 
 

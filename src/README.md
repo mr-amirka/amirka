@@ -32,9 +32,9 @@
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)  
-[Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)
-[From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)    
+* [Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)  
+* [Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)  
+* [From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)    
 
 
 Try this tests:

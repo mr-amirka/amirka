@@ -7,21 +7,21 @@
 **The MN library includes predefined settings included in the default cli-version.**
 
 
-[Media queries](#media-queries)   
-[States](#states)  
-[Other default settings](#other-default-settings)  
-[Side names](#side-names)  
-[Essences of styles](#essences-of-styles)  
-    [Dynamic essences](#dynamic-essences)  
-    [Static essences](#static-essences)   
+* [Media queries](#media-queries)   
+* [Other default settings](#other-default-settings)  
+* [States](#states)  
+* [Side names](#side-names)  
+* [Essences of styles](#essences-of-styles)  
+    * [Dynamic essences](#dynamic-essences)  
+    * [Static essences](#static-essences)   
 
 
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)   
-[More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)  
-[From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
+* [Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)   
+* [More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)  
+* [From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
 
 
 

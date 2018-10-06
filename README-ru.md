@@ -7,18 +7,18 @@
 
 Minimalist Notation (MN) (минималистическая нотация) - это технология генерации стилей, основанная на парсинге разметки. Генерация осуществляется непосредственно в СSS. Технология колоссально ускоряет процесс верстки и может использоваться дополнительно с традиционными технологиями, либо заменять их полностью.  
 
-[CLI](#cli)  
-[Webpack Plugin](#webpack-plugin)  
-[Runtime](#runtime)  
-    [Standalone](#standalone)  
-    [Integration](#integration)  
-        [Как интегрировать "Minimalist Notation" в Angular 6](#Как-интегрировать-minimalist-notation-в-angular-6)  
-        [Как интегрировать "Minimalist Notation" в AngularJS](#Как-интегрировать-minimalist-notation-в-angularjs)  
-        [Как интегрировать "Minimalist Notation" в React](#Как-интегрировать-minimalist-notation-в-react)  
+* [CLI](#cli)  
+* [Webpack Plugin](#webpack-plugin)  
+* [Runtime](#runtime)  
+    * [Standalone](#standalone)  
+    * [Integration](#integration)  
+        * [Как интегрировать "Minimalist Notation" в Angular 6](#Как-интегрировать-minimalist-notation-в-angular-6)  
+        * [Как интегрировать "Minimalist Notation" в AngularJS](#Как-интегрировать-minimalist-notation-в-angularjs)  
+        * [Как интегрировать "Minimalist Notation" в React](#Как-интегрировать-minimalist-notation-в-react)  
 
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)  
-[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)  
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)  
+* [Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)  
+* [Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)  
+* [От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)  
 
 Try this tests:
 * https://jsfiddle.net/j6d8aozy/51/  

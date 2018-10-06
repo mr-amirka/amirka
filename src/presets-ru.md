@@ -7,21 +7,21 @@
 **Библиотека MN включает в себя предустановленные настройки включенные в cli-версию по умолчанию.**
 
 
-[Медиа-запросы](#Медиа-запросы)   
-[Состояния](#Состояния)  
-[Другие настройки по умолчанию](#Другие-настройки-по-умолчанию)  
-[Side names](#side-names)  
-[Эссенции стилей](#Эссенции-стилей)  
-    [Dynamic essences](#dynamic-essences)  
-    [Static essences](#static-essences)   
+* [Медиа-запросы](#Медиа-запросы)   
+* [Состояния](#Состояния)  
+* [Другие настройки по умолчанию](#Другие-настройки-по-умолчанию)  
+* [Side names](#side-names)  
+* [Эссенции стилей](#Эссенции-стилей)  
+    * [Dynamic essences](#dynamic-essences)  
+    * [Static essences](#static-essences)   
 
 
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)   
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)   
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)   
+* [Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)   
+* [Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)   
+* [От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)   
 
 
 Try this tests:
