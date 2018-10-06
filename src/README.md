@@ -6,26 +6,26 @@
 
 
 
-[About](#about)  
-    [Example for class name](#example-for-class-name)   
-    [Example for attr](#example-for-attr)  
-[Notation](#notation)  
-    [Essence name](#essence-name)  
-    [Essence context](#essence-context)  
-    [Media queries in notation](#media-queries-in-notation)
-[Grouping](#grouping)  
-[Escaping](#escaping)  
-[Media queries generation](#media-queries-generation)  
-[Essences of styles](#essences-of-styles)  
-[Dynamic essences](#dynamic-essences)  
-[Generating the essences of styles](#generating-the-essences-of-styles)  
-[Auto prefixes](#auto-prefixes)  
-[States](#states)  
-[Parent/child selectors](#parent/child-selectors)   
-[Depth](#depth)  
-[Complex selectors](#complex-selectors)   
-[Essences assignment (Example with container)](#essences-assignment)   
-[Priority multiplier](#priority-multiplier)   
+* [About](#about)  
+*     [Example for class name](#example-for-class-name)   
+*     [Example for attr](#example-for-attr)  
+* [Notation](#notation)  
+*     [Essence name](#essence-name)  
+*     [Essence context](#essence-context)  
+*     [Media queries in notation](#media-queries-in-notation)
+* [Grouping](#grouping)  
+* [Escaping](#escaping)  
+* [Media queries generation](#media-queries-generation)  
+* [Essences of styles](#essences-of-styles)  
+* [Dynamic essences](#dynamic-essences)  
+* [Generating the essences of styles](#generating-the-essences-of-styles)  
+* [Auto prefixes](#auto-prefixes)  
+* [States](#states)  
+* [Parent/child selectors](#parent/child-selectors)   
+* [Depth](#depth)  
+* [Complex selectors](#complex-selectors)   
+* [Essences assignment (Example with container)](#essences-assignment)   
+* [Priority multiplier](#priority-multiplier)   
 
 
 
@@ -33,8 +33,8 @@
 
 
 [Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)  
-[Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)  
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
+[Presets](https://github.com/mr-amirka/amirka/blob/master/src/presets.md)
+[From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)    
 
 
 Try this tests:
