@@ -1,16 +1,9 @@
 {
   "name": "amirka",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minimalist Notation",
   "main": "./utils/index.js",
   "types": "./global.d.ts",
-  "scripts": {
-    "test": "rm -rf tmp/ && karma start karma.conf.js --single-run --browsers Chrome",
-    "test:watch": "karma start karma.conf.js --browsers Chrome",
-    "start": "webpack-dev-server --inline --config webpack.config.js --progress",
-    "build": "webpack --mode production",
-    "setup": "rustup default nightly && rustup update nightly && rustup target add wasm32-unknown-unknown --toolchain nightly && cargo install --force --git https://github.com/alexcrichton/wasm-gc"
-  },
   "keywords": [
     "CSS",
     "preprocessor",

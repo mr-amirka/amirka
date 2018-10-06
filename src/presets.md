@@ -4,14 +4,14 @@
 # Minimalist Notation Default Presets
 
 
-**Библиотека MN включает в себя предустановленные настройки включенные в cli-версию по умолчанию.**
+**The MN library includes predefined settings included in the default cli-version.**
 
 
-[Медиа-запросы](#Медиа-запросы)   
-[Состояния](#Состояния)  
-[Другие настройки по умолчанию](#Другие-настройки-по-умолчанию)  
+[Media queries](#media-queries)   
+[States](#states)  
+[Other default settings](#other-default-settings)  
 [Side names](#side-names)  
-[Эссенции стилей](#Эссенции-стилей)  
+[Essences of styles](#essences-of-styles)  
     [Dynamic essences](#dynamic-essences)  
     [Static essences](#static-essences)   
 
@@ -19,27 +19,33 @@
 
 
 
-[Getting started](https://github.com/mr-amirka/amirka/blob/master/README-ru.md)   
-[Подробная документация](https://github.com/mr-amirka/amirka/blob/master/src/README-ru.md)   
-[От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author-ru.md)   
+[Getting started](https://github.com/mr-amirka/amirka/blob/master/README.md)   
+[More documentation](https://github.com/mr-amirka/amirka/blob/master/src/README.md)  
+[From author](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/46/   
+
+Try this tests:
+* https://jsfiddle.net/j6d8aozy/51/  
+* https://jsfiddle.net/j6d8aozy/46/  
+
 Home page: http://minimalist-notation.org  
 
 
-Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka).  
-С любовью, Ваш mr.Amirka :)
+I would be grateful for your feedback and comments. Write me in a [telegram](https://t.me/mr_amirka).  
+With love, your mr.Amirka :)
 
 
-Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation).
-
-
-
+Are you interested in the development of this project? Do your [bit](https://yasobe.ru/na/notation).  
 
 
 
-#### Медиа-запросы
+
+
+
+
+
+#### Media queries
 
 [https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.medias.js](amirka/mn-presets/mn.medias.js)
 
@@ -84,7 +90,7 @@ Output:
 ```
 
 
-#### Состояния
+#### States
 
 [https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.states.js](amirka/mn-presets/mn.states.js)
 
@@ -118,7 +124,7 @@ Output:
 ```
 
 
-#### Другие настройки по умолчанию
+#### Other default settings
 
 
 [https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.theme.js](amirka/mn-presets/mn.theme.js)
@@ -145,7 +151,7 @@ mn.assign({
 #### Side names
 
 
-**Именование сторон в имени эссенции, если такое уточнение может иметь место для рассматриваемого атрибута**
+**How sides named in the names of the essences, if such clarification may take place for the attribute in question**
 
 
 Base format: ``` {baseName}{sideName}{value} ```
@@ -216,7 +222,7 @@ Base format: ``` {baseName}{sideName}{value} ```
 
 
 
-#### Эссенции стилей
+#### Essences of styles
 
 
 [https://github.com/mr-amirka/amirka/blob/master/src/mn-presets/mn.styles.js](amirka/mn-presets/mn.styles.js)

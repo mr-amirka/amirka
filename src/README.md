@@ -10,9 +10,12 @@
     [Example for class name](#example-for-class-name)   
     [Example for attr](#example-for-attr)  
 [Notation](#notation)  
+    [Essence name](#essence-name)  
+    [Essence context](#essence-context)  
+    [Media queries in notation](#media-queries-in-notation)
 [Grouping](#grouping)  
 [Escaping](#escaping)  
-[Media-queries generation](#media-queries-generation)  
+[Media queries generation](#media-queries-generation)  
 [Essences of styles](#essences-of-styles)  
 [Dynamic essences](#dynamic-essences)  
 [Generating the essences of styles](#generating-the-essences-of-styles)  
@@ -34,37 +37,46 @@
 [От автора](https://github.com/mr-amirka/amirka/blob/master/src/from-author.md)  
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/46/  
+Try this tests:
+* https://jsfiddle.net/j6d8aozy/51/  
+* https://jsfiddle.net/j6d8aozy/46/  
+
 Home page: http://minimalist-notation.org  
 
 
-Буду благодарен за Ваши отзывы и замечания. Пишите мне в [telegram](https://t.me/mr_amirka) .  
-С любовью, Ваш mr.Amirka :)
+I would be grateful for your feedback and comments. Write me in a [telegram](https://t.me/mr_amirka).  
+With love, your mr.Amirka :)
 
 
-Вы заинтересованы в развитии проекта? Внесите свою [лепту](https://yasobe.ru/na/notation).
+Are you interested in the development of this project? Do your [bit](https://yasobe.ru/na/notation).  
 
 
 
 ## About
 
 
-Minimalist Notation (MN) (минималистическая нотация) - это технология генерации стилей, основанная на парсинге разметки. Генерация осуществляется непосредственно в СSS. Технология колоссально ускоряет процесс верстки и может использоваться дополнительно с традиционными технологиями, либо заменять их полностью.  
+Minimalist Notation (MN) is a technology for generating styles based on parsing the markup.
+In the current version for web applications, the generation is done directly in the CSS.
+Technology tremendously speeds up the layout process and can be used additionally with traditional technologies, or replace completely those.
 
-Преимущество перед традиционными технологиями CSS-препроцессинга в том, что разработчик избавляется от необходимости писать CSS. CSS генерируется автоматически на основании нотации и заданных разработчиком правил генерации стилей. Разработчику больше не нужно контролировать, какие стили используются в его разметке, а какие - нет, ибо отныне стили генерируются только для того, что присутствует в разметке.
+
+
+The advantage over the traditional technologies of CSS-preprocessing is that the developer gets rid of the need to write CSS. CSS is generated automatically based on the notation and the style generate rules specified by the developer.
+The developer no longer needs to control which styles are used in his markup and which ones are not, for from now on the styles are generated dynamically only for what is present in the markup.
 
 
 PS:   
-Технология ориентирована на методологию Functional/Atomic CSS.
+The technology is focused on the methodology Functional/Atomic CSS.  
 
- Если Вы верстаете по методологии Functional/Atomic CSS, то:
-* со временем Вы с первого взгляда понимаете смысл каждого имени в разметке;
-* имеете возможность легко стандартизировать правила нотации и именования;
-* разметку легко переиспользовать в новом проекте, если он предусматривает тот же базовый набор функциональных стилей в CSS.
-* в случае внесения правок в дизайн, Вы будете менять только HTML-разметку.
-* у Вас прямые руки - Вы не натыкаетесь на грабли с перекрытиями стилей;
-* имеете возможность настроить Вашу систему сборки под автоматическую генерацию CSS из атрибутов в разметке;
-* не задаете громоздкие атрибуты длинным селекторам в каждом месте, где хотите, например, просто добавить плавность трансформации. В функциональном подходе это делается один раз, как в CSS-коде ниже:
+
+If you are using the Functional/Atomic CSS methodology, then:
+* over time, you will at a glance understand the meaning of each name in the markup;
+* you can easily standardize the rules of notation and naming;
+* easy to reuse markup in the new project, if it provides the same basic set of functional styles in CSS.
+* in case of making changes to the design, you only change the HTML markup.
+* you have straight arms - you do not stumble on a rake with overrided styles;
+* you can customize your build system for automatic generation of CSS from attributes in the markup;
+* do not specify bulky attributes for long selectors in every place you want, for example, just add smoothness to the transformation. In the functional approach, this is done once, as in the CSS code below:
 
 ```css
 [m~='dn250'] {
@@ -78,7 +90,7 @@ PS:
 ```   
 
 
-PS: Если у Вас вызывает беспокойство, почему некоторые атрибуты имеют флаг ``` !important ```, то это обусловлено тем, что атомные стили должны быть более приоритетными, чем традиционные классы и сложные селекторы, так как применение атомных стилей подразумевает более точечную кастомизацию разметки поверх других более общих правил CSS. Например, во флаге ``` !important ``` была необходимость когда я применял технологию ``` MN ``` вместе с ``` Angular Material (MD) ``` для корректировки и кастомизации внешнего вида некоторых элементов, так как стили комплексных селекторов из MD перекрывали стили MN. Однако такой подход может создавать Вам грабли, если Вы захотите посредством JS динамически менять стиль элемента, на который распространяется действие флага ``` !important ``` из CSS. Поэтому этот нюанс стоит учитывать. Например, это предусмотрено в некоторых дефолтных правилах MN генерации эссенций стилей. Вы можете добавить суффикс ``` -i ``` в конец имени эссенции:  
+If you are concerned about why some attributes have the ``` !important ``` flag, this is due to the fact that atomic styles should be given higher priority than traditional classes and complex selectors, since the use of atomic styles implies a more precise markup customization over top of other more general CSS rules. For example, the flag ``` !important ``` Was necessary when I applied the technology ``` MN ``` along with ``` Angular Material (MD) ``` to customize the appearance of some elements, since styles MD's complex selectors did override MN styles. However, this approach can create a rake for you if you want to use JS to dynamically change the style of an element covered by the ``` !important ``` flag from CSS. Therefore, this nuance is worth considering. For example, this is provided for in some default MN rules for the generation of style essences. You can add the suffix ``` -i ``` to the end of the name of the essence:
 ```css
 [m~='dn250-i'] {
   -khtml-transition-duration: 250ms;
@@ -92,15 +104,16 @@ PS: Если у Вас вызывает беспокойство, почему �
 
 
 
-Благодаря MN:
-* СSS генерируется автоматически из значений атрибутов в разметке, и мы экономим время, избавив себя от написания "сатанинского" CSS-кода;
-* у нас нет мертвого CSS-кода, ибо CSS генерируется только для той разметки, которая имеется.
-* мы имеем возможность не обращаться на сервер за "тяжелыми" СSS-файлами, генерируя CSS в рантайме.
-* при внесении правок в дизайн мы меняем только разметку HTML, не трогая СSS.
+Thanks to MN:
+* CSS is generated automatically from attribute values in the markup, and we save time by saving ourselves from writing "satanic" CSS-code;
+* We do not have dead CSS code, because CSS is generated only for the markup that is available.
+* we have the opportunity not to contact the server for "heavy" CSS-files, generating CSS in runtime.
+* when making changes to the design, we only change the HTML markup, without touching the CSS.
 
-Если же Вы хотите иметь возможность кастомизировать / менять тему Вашего приложения, подменяя один только CSS-файл, то ничто не мешает Вам делать это по методологии BEM naming convention, ограничиваясь кастомизаций цветовых схем, размеров шрифтов и прочих атрибутов, не требующих изменения самой разметки.  
 
-Для целей кастомизации стилей разметки под определенную тему в MN предусмотрена возможность манипуляции глобальными CSS правилами в рантайме, например, так с конкретными селекторами:
+If you want to have available to customize / change the theme of your application, replacing only the CSS file, then nothing prevents you from doing it according to the BEM naming convention methodology, limiting yourself to customizing color schemes, font sizes and other attributes that do not require changing the markup itself.  
+
+For the purpose of customizing markup styles for a specific topic, MN provides for the possibility of manipulating global CSS rules in runtime, for example, with specific selectors:
 ```js
 mn.css('.bgTheme', {
   backgroundColor: '#EEE'
@@ -109,7 +122,7 @@ mn.css('.bTheme', {
   borderColor: '#CCC'
 });
 ```
-или так с эссенциями:
+or you can do this with the essences:
 ```js
 mn('bgTheme', {
   style: {
@@ -123,34 +136,35 @@ mn('bTheme', {
 });
 ```
 
-PS: Если необходимо задать несколько альтернативных значений для одного атрибута по аналогии с оным в CSS:
+PS: If it is necessary to set several alternative values for one attribute by analogy with this in CSS:
 ```css
 .theme-bg{
   background-color: #CCC;
   background-color: rgba(0,0,0,0.2);
 }
 ```
-Вы можете сделать так:
+You can do this:
 ```js
 mn.css('.theme-bg', {
   backgroundColor: [ '#CCC',  'rgba(0,0,0,0.2)' ]
 });
 ```
 
-Технология "Minimalist Notation" поддерживает:
-* параметризуемую нотацию имен
-* параметризуемые состояния;
-* контексты родительских/дочерних селекторов;
-* контексты комплексных селекторов;
-* управление глубиной в dom-дереве через нотацию;
-* управление приоритетом стилей через нотацию;
-* контексты медиа-запросов;
-* группировки подстрок в нотации;
-* синонимы состояний и медиа-запросов;
-* наследование от эссенций стилей (расширение; аналог ``` @extend ``` в SASS) ;
-* примеси эссенций (аналог ``` @include ``` в SASS);
-* ассоциацию селекторов с эссенциями стилей;
-* манипуляция глобальными стилями CSS в рантайме.  
+Technology "Minimalist Notation" supports:
+* parameterizable name notation
+* parameterizable state;
+* contexts of parent / child selectors;
+* complex selector contexts;
+* control the depth in the dom-tree through the notation;
+* management of the priority of styles through the notation;
+* media query contexts;
+* grouping of substrings in notation;
+* synonyms of states and media queries;
+* inheritance from style essences (extension; analogue of ``` @extend ``` in SASS);
+* admixture of essences (similar to ``` @include ``` in SASS);
+* association of selectors with style essences;
+* manipulation of global CSS styles in runtime.  
+
 
 
 ### Example for class name
@@ -211,66 +225,69 @@ Base format:
 ```
 
 
-Запись нотации MN делится на 2 части:
-* имя эссенции;
-* контекст эссенции (комбинированный селектор и медиа-запрос).
+Record of notation in MN is divided into 2 parts:
+* name of the essence;
+* context of the essence (combined selector and media query).
 
-За имя эссенции отвечает подстрока от начала имени до первого служебного символа (``` <>.[]:+@ ```).
+The substring from the beginning of the name to the first service character (``` <>. []: + @ ```) is responsible for the name of the essence.
 
-Остальная часть нотации, включая первый служебный символ относится к контексту эссенции, в пределах которого стили эссенции применяются (селекторы и медиа-запросы).  Например:  
+The rest of the notation, including the first service symbol, refers to the context of the essence, within which the styles of the essence are applied (selectors and media queries).  For example:  
+
 
 Example 1:  
 
 ``` ph10>1 ``` ->  
- имя эссенции: ``` ph10 ```;  контекст эссенции: ``` >1 ```
+essence name: ``` ph10 ```;  essence context: ``` >1 ```
 
 Example 2:  
 ``` bgF00<.theme-1 ``` ->  
- имя эссенции: ``` bgF00 ``` ;  контекст эссенции: ``` <.theme-1 ```
+essence name: ``` bgF00 ``` ;  essence context: ``` <.theme-1 ```
 
 Example 3:  
 ``` cF:h  ``` ->   
-имя эссенции: ``` cF ```;  контекст эссенции: ``` :h ```
+essence name: ``` cF ```;  essence context: ``` :h ```
 
 Example 4:  
 ``` mh-10@sm>1  ``` ->   
-имя эссенции: ``` mh-10 ```;  контекст эссенции: ``` @sm>1 ```
+essence name: ``` mh-10 ```;  essence context: ``` @sm>1 ```
 
-### Имя эссенции
 
-Часть имени, которая отвечает за эссенцию, парсится для генерации стилей и также делится на 2 части:
-* префикс эссенции (статичная часть, собственно само имя эссенции);
-* суффикс эссенции (параметризуемая часть, значение эссенции).
+### Essence name
 
-Префиксом имени эссенции является первая часть имени эссенции, состоящая из латинских букв в нижнем регистре. Оно может являться аббревиатурой. Соответственно, остальная часть имени эссенции является префиксом - параметризуемой частью. Например:  
+The part of the name that is responsible for the essence is parsed to generate styles and is also divided into 2 parts:
+* essence prefix (static part, the actual name of the essence itself);
+* essence suffix (parameterizable part, meaning of essence).
+
+The prefix of the name of the essence is the first part of the name of the essence, consisting of Latin letters in lower case. It may be an abbreviation. Accordingly, the rest of the name of the essence is the prefix - the parameterizable part. For example:
+
 
 Example 1:  
 ``` ph10 ``` ->  
-префикс эссенции: ``` ph ```;  суффикс эссенции: ```10 ```
+essence prefix: ``` ph ```;  essence suffix: ```10 ```
 
 Example 2:  
 ``` bgF00 ``` ->  
-префикс эссенции: ``` bg ```;  суффикс эссенции: ``` F00 ```
+essence prefix: ``` bg ```;  essence suffix: ``` F00 ```
 
 Example 3:  
 ``` cF  ``` ->   
-префикс эссенции: ``` c ```;  суффикс эссенции: ``` F ```
+essence prefix: ``` c ```;  essence suffix ``` F ```
 
 
-### Контекст эссенции
+### Essence context
 
-Часть нотации, отвечающая за контекст эссенции может разделяться символом ``` > ``` на несколько частей, представляющие собой последовательность дочерних элементов до целевого элемента, на который распространяется влияние эссенции. Например:  
+The part of the notation responsible for the context of the essence can be divided into several parts by the ``` > ``` symbol, which is a sequence of child elements up to the target element affected by the essence. For example:  
 ``` essenceValue>.child1>.child2>.targetChild ```
 
 
-Затем полученные части могут разделяться символом ``` < ``` на несколько частей представляющие собой последовательность родительских элементов, при наличии которых стили эссенции вступают в силу. Например:  
+Then, the resulting parts can be separated by the ``` < ``` symbol into several parts representing a sequence of parent elements, by which the styles of the essence take effect. For example:  
 ``` essenceValue<.parent1<.parent2 ```
 
 
-### Медиа-запросы в нотации
+### Media queries in notation
 
 
-Каждая полученная выше часть может разделяться символом ``` @ ```, отвечающий за имя медиа-запроса, при наличии которого стили эссенции вступают в силу. Например:  
+Each part obtained above can be separated by the ``` @ ``` symbol, which is responsible for the name of the media query, whereby the styles of the essence take effect. For example:  
 ``` essenceValue@mediaName ```  
 ``` essenceValue@mediaName<.parent ```  
 ``` essenceValue<.parent@mediaName ```  
@@ -278,53 +295,52 @@ Example 3:
 ``` essenceValue<.parent1@mediaName<.parent2 ```  
 ``` essenceValue@mediaName<.parent1<.parent2>.child1>.targetChild ```  
 
-Допустимо указывать имена нескольких медиа-запросов, например так:
+
+It is possible to specify the names of several media queries, for example:  
 
 ``` essenceValue@mediaName1<parent@mediaName2 ```
 
-Однако в подобных случаях задействуется только первое найденное имя медиа-запроса. В данном случае, это ``` mediaName1 ```
+However, in such cases only the first found name of the media query is used. In this case, it is ``` mediaName1 ```
 
-Таким образом сделано для удобства использования нотации, например в случах, когда мы задаем общий медиа-запрос для нескольких атрибутов дочернего элемента, но для некоторых атрибутов этот медиа-запрос должен отличаться:
+This is done for ease of use of the notation, for example, in cases when we specify a common media query for several attributes of a child element, but for some attributes this media query should be different:  
 ```html
-
 <div m="(sq200|f20|f14@sm)>.child1@md">
   <div class="child1">
-    текст
+    text
   </div>
 </div>
-
 ```
 
 
-Нотация ``` (sq200|f20|f14@sm)>.child1@md ``` распарсится как несколько таких строк:
+The notation ``` (sq200|f20|f14@sm)>.child1@md ``` is parsing like several such lines:
 
 1. ``` sq200>.child1@md ```  
 2. ``` f20>.child1@md ```  
 3. ``` f14@sm>.child1@md ```  
 
-В строке *3* мы получим несколько имен медиа-запросов, но в силу вступит только первое имя медиа-запроса в этой последовательности.
+In line *3* we will receive several names of media queries, but only the first name of the media query in this sequence will take effect.  
 
 
 
 ### Grouping
 
-Группировка помогает сократить запись.
+Grouping helps reduce notation entry
 
-Несколько параметров можно сгруппировать вместе с помощью разделителя ``` | ``` между альтернативными подстроками внутри скобок.
+Several parameters can be grouped together using the ``` | ``` between alternate substrings inside brackets.  
 
 
 Example:
 
-Вместо этого
+Instead of this:
 ```html
 <div m="bc00F>input:h bc00F>input:a bg0>input:h bg0>input:a"></div>
 ```
-Вы можете сделать так:
+You can do this:
 ```html
 <div m="(bc00F|bg0)>input:(h|a)"></div>
 ```
 
-Т.е., эти записи эквивалентны:  
+That is, these entries are equivalent:  
 Example 1:  
 ``` (bc00F|bg0)>input ```  ->  ``` bc00F>input bg0>input ```  
 
@@ -339,22 +355,22 @@ Example 3:
 
 ### Escaping
 
-В процессе применения MN могут возникать ситуации, когда Вам нужно экранировать служебные символы, например в таком случае:
+In the process of applying the MN, there may be situations when you need to escape service characters, for example in this case:
 ```html
 <div m="pt33.3%"></div>
 ```
-Мы получим не то, чего ожидаем, так как точка является служебным символом
+We will not get what we expect, since the dot is a service symbol.  
 ``` pt33.3%  ```  ->  
 ```css
 [m~='pt33.3%'].3%{padding-top:33px}
 ```
 
 
-Если мы хотим, чтобы точка попала в параметры эссенции, то мы должны экранировать её так:
+If we want the dot to fall into the parameters of the essence, then we must escape it as follows:
 ```html
 <div m="pt33\.3%"></div>
 ```
-Таким образом, получим желаемое:
+Thus, we get the desired:  
 ``` pt33\.3% ``` ->  
 ```css
 [m~='pt33\\.3%']{padding-top:33.3%}
@@ -362,13 +378,13 @@ Example 3:
 
 
 
-### Media-queries generation  
+### Media queries generation  
 
 
-По умолчанию имя медиа-запроса генерируется в CSS как есть, например:  
+By default, the media query name is generated in CSS as it is, for example:  
 INPUT:  
 ```html
-<div m="f20@sm f10@print">текст</div>
+<div m="f20@sm f10@print">text</div>
 ```  
 
 OUTPUT:  
@@ -386,8 +402,9 @@ OUTPUT:
 ```
 
 
-Именам медиа-запросов в нотации можно установить синонимы.  
-Пример:  
+For the names of media queries in the notation can be set to synonyms.  
+Example:  
+
 INPUT:  
 ```js
 mn.media.sm = {
@@ -401,7 +418,7 @@ mn.media.xs = {
 ```  
 
 ```html
-<div m="f18@sm f16@xs">текст</div>
+<div m="f18@sm f16@xs">text</div>
 ```  
 
 OUTPUT:  
@@ -421,13 +438,13 @@ OUTPUT:
 
 
 
-Если в имени медиа-запроса будет распознана сокращенная запись подпадающая под шаблон:
+If in the media query name recognized the abbreviated entry matching the pattern:
 ``` {min-width?:number}-{max-width?:number}x{min-height?:number}-{max-height?:number} ```
 
-Тогда будут сгенерированы соответствующие медиа-запросы, например:  
+then media queries be generated, for example:
 INPUT:  
 ```html
-<div m="f20@768-992x300-600">текст</div>
+<div m="f20@768-992x300-600">text</div>
 ```  
 
 OUTPUT:  
@@ -439,10 +456,10 @@ OUTPUT:
 }
 ```
 
-Параметры шаблона сокращенной записи медиа-запроса в нотации не являются обязательными и некоторые из них можно опустить, например:  
+The parameters of the template of the abbreviated recording of the media query in the notation are optional and some of them can be omitted, for example:  
 INPUT:  
 ```html
-<div m="f20@768 f30@992- f40@x600 f50@1000-1200 f3@x10-60">текст</div>
+<div m="f20@768 f30@992- f40@x600 f50@1000-1200 f3@x10-60">text</div>
 ```  
 
 OUTPUT:  
@@ -477,26 +494,26 @@ OUTPUT:
 
 ### Essences of styles
 
-В MN эссенция стиля - это именованная атомарная абстракция с набором опций, на основе которых генерируются стили.
-Эти опции включают:
-* атрибуты стилей;
-* приоритет в ранжировании;
-* массив cелекторов, которые будут конкатенироваться к целевым селекторам;
-* массив имен примешиваемых эссенций;
-* массив имен эссенций, от которых наследуется текущая эссенция;
-* ассоциативный массив дочерних эссенций;
-* ассоциативный массив эссенций для конкретных медиа-запросов.
+In MN, the essence of a style is a named atomic abstraction with a set of options on the basis of which styles are generated.
+This options include:
+* attributes of styles;
+* ranking priority;
+* an array of selectors that will be concatenated to the target selectors;
+* an array of names of admixed essences;
+* an array of names of essences from which the current essence is inherited;
+* associative array of child essences;
+* associative array of essences for specific media queries.
 
 
-Эссенции могут быть двух типов:
-* статические;
-* динамические;
+Essences can be of two types:
+* static;  
+* dynamic.  
 
-Статические эссенции задаются путем установки опций эссенции напрямую.
+Static essences are set by setting the essence options directly.  
 
-Динамические эссенции задаются путем установки функции генерирующей опции эссенции.
+Dynamic essences are set by setting of the generating function of essence options.  
 
-Как создаются эссенции стилей:
+How style essences are created:  
 
 ```js
 // Статическая эссенция
@@ -543,7 +560,7 @@ mn('btnTheme', {
 });
 ```
 
-Есть возможность устанавливать/менять атрибуты дочерних элементов эссенции, например, таким образом:  
+It is possible to set/change the attributes of the child elements of the essence, for example, in this way:  
 ```js
 mn('btnTheme.inner', {
   style: {
@@ -553,7 +570,7 @@ mn('btnTheme.inner', {
 ```
 
 
-Пример того, каким образом может быть задекларирована эссенция ``` tbl ``` :
+The example of how can be declared a style essence: ``` tbl ``` :
 ```js
 mn('tbl', {
   style: {display: 'table'},
@@ -568,7 +585,7 @@ mn('tbl', {
   }
 });
 ```  
-или так:  
+or so:  
 ```js
 mn('tbl', {
   style: {display: 'table'}
@@ -582,24 +599,24 @@ mn('tbl.cell',  {
 });
 ```  
 
-Работает это следующим образом:  
+It works as follows:  
 
 Example 1.  
-Вы просто пишите в разметку:
+You just write in the markup:
 ```html
 <div m="tbl">
   <div>текст</div>
 </div>
 
 ```  
-CSS для этой разметки генерируется автоматически:
+The CSS for this markup is automatically generated:
 ```css
 [m~='tbl']>*{display:table-cell;vertical-align:middle}
 [m~='tbl']{display:table}
 ```
 
 Example 2.
-Как это работает с контекстами эссенций:
+How it works with essence contexts:
 ```html
 <div m="tbl>.example2__item">
   <div class="example2__item">
@@ -610,7 +627,7 @@ Example 2.
   </div>
 </div>
 ```
-Сгенерированный CSS:
+Generated CSS:
 ```css
 [m~='tbl>.example2__item'] .example2__item>*{display:table-cell;vertical-align:middle}
 [m~='tbl>.example2__item'] .example2__item{display:table}
@@ -618,15 +635,15 @@ Example 2.
 
 
 Example 3.  
-Практический пример:
+Practical example:
 ```html
 <div m="mb10 lh">
   <a class="example__button" m="tbl w200 h50 tc cF bg0">
-    <div>центрированный текст</div>
+    <div>centered text</div>
   </a>
 </div>
 ```
-Сгенерированный CSS:
+Generated CSS:
 ```css
 [m~='lh']{line-height:1}
 [m~='bg0']{background:rgba(0,0,0,1) !important}
@@ -642,9 +659,9 @@ Example 3.
 
 
 ### Dynamic essences
-(Обработчики, генерирующие стили)
+(Handlers generating styles)
 
-На вход функций, которые Вы задаете для генерации эссенций стилей, подставляются параметры извлеченные при предварительном парсинге строки эссенции в результате сопоставления строки с последовательностью шаблонов:  
+Into functions that you specify to generate essences of  styles, are input the parameters extracted during the preliminary parsing of the essence line as a result of matching the string with the sequence of templates:  
 
 1. ``` ^([a-z]+):name(.*?):suffix$ ```  
 2. ``` ^(.*?):suffix(-i):ni$ ```  
@@ -657,7 +674,7 @@ params.i = params.ni ? '' : '!important';
 
 
 
-PS: см. функцию **amirka/utils/route-parse-provider**
+PS: see function **amirka/utils/route-parse-provider**
 
 
 #### Generating the essences of styles
@@ -710,7 +727,7 @@ OUTPUT:
 
 Example 2:
 
-Обработчик:  
+Handler:  
 ```js
 mn('x', p => {
   return {
@@ -815,7 +832,7 @@ mn('x', p => {
 
 ### Auto prefixes
 
-Вы можете настроить авто-подстановку префиксов для кроссбраузерности верстки, добавив имена свойств стилей в карту префиксов таким образом:
+You can configure auto-prefix for cross-browser property names of styles to the prefixes map following way:
 ```js
 mn.propertiesStringify.prefixedAttrs.transform = true;
 mn.propertiesStringify.prefixedAttrs.transitionDuration = true;
@@ -825,7 +842,7 @@ mn.propertiesStringify.prefixedAttrs.filter = true;
 mn.propertiesStringify.prefixedAttrs.boxSizing = true;
 ```
 
-либо так:
+either so:
 ```js
 mn.utils.extend(mn.propertiesStringify.prefixedAttrs, {
   transform: true,
@@ -837,7 +854,7 @@ mn.utils.extend(mn.propertiesStringify.prefixedAttrs, {
 });
 ```
 
-, но лучше так:
+, but better like that:
 ```js
 mn.utils.flags([
   'transform', 'transitionDuration', 'pointerEvents', 'userSelect', 'filter', 'boxSizing'
@@ -845,15 +862,15 @@ mn.utils.flags([
 ```
 
 
-Указать какие именно префиксы должны подставляться Вы можете так:
+You can specify which prefixes should be added like this:
 ```js
 mn.utils.flags(['-webkit-', '-moz-', '-o-',  '-ms-', '-khtml-' ], mn.propertiesStringify.prefixes);
 ```
 
 ### States
 
-Состояние - в MN это часть записи нотации после двоеточия(``` : ```), которой может соответствовать аналогичные псевдоселекторы в терминах CSS.  
-В MN мы стараемся использовать сокращенные записи. Так для одного имени состояния в MN можно указать несколько произвольных селекторов.
+The state - in MN is the part of the notation after the colon (``` : ```), which can correspond to similar pseudo-selectors in terms of CSS.  
+In MN, we use abbreviated entries. So for a single state name in MN, you can specify multiple arbitrary selectors.  
 
 
 Input:
@@ -892,7 +909,7 @@ Output:
 }
 ```
 
-Если Вы укажете какое-либо иное незадекларированное состояние, то оно выводится как есть:
+If you specify any other undeclared state, then it is displayed as it is:
 ```css
 f16:hz ->
 [m~='f16:hz']:hz{font-size: 16px;}
@@ -901,7 +918,8 @@ f16:hover ->
 [m~='f16:hover']:hover{font-size: 16px;}
 ```
 
-#### Вы можете параметризовать состояния через квадратные скобки:
+
+*You can parameterize states through square brackets:*
 
 ```js
 mn.states.n = [ ':nth-child' ];
@@ -912,10 +930,10 @@ f16:n[3n+2] ->
 [m~='f16:n[3n+2]']:nth-child(3n+2){font-size: 16px;}
 ```
 
-PS: В связи с тем, что круглые скобки являются служебными символами MN, необходимыми для группировки подстрок, то вместо них применяются квадратные скобки.  
+PS: Due to the fact that the parentheses are the service characters MN, necessary for grouping the substrings, square brackets are used instead.  
 
 
-Вы можете без проблем в нотации записать псевдокласс отрицания:
+You can write down the pseudo-class of denial without problems in the notation:
 ```css
 f16:not[.active] ->
 [m~='f16:not[.active]']:not(.active){font-size: 16px;}
@@ -924,14 +942,14 @@ f16:not[[type=number]] ->
 [m~='f16:not[[type=number]]']:not([type=number]){font-size: 16px;}
 ```
 
-Вы можете указать в нотации несколько состояний:
+You can specify several states in the notation:
 ```css
 f16:(hover|active) ->
 [m~='f16:(hover|active)']:hover, [m~='f16:(hover|active)']:active{font-size: 16px;}
 ```
 
 
-В состояниях предусмотрена возможность использования нестандартных псевдоклассов в качестве синонимов:  
+In states it is possible to use non-standard pseudo-classes as synonyms:  
 
 Input:
 ```js
@@ -957,27 +975,27 @@ Output:
 ```
 
 
-PS: селекторы с нестандартными псевдоклассами и браузерными префиксами для валидности автоматически разбивается на отдельные каскадные блоки.
+PS: selectors with non-standard pseudo-classes and browser prefixes for validity are automatically split into separate cascading blocks.
 
 
 ### Parent/child selectors
 
-Разделитель родительских селекторов: ``` < ```
+Separator of parent selectors: ``` < ```
 
-Например, для записи ``` bgF00<.active ``` генерируется следующий селектор:  
+For example, the following selector is generated for notation ``` bgF00<.active ```:  
 
 ```css
 .active [m~='bgF00<.active'] { /* ... */ }
 ```
 
-Так мы можем указать для текущего элемента при наличии какого родительского элемента будет отображаться стиль эссенции ``` bgF00 ```.
+So we can specify for the current element in the presence of which parent element the ``` bgF00 ``` essence style will be displayed.
 
 
-Разделитель дочерних селекторов: ``` > ```  
-С дочерними селекторами всё точно также как и с родительскими, только наоборот.  
+Separator of child selectors: ``` > ```  
+With child selectors, everything is exactly the same as with parent selectors, only the other way around.  
 
 
-Например, для записи ``` bgF00>.active ``` генерируется следующий селектор:  
+the following selector is generated for notation ``` bgF00>.active ```:  
 ```css
 [m~='bgF00>.active'] .active { /* ... */ }
 ```
@@ -986,7 +1004,7 @@ PS: селекторы с нестандартными псевдокласса�
 ### Depth
 
 
-Для задания определенной глубины вложенности мы можем подставить число перед селектором, например:  
+To set a specific depth of nesting, we can added a number in front of the selector, for example:  
 
 ```css
 /* bgF00<1.active -> */
@@ -1000,13 +1018,13 @@ PS: селекторы с нестандартными псевдокласса�
 ```
 
 
-Если нужно чтобы стили эссенции были активны при наличии какого-либо селектора(в частности класс ``` active ```) на текущем элементе:
+If you want the essence styles to be active if there is any selector (in particular, the ``` active ``` class) on the current element:
 ```css
 /* bgF00<0.active -> */
 .active[m~='bgF00<0.active'] { /* ... */ }
 ```
 
-Если есть отрицательный знак, то мы получим распространение стиля эссенции на дочернии элементы:
+If there is a negative sign, then we will get an affect of the style of essence to the child elements:
 ```css
 /* bgF00<-1.active -> */
 [m~='bgF00<-1.active']>.active { /* ... */ }
@@ -1016,8 +1034,8 @@ PS: селекторы с нестандартными псевдокласса�
 ```
 
 
-Вы можете игнорировать разделитель.  
-Если нужно чтобы стили эссенции были активны при наличии какого-либо селектора на текущем элементе (в частности класс active), то Вы можете писать более лаконично и получать на выходе желаемое:  
+You can ignore the delimiter.  
+If you want the essence styles to be active if there is any selector is present on the current element (in particular, class "active"), then you can write more succinctly and get the desired output:  
 
 ```css
 /* bgF00.active -> */
@@ -1028,7 +1046,7 @@ PS: селекторы с нестандартными псевдокласса�
 ### Complex selectors
 
 
-Всё вышеперечисленное аналогично можем применять и для других селекторов с атрибутами:  
+All of the above can also be applied to other selectors with attributes:  
 ```css
 /* bgF00>[type=text] -> */
 [m~='bgF00>[type=text]'] [type=text] { /* ... */ }
@@ -1037,13 +1055,13 @@ PS: селекторы с нестандартными псевдокласса�
 [m~='bgF00[type=text]'][type=text] { /* ... */ }
 ```
 
-Пример более сложного селектора:
+An example of a more complex selector:
 ```css
 /* bgF00.theme1.active -> */
 [m~='bgF00.theme1.active'].theme1.active { /* ... */ }
 ```
 
-Разделители подразумевают, что Вы можете совместно указать сколько угодно родительских и дочерних элементов и состояний в контексте эссенции:  
+Separators imply that you can jointly specify parent and child elements and states in the essence context how many you need:  
 ```css
 /* bgF00.active<.md>.anyChild -> */
 .md [m~='bgF00.active<.md>.anyChild'].active .anyChild { /* ... */ }
@@ -1129,12 +1147,12 @@ Output:
 (Example with container)
 
 
-Связывание селекторов с эссенциями стилей
+Linking selectors with style essences.
 
 
-Для наглядности рассмотрим приближенный синтетический пример имплементации контейнера из Twitter Bootstrap 3.
+For clarity, consider an approximate synthetic example of the implementation of the container from Twitter Bootstrap 3.
 
-Так это делается вручную с помощью CSS:
+This is done manually with CSS:
 
 ```css
 .container {
@@ -1161,27 +1179,26 @@ Output:
 
 ```
 
-Для того, чтобы сделать тоже самое с MN можно пойти разными путями в зависимости от Ваших нужд.  
+In order to do the same with MN, you can go different ways depending on your needs.  
 
-Несколько лаконичных способов:  
+Several laconic ways:  
 
 Example 1.
 ```js
 mn.assign('.container', '(mhAuto-i|ph15-i|w750-i@sm-md|w970-i@md|w1170-i@lg)');
 ```
 
-Example 2. Без использования предустановленных синонимов по умолчанию для медиа-запросов:  
+Example 2. Without the use of predefined default synonyms for media queries:  
 ```js
 mn.assign('.container', '(mhAuto-i|ph15-i|w750-i@768-|w970-i@992-|w1170-i@1200-)');
 ```
 
-Example 3. Если мы хотим иметь возможность переиспользовать стили контейнера в других селекторах,
-то мы можем декларировать контейнер как эссенцию:
+Example 3. If we want to be able to reuse container styles in other selectors, then we can declare the container as an essence:
 ```js
-mn('container', '(mhAuto-i|ph15-i|w750-i@xs|w970-i@md|w1170-i@lg)');
+mn('container', '(mhAuto-i|ph15-i|w750-i@sm-md|w970-i@md|w1170-i@lg)');
 ```
 
-Таким образом будет задействована вся мощь минималистической нотации, для которой селекторы генерируются автоматически:  
+Thus, all the power of minimalist notation will be used, for which selectors are automatically generated:  
 Input:
 ```html
 <div class="container">...</div>
@@ -1221,25 +1238,24 @@ Output:
 }
 ```
 
-Этот приведенный пример
+This given example
 ```js
 mn('container', '(mhAuto-i|ph15-i|w750-i@sm-md|w970-i@md|w1170-i@lg)');
 ```
-является сокращенным способом такой декларации:
+is an abbreviated form of such a declaration:
 ```js
 mn('container', {
  exts: '(mhAuto-i|ph15-i|w750-i@sm-md|w970-i@md|w1170-i@lg)'
 });
 ```
 
-В приведенных выше примерах декларация эссенции осуществляется на основе других более атомарных эссенций.
+In the examples above, the declaration of the essence is based on other more atomic essences of styles.
 
-Таким образом мы можем многократно переиспользовать однажды созданные эссенции стилей в новых эссенциях.
+In this way, we can repeatedly reuse once created style essences in new essences.
 
-Вместо этого мы также могли декларировать эссенцию тем же способом, что и более атомарные эссенции, на которых мы основывались до этого.
+Instead, we could declared the essence in the same way as the more atomic essences on which we were based before.
 
-Допустим, у нас пока нет тех атомарных эссенций, которые мы использовали в прошлых примерах, и нам было лень их писать до этого момента,
-либо мы руководствуемся какими то другими причинами. Тогда мы можем декларировать эссенцию контейнера таким способом:
+Suppose we do not yet have the atomic essences that we used in the previous examples, and we were too lazy to write them until that moment, or we are guided by some other reasons. Then we can declare the essence of the container in this way:
 ```js
 mn('container', {
   style: {
@@ -1271,7 +1287,7 @@ mn('container', {
 
 ### Priority multiplier
 
-В MN есть возможность манипуляции приоритетом стилей, которая позволяет лаконично перекрывать влияние некоторых других CSS правил.
+The MN has the ability to manipulate the priority of styles that allows you to succinctly override the effect of some other CSS rules.
 
 Format:
 ```

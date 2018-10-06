@@ -16,7 +16,10 @@
 
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/46/
+Try this tests:
+* https://jsfiddle.net/j6d8aozy/51/  
+* https://jsfiddle.net/j6d8aozy/46/  
+
 Home page: http://minimalist-notation.org
 
 

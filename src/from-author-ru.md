@@ -14,7 +14,10 @@
 [Предустановленные опции](https://github.com/mr-amirka/amirka/blob/master/src/presets-ru.md)
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/46/  
+Try this tests:
+* https://jsfiddle.net/j6d8aozy/51/  
+* https://jsfiddle.net/j6d8aozy/46/  
+
 Home page: http://minimalist-notation.org  
 
 

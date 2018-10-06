@@ -3,9 +3,14 @@
 
 # Minimalist Notation
 
+This is the best CSS framework and CSS-preprocessing technology that you will not be able to part with.  
+
+
 Minimalist Notation (MN) is a technology for generating styles based on parsing the markup.
 In the current version for web applications, the generation is done directly in the CSS.
 Technology tremendously speeds up the layout process and can be used additionally with traditional technologies, or replace completely those.
+
+
 The advantage over the traditional technologies of CSS-preprocessing is that the developer gets rid of the need to write CSS. CSS is generated automatically based on the notation and the style generate rules specified by the developer.
 The developer no longer needs to control which styles are used in his markup and which ones are not, for from now on the styles are generated dynamically only for what is present in the markup.
 
@@ -26,7 +31,10 @@ The developer no longer needs to control which styles are used in his markup and
 
 
 
-Try this test: https://jsfiddle.net/j6d8aozy/46/  
+Try this tests:
+* https://jsfiddle.net/j6d8aozy/51/  
+* https://jsfiddle.net/j6d8aozy/46/  
+
 Home page: http://minimalist-notation.org  
 
 
@@ -90,7 +98,7 @@ module.exports = {
 
 PS: see amirka/node-mn.d.ts
 
-
+<field key="region" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="fulltext" />
 
 
 ## Runtime

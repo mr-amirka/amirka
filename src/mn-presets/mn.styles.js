@@ -422,23 +422,26 @@ module.exports = (mn) => {
   });
 
 
-  /*
-  .overlay{
+/*
+.overlay{
   position: absolute;
   top:0px;left:0px;right:0px;bottom:0px;
+}
+*/
+/*
+mn('overlay', {
+  priority: 0,
+  style: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
   }
-  */
-  mn('overlay', {
-    priority: 0,
-    style: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0
-    }
-  });
+});
+*/
 
+  mn('overlay', 'abs pn');
 
   forIn({
     rlv: 'relative',
@@ -446,7 +449,7 @@ module.exports = (mn) => {
     abs: 'absolute',
     'static': 'static'
   }, (position, essenceName) => {
-    mn(essenceName, { style: { position }, priority: 2 })
+    mn(essenceName, { style: { position }, priority: 1 })
   });
 
   forIn({
@@ -784,10 +787,10 @@ module.exports = (mn) => {
     return p.camel || p.negative ? null : {
       exts: [ 'hmin1-i' ],
       style: {
-        width: (100 * (Math.abs(p.num) || 12) / (p.cols || 12)) + '%' + p.i
+        width: (100 * (p.num || 12) / (p.total || 12)) + '%' + p.i
       }
     };
-  }, '^(-?[0-9]+(/([0-9]+):cols)?)?(.*)$');
+  }, '^([0-9]+(/([0-9]+):total)?)?(.*)$');
 
 
   /*
