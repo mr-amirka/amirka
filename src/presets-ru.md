@@ -236,7 +236,7 @@ Base format: ``` {baseName}{sideName}{value} ```
 | pn          | &{top?:{value}{unit}; bottom?:{value}{unit}; left?:{value}{unit}; right?:{value}{unit};} | position    | {side:([a-z]+)}{value:(-?[0-9])}{unit:([a-z]+)} | 0px ('', 0, 'px')  |
 | b           | &{border-width:{value}{unit}}            |             | {side:([a-z]+)}{value:([0-9]+)}{unit:([a-z]+)}   | 0px ('', 0, 'px')  |
 | bs          | &{border-style:{value}}                  |             | {value:camleCase}                                |                    |
-| bc          | &{border-color:{value}}                  |             | {value:camleCase|([A-F0-9]+)}                    | #000 (0)           |
+| bc          | &{border-color:{value}}                  |             | {value:camleCase/([A-F0-9]+)}                    | #000 (0)           |
 | sq          | &{width:{value}; height:{value}}         | square      | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
 | w           | &{width:{value}}                         |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
 | h           | &{height:{value}}                        |             | {value:([0-9]+)}{unit:([a-z]+)}                  | 100% (100, '%')    |
