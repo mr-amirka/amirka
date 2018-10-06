@@ -7,6 +7,31 @@
 
 Minimalist Notation (MN) (минималистическая нотация) - это технология генерации стилей, основанная на парсинге разметки. Генерация осуществляется непосредственно в СSS. Технология колоссально ускоряет процесс верстки и может использоваться дополнительно с традиционными технологиями, либо заменять их полностью.  
 
+### Example
+
+Input:
+
+```html
+<div class="f12 p10 mb10 f14:h cF00<.parent c0F0@mediaName sq40 bg0F0">...</div>
+```
+
+Output:
+
+```css
+@media mediaName{
+  .c0F0\@mediaName{color:rgb(0,255,0)!important}
+}
+.f12{font-size:12px}
+.f14\:h:hover{font-size:14px}
+.parent .cF00\<\.parent{color:rgb(255,0,0)!important}
+.bg0F0{background:rgb(0,255,0)}
+.sq40{width:40px!important;height:40px!important}
+.p10{padding:10px!important}
+.mb10{margin-bottom:10px!important}
+
+```
+
+
 * [CLI](#cli)  
 * [Webpack Plugin](#webpack-plugin)  
 * [Runtime](#runtime)  
