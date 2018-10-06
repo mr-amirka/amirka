@@ -7,12 +7,12 @@
 
 
 * [About](#about)  
-*     [Example for class name](#example-for-class-name)   
-*     [Example for attr](#example-for-attr)  
+    * [Example for class name](#example-for-class-name)   
+    * [Example for attr](#example-for-attr)  
 * [Notation](#notation)  
-*     [Essence name](#essence-name)  
-*     [Essence context](#essence-context)  
-*     [Media queries in notation](#media-queries-in-notation)
+    * [Essence name](#essence-name)  
+    * [Essence context](#essence-context)  
+    * [Media queries in notation](#media-queries-in-notation)
 * [Grouping](#grouping)  
 * [Escaping](#escaping)  
 * [Media queries generation](#media-queries-generation)  
