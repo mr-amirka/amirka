@@ -27,15 +27,15 @@ Output:
 
 ```css
 @media mediaName{
-  .c0F0\@mediaName{color:rgb(0,255,0)!important}
+  .c0F0\@mediaName{color:rgb(0,255,0)}
 }
 .f12{font-size:12px}
 .f14\:h:hover{font-size:14px}
-.parent .cF00\<\.parent{color:rgb(255,0,0)!important}
+.parent .cF00\<\.parent{color:rgb(255,0,0)}
 .bg0F0{background:rgb(0,255,0)}
-.sq40{width:40px!important;height:40px!important}
-.p10{padding:10px!important}
-.mb10{margin-bottom:10px!important}
+.sq40{width:40px;height:40px}
+.p10{padding:10px}
+.mb10{margin-bottom:10px}
 
 ```
 
