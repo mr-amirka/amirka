@@ -8,15 +8,19 @@ const forEach = require('./for-each');
 const eachApply = require('./each-apply');
 module.exports = function() {
 	let destroyers = [];
-	const instance = function () {
+	const instance = () => {
 		const _destroyers = destroyers;
-		destroyers = [];
-		eachApply(_destroyers, arguments, this);
+		destroyers = null;
+		_destroyers && eachApply(_destroyers);
 		return instance;
 	};
 	forEach(arguments, instance.add = (fn) => {
-		isFunction(fn) && destroyers.push(fn);
+		isFunction(fn) && (destroyers ? destroyers.push(fn) : fn());
 		return instance;
 	});
+  instance.clear = () => {
+		if (destroyers) destroyers = [];
+		return instance;
+	};
 	return instance;
 };

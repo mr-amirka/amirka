@@ -5,7 +5,7 @@
 
 const isObject = require('./is-object');
 const isIndex = require('./is-index');
-const set = module.exports = (ctx, path, value) => path ? base(ctx, path.split('.'), value) : value;
+const set = module.exports = (ctx, path, value) => path ? base(ctx, ('' + path).split('.'), value) : ctx;
 const base = set.base = (ctx, path, value) => {
   const length = path.length;
   const lastIndex = length - 1;

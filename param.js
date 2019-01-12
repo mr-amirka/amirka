@@ -8,6 +8,7 @@
 const isLength = require('./is-length');
 const withoutEmpty = require('./without-empty');
 const param = module.exports = (v, excludePrefix) => {
+
   if (!v || typeof v !== 'object') return '';
   const s = [];
   const prefixLength = (excludePrefix || (excludePrefix = '$')).length;
@@ -20,8 +21,9 @@ const param = module.exports = (v, excludePrefix) => {
   return s.sort().join('&');
 };
 const paramBuild = (s, p, v) => {
-  s.push(paramEscape(p) + '=' + paramEscape(
-    v && typeof v === 'object' ? JSON.stringify(withoutEmpty(v)) : ('' + v)
+  v = withoutEmpty(v);
+  v === null || s.push(paramEscape(p) + '=' + paramEscape(
+    typeof v === 'object' ? JSON.stringify(v) : ('' + v)
   ));
   return s;
 };

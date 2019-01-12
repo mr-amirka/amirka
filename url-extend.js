@@ -28,11 +28,15 @@ const urlExtend = module.exports = (dst, src) => {
   const userpart = username ? (username + ':' + password) : '';
   const host = hostname || port ? (hostname + (port ? (':' + port) : '')) : '';
   const email = username ? (username + '@' + host) : '';
-  const unalias = (hostname ? (protocol + '://' + (userpart ? (userpart + '@') : '') + host ) : '') + dirname;
+  const login = userpart ? (userpart + '@' + host) : '';
+  const unpath = login ? (protocol + '://' + login) : (host ? (protocol + '://' + host) : '');
+  const extension = (src.extension === undefined ? dst.extension : src.extension) || '';
   const alias = (src.alias === undefined ? dst.alias : src.alias) || '';
+  const filename = alias + (extension ? '.' + extension : '');
+
+  const unalias = unpath + (dirname ? ('/' + dirname) : '') + (filename ? '/' : '');
+
   const
-    extension = (src.extension === undefined ? dst.extension : src.extension) || '',
-    filename = alias + (extension ? '.' + extension : ''),
     unextension = unalias + alias,
     unsearch = unextension + (extension ? '.' + extension : ''),
     path = dirname + filename,
@@ -44,7 +48,9 @@ const urlExtend = module.exports = (dst, src) => {
   const child = (srcChild || dstChild) ? urlExtend(dstChild || {}, srcChild || {}) : null;
   const hash = child && child.href || '';
   const href = unhash + (hash ? '#' + hash : '');
-  const unpath = host ? (protocol + '://' + host) : '';
+
+
+
   return {
     href,
     search,
@@ -68,9 +74,12 @@ const urlExtend = module.exports = (dst, src) => {
     username,
     password,
     email,
+    login,
     child
   };
 };
+
+//console.log(urlExtend('http://username:password@eko-press.dartline.ru/api.php?callback=JSONP_1&entity=navigation&method=GET&timestamp=1546178631496'));
 
 /*
 const defaultConfig: UrlOptions = {

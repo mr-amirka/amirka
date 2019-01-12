@@ -26,13 +26,20 @@ const urlParse = module.exports = (href) => {
   const email = username ? (username + '@' + host) : '';
   const hostname = protocol ? (parts = breakup(host, ':'))[0] : '';
   const port = protocol ? parts[1] : '';
-  const unalias = (parts = breakupLast(unsearch, '/', true))[0] + '/';
+
+  const login = userpart ? (userpart + '@' + host) : '';
+
+  const unpath = login ? (protocol + '://' + login) : (host ? (protocol + '://' + host) : '');
+
+  const dirname = (parts = breakupLast(path, '/', true))[0];
   const filename = parts[1];
+
+  const unalias = unpath + (dirname ? ('/' + dirname) : '') + (filename ? '/' : '');
+
   const alias = (parts = breakupLast(filename, '.'))[0];
   const unextension = unalias + alias;
   const extension = parts[1];
-  const dirname = host ? breakup(unalias, host, true)[1] : unalias;
-  const unpath = host ? (protocol + '://' + host) : '';
+
   return {
     href,
     search,
@@ -54,8 +61,15 @@ const urlParse = module.exports = (href) => {
     unsearch,
     userpart,
     username,
+    login,
     password,
     email,
     child
   };
 };
+
+//console.log(urlParse('http://username:password@eko-press.dartline.ru/api.php?callback=JSONP_1&entity=navigation&method=GET&timestamp=1546178631496'));
+
+
+//console.log(urlParse('http://eko-press.dartline.ru/api.php'));
+//console.log(urlParse('https://localhost:80/api/v1/method.json?sa=10#path/as?asd=29'));

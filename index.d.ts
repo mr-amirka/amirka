@@ -5,9 +5,9 @@
 
 
 import * as noop from './noop';
-import * as loop from './loop';
-import * as loopMap from './loop-map';
-import * as range from './range';
+//import * as loop from './loop';
+//import * as loopMap from './loop-map';
+//import * as range from './range';
 import * as support from './support';
 import * as aggregate from './aggregate';
 import * as breakup from './breakup';
@@ -17,11 +17,11 @@ import * as getByType from './get-by-type';
 import * as set from './set';
 import * as get from './get';
 import * as complement from './complement';
-import * as destroyProvider from './destroy-provider';
+//import * as destroyProvider from './destroy-provider';
 import * as eachApply from './each-apply';
 import * as eachTry from './each-try';
 import * as cloneDepth from './clone-depth';
-import * as extendByPathsMap from './extend-by-paths-map';
+//import * as extendByPathsMap from './extend-by-paths-map';
 import * as extendDepth from './extend-depth';
 import * as flags from './flags';
 import * as flagsSet from './flags-set';
@@ -32,7 +32,7 @@ import * as forIn from './for-in';
 import * as forEach from './for-each';
 import * as withoutEmpty from './without-empty';
 import * as map from './map';
-import * as mapValues from './map-values';
+//import * as mapValues from './map-values';
 import * as reduce from './reduce';
 import * as once from './once';
 import * as isEmpty from './is-empty';
@@ -85,6 +85,7 @@ import * as push from './push';
 import * as withDefer from './with-defer';
 import * as withDelay from './with-delay';
 import * as withResult from './with-result';
+import * as trim from './trim';
 
 export * from './global';
 
