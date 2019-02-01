@@ -14,7 +14,7 @@ module.exports = (collection, iteratee, dst) => {
   if (isLength(length)) {
     dst || (dst = []);
     for (let i = 0; i < length; i++) {
-      if (_iteratee(v = collection[i], i)) dst[i] = v;
+      if (_iteratee(v = collection[i], i)) dst.push(v);
     }
   } else {
     dst || (dst = {});

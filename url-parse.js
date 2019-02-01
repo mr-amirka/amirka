@@ -17,7 +17,13 @@ const urlParse = module.exports = (href) => {
   const query = unparam(search);
   const child = hash ? urlParse(hash) : null;
   const protocol = (parts = breakup(unsearch, '://' ,true))[0];
-  const path = protocol ? (parts = breakup(parts[1], '/'))[1] : parts[1];
+  const rootPath = parts[1];
+
+  parts = protocol ? breakup(rootPath, '/') : [ '', rootPath ];
+
+  const path = parts[1];
+  const hasDelimeter = parts[2];
+
   const userpart = (parts = breakup(parts[0], '@', true))[0];
   const userParts = breakup(userpart, ':');
   const username = userParts[0];
@@ -31,10 +37,11 @@ const urlParse = module.exports = (href) => {
 
   const unpath = login ? (protocol + '://' + login) : (host ? (protocol + '://' + host) : '');
 
-  const dirname = (parts = breakupLast(path, '/', true))[0];
+  parts = breakupLast(path, '/', true);
+  const dirname = (hasDelimeter ? '/' : '') + parts[0] + (parts[2] ? '/' : '');
   const filename = parts[1];
 
-  const unalias = unpath + (dirname ? ('/' + dirname) : '') + (filename ? '/' : '');
+  const unalias = unpath + dirname;
 
   const alias = (parts = breakupLast(filename, '.'))[0];
   const unextension = unalias + alias;
@@ -64,9 +71,12 @@ const urlParse = module.exports = (href) => {
     login,
     password,
     email,
-    child
+    child,
+    rootPath
   };
 };
+
+//console.log(urlParse('http://eko-press.dartline.ru/api/'));
 
 //console.log(urlParse('http://username:password@eko-press.dartline.ru/api.php?callback=JSONP_1&entity=navigation&method=GET&timestamp=1546178631496'));
 

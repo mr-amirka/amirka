@@ -1,1 +1,1 @@
-module.exports = v => (new Date(v)).getTime();
+module.exports = () => (new Date()).getTime();

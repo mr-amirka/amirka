@@ -34,12 +34,15 @@ const urlExtend = module.exports = (dst, src) => {
   const alias = (src.alias === undefined ? dst.alias : src.alias) || '';
   const filename = alias + (extension ? '.' + extension : '');
 
-  const unalias = unpath + (dirname ? ('/' + dirname) : '') + (filename ? '/' : '');
+  //const unalias = unpath + (dirname ? ('/' + dirname) : '') + (filename ? '/' : '');
+
+  const path = dirname + filename;
+  const unalias = unpath + dirname;
 
   const
     unextension = unalias + alias,
     unsearch = unextension + (extension ? '.' + extension : ''),
-    path = dirname + filename,
+
     query = src.query === null ? {} : mergeDepth([ dst.query, src.query ], {}),
     search = param(query);
 
@@ -78,6 +81,8 @@ const urlExtend = module.exports = (dst, src) => {
     child
   };
 };
+
+//console.log(urlExtend('http://eko-press.dartline.ru/api/'));
 
 //console.log(urlExtend('http://username:password@eko-press.dartline.ru/api.php?callback=JSONP_1&entity=navigation&method=GET&timestamp=1546178631496'));
 

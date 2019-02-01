@@ -13,11 +13,11 @@ const base = get.base = (ctx, path, def) => {
 	return i === length ? ctx : def;
 };
 
-get.getter = (path) => {
-  const type = typeof path;
-  return type === 'function' ? path : (
-    (type === 'string' ? (path = path.split('.')) : path) && isLength(path.length)
-      ? (value => base(value, path))
-      : path
-  );
+get.getter = v => (handlers[typeof v] || noopHandle)(v);
+
+const noopHandle = v => v;
+const arrayHandle = path => v => base(v, path);
+const handlers = {
+  'string': v => arrayHandle(v.split('.')),
+  'object': v => v && isLength(v.length) ? arrayHandle(v) : v
 };
