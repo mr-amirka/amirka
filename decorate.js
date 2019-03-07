@@ -13,8 +13,8 @@ wrappedFn.use((innerFn) => (args) => {
 });
 */
 
-const isFunction = require('./is-function');
-const forEach = require('./for-each');
+const isFunction = require('./isFunction');
+const forEach = require('./forEach');
 
 module.exports = (emit, decorators) => {
   const instance = function() {

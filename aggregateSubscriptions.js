@@ -1,5 +1,5 @@
 
-const eachApply = require('./each-apply');
+const eachApply = require('./eachApply');
 module.exports = (subscriptions) => () => {
   if (subscriptions) {
     eachApply(subscriptions);

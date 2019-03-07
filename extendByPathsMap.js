@@ -4,7 +4,7 @@
  */
 
 const extend = require("./extend");
-const isPlainObject = require("./is-plain-object");
+const isPlainObject = require("./isPlainObject");
 const get = require("./get");
 const set = require("./set");
 module.exports = (dst, src, map) => {

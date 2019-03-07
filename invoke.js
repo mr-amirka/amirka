@@ -1,5 +1,5 @@
-const isFunction = require('./is-function');
-const isDefined = require('./is-defined');
+const isFunction = require('./isFunction');
+const isDefined = require('./isDefined');
 
 const invoke = module.exports = (object, path, args, context) => base(
   object,

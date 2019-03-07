@@ -5,8 +5,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const mergeDepth = require('./merge-depth');
-const urlParse = require('./url-parse');
+const mergeDepth = require('./mergeDepth');
+const urlParse = require('./urlParse');
 const param = require('./param');
 const __normalize = v => {
   if (!v) return {};

@@ -6,7 +6,7 @@
  */
 
 
-const isLength = require('./is-length');
+const isLength = require('./isLength');
 
 const cloneDepth = module.exports = (src, depth) => __cloneDepth(src, depth || 0);
 const __cloneDepth = cloneDepth.base = (src, depth) => {

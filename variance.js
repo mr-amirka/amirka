@@ -9,8 +9,8 @@
  */
 
 const unslash = require('./unslash');
-const escapedSplitProvider = require('./escaped-split-provider');
-const joinArrays = require('./join-arrays');
+const escapedSplitProvider = require('./escapedSplitProvider');
+const joinArrays = require('./joinArrays');
 const variance = module.exports = (exp) => base(exp).map(unslash);
 //Экранирование служебных символов
 const __split = escapedSplitProvider('|').base; //support escape

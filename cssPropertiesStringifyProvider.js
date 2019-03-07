@@ -3,8 +3,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
- const camelToKebabCase = require("./camel-to-kebab-case");
- const isArray = require("./is-array");
+ const camelToKebabCase = require("./camelToKebabCase");
+ const isArray = require("./isArray");
 
 module.exports = (prefixedAttrs, prefixes) => {
   prefixedAttrs || (prefixedAttrs = {});

@@ -20,7 +20,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const regexpMapperProvider = require('./regexp-mapper-provider');
+const regexpMapperProvider = require('./regexpMapperProvider');
 module.exports = (route, defaultValueExp) => {
   const valueExp = defaultValueExp || '([^/]*)';
   const suffixExp = valueExp + ')';

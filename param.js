@@ -5,15 +5,14 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isLength = require('./is-length');
-const withoutEmpty = require('./without-empty');
+const withoutEmpty = require('./withoutEmpty');
 const param = module.exports = (v, excludePrefix) => {
 
   if (!v || typeof v !== 'object') return '';
   const s = [];
   const prefixLength = (excludePrefix || (excludePrefix = '$')).length;
-  const l = v.length;
-  if (isLength(l)) {
+  if (v instanceof Array) {
+    const l = v.length;
     for (let i = 0; i < l; i++) paramBuild(s, '' + i, v[i]);
   } else {
     for (let k in v) excludePrefix === k.slice(0, prefixLength) || paramBuild(s, k, v[k]);

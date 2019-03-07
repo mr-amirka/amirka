@@ -3,7 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const iterateeNormalize = require('./iteratee-normalize');
+const iterateeNormalize = require('./iterateeNormalize');
 const __sort = [].sort;
 
 module.exports = (src, iteratee) => {

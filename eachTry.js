@@ -3,8 +3,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isLength = require('./is-length');
-const execute = require('./execute-try');
+const isLength = require('./isLength');
+const execute = require('./executeTry');
 module.exports = (funcs, args, context) => {
   const length = funcs && funcs.length;
   if (isLength(length)) {

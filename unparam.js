@@ -5,7 +5,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isObject = require('./is-object');
+const isObject = require('./isObject');
 const breakup = require('./breakup');
 const unparam = module.exports = s => {
   const type = typeof s;

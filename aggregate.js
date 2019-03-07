@@ -3,7 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const eachApply = require('./each-apply');
+const eachApply = require('./eachApply');
 module.exports = (funcs, aggregator) => {
   aggregator || (aggregator = eachApply);
 	return function() {

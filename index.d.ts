@@ -6,94 +6,94 @@
 
 import * as noop from './noop';
 //import * as loop from './loop';
-//import * as loopMap from './loop-map';
+//import * as loopMap from './loopMap';
 //import * as range from './range';
 import * as support from './support';
 import * as aggregate from './aggregate';
 import * as breakup from './breakup';
-import { intval, floatval } from './any-val'
+import { intval, floatval } from './anyval'
 import * as size from './size';
-import * as getByType from './get-by-type';
+import * as getByType from './getByType';
 import * as set from './set';
 import * as get from './get';
 import * as complement from './complement';
 //import * as destroyProvider from './destroy-provider';
-import * as eachApply from './each-apply';
-import * as eachTry from './each-try';
-import * as cloneDepth from './clone-depth';
+import * as eachApply from './eachApply';
+import * as eachTry from './eachTry';
+import * as cloneDepth from './cloneDepth';
 //import * as extendByPathsMap from './extend-by-paths-map';
-import * as extendDepth from './extend-depth';
+import * as extendDepth from './extendDepth';
 import * as flags from './flags';
-import * as flagsSet from './flags-set';
+import * as flagsSet from './flagsSet';
 import * as merge from './merge';
-import * as mergeDepth from './merge-depth';
+import * as mergeDepth from './mergeDepth';
 import * as extend from './extend';
-import * as forIn from './for-in';
-import * as forEach from './for-each';
-import * as withoutEmpty from './without-empty';
+import * as forIn from './forIn';
+import * as forEach from './forEach';
+import * as withoutEmpty from './withoutEmpty';
 import * as map from './map';
 //import * as mapValues from './map-values';
 import * as reduce from './reduce';
 import * as once from './once';
-import * as isEmpty from './is-empty';
-import * as isCollection from './is-collection';
-import * as isInsign from './is-insign';
-import * as isString from './is-string';
-import * as isPlainObject from './is-plain-object';
-import * as isObject from './is-object';
-import * as isArray from './is-array';
-import * as isPromise from './is-promise';
-import * as isIndex from './is-index';
-import * as isLength from './is-length';
+import * as isEmpty from './isEmpty';
+//import * as isCollection from './isCollection';
+import * as isInsign from './isInsign';
+import * as isString from './isString';
+import * as isPlainObject from './isPlainObject';
+import * as isObject from './isObject';
+import * as isArray from './isArray';
+import * as isPromise from './isPromise';
+import * as isIndex from './isIndex';
+import * as isLength from './isLength';
 import * as delay from './delay';
 import * as immediate from './immediate';
-import * as removeOf from './remove-of';
-import * as cssPropertiesStringifyProvider from './css-properties-stringify-provider';
-import * as cssPropertiesParse from './css-properties-parse';
+import * as removeOf from './removeOf';
+import * as cssPropertiesStringifyProvider from './cssPropertiesStringifyProvider';
+import * as cssPropertiesParse from './cssPropertiesParse';
 /*
 import * as param from './param';
 import * as unparam from './unparam';
 import * as urlExtend from './url-extend';
 import * as urlParse from './url-parse';
 */
-import * as joinArrays from './join-arrays';
-import * as joinMaps from './join-maps';
-import * as escapedSplitProvider from './escaped-split-provider';
-import * as mapperProvider from './mapper-provider';
-import * as regexpMapperProvider from './regexp-mapper-provider';
-import * as routeParseProvider from './route-parse-provider';
+import * as joinArrays from './joinArrays';
+import * as joinMaps from './joinMaps';
+import * as escapedSplitProvider from './escapedSplitProvider';
+import * as mapperProvider from './mapperProvider';
+import * as regexpMapperProvider from './regexpMapperProvider';
+import * as routeParseProvider from './routeParseProvider';
 import * as unslash from './unslash';
 import * as variance from './variance';
 import * as single from './single';
 import * as debounce from './debounce';
 import * as throttle from './throttle';
-import * as withReDelay from './with-re-delay';
-import * as throttleCancelable from './throttle-cancelable';
-import * as uniqLastApply from './uniq-last-apply';
-import * as escapeQuote from './escape-quote';
-import * as escapeRegExp from './escape-reg-exp';
-import * as escapeCss from './escape-css';
-import * as escapedBreakupProvider from './escaped-breakup-provider';
-import * as upperFirst from './upper-first';
-import * as lowerFirst from './lower-first';
-import * as camelToKebabCase from './camel-to-kebab-case';
-import * as kebabToCamelCase from './kebab-to-camel-case';
-import * as splitProvider from './split-provider';
-import * as joinProvider from './join-provider';
-import * as pushArray from './push-array';
+import * as withReDelay from './withReDelay';
+import * as throttleCancelable from './throttleCancelable';
+import * as uniqLastApply from './uniqLastApply';
+import * as escapeQuote from './escapeQuote';
+import * as escapeRegExp from './escapeRegExp';
+import * as escapeCss from './escapeCss';
+import * as escapedBreakupProvider from './escapedBreakupProvider';
+import * as upperFirst from './upperFirst';
+import * as lowerFirst from './lowerFirst';
+import * as camelToKebabCase from './camelToKebabCase';
+import * as kebabToCamelCase from './kebabToCamelCase';
+import * as splitProvider from './splitProvider';
+import * as joinProvider from './joinProvider';
+import * as pushArray from './pushArray';
 import * as push from './push';
-import * as withDefer from './with-defer';
-import * as withDelay from './with-delay';
-import * as withResult from './with-result';
+import * as withDefer from './withDefer';
+import * as withDelay from './withDelay';
+import * as withResult from './withResult';
 import * as trim from './trim';
 
 export * from './global';
 
 export {
   noop,
-  loop,
-  loopMap,
-  range,
+  //loop,
+  //loopMap,
+  //range,
   support,
   aggregate,
   breakup,
@@ -104,11 +104,11 @@ export {
   set,
   get,
   complement,
-  destroyProvider,
+  //destroyProvider,
   eachApply,
   eachTry,
   cloneDepth,
-  extendByPathsMap,
+  //extendByPathsMap,
   extendDepth,
   flags,
   flagsSet,
@@ -118,12 +118,12 @@ export {
   forIn,
   forEach,
   withoutEmpty,
-  mapValues,
+  //mapValues,
   map,
   reduce,
   once,
   isEmpty,
-  isCollection,
+  //isCollection,
   isInsign,
   isString,
   isPlainObject,

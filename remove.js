@@ -3,7 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isObject = require('./is-object');
+const isObject = require('./isObject');
 const remove = module.exports = (ctx, path) => path ? base(ctx, path.split('.')) : ctx;
 const base = remove.base = (ctx, path) => {
   const length = path.length;

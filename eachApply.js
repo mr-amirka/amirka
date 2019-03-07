@@ -3,7 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isLength = require('./is-length');
+const isLength = require('./isLength');
 module.exports = (funcs, args, context) => {
   const length = funcs && funcs.length;
   if (isLength(length)) {

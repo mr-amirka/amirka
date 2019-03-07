@@ -3,9 +3,9 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isFunction = require('./is-function');
-const forEach = require('./for-each');
-const eachApply = require('./each-apply');
+const isFunction = require('./isFunction');
+const forEach = require('./forEach');
+const eachApply = require('./eachApply');
 module.exports = function() {
 	let destroyers = [];
 	const instance = () => {

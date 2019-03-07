@@ -4,6 +4,6 @@
  *
  */
 
-const isObject = require('./is-object');
-const isFunction = require('./is-function');
+const isObject = require('./isObject');
+const isFunction = require('./isFunction');
 module.exports = v => isObject(v) && isFunction(v.then);

@@ -8,9 +8,9 @@
  *
  */
 
-const isRegExp = require('./is-reg-exp');
-const escapeRegExp = require('./escape-reg-exp');
-const mapValues = require('./map-values');
+const isRegExp = require('./isRegExp');
+const escapeRegExp = require('./escapeRegExp');
+const mapValues = require('./mapValues');
 const unslash = require('./unslash');
 
 module.exports = (separator) => {

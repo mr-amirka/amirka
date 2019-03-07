@@ -20,6 +20,6 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-import { regexpMapperProvider } from './regexp-mapper-provider';
+import { regexpMapperProvider } from './regexpMapperProvider';
 declare const routeParseProvider: (route: string, defaultValueExp?: string) => regexpMapperProvider;
 export = routeParseProvider;

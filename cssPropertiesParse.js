@@ -5,8 +5,8 @@
  * @author Absalyamov Amir <mr.amirka@ya.ru>
  */
 
-const kebabToCamelCase = require('./kebab-to-camel-case');
-const isArray = require("./is-array");
+const kebabToCamelCase = require('./kebabToCamelCase');
+const isArray = require("./isArray");
 const regexpLine = /\s*;\s*/;
 const regexpProp = /\s*:\s*/;
 const reTrim = /^[\r\n {}]+|[\r\n {}]+$/g;

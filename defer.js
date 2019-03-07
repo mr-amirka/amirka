@@ -1,3 +1,5 @@
+const delay = require('./delay');
+
 module.exports = (fn, args, ctx) => {
 	try {
     const immediateId = setImmediate(() => fn.apply(ctx || null, args || []));

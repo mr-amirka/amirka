@@ -3,9 +3,9 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isLength = require('./is-length');
-const isPlainObject = require('./is-plain-object');
-const isObject = require('./is-object');
+const isLength = require('./isLength');
+const isPlainObject = require('./isPlainObject');
+const isObject = require('./isObject');
 const complement = require('./complement');
 
 /**

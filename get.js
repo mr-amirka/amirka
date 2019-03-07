@@ -3,7 +3,7 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isLength = require('./is-length');
+const isLength = require('./isLength');
 
 const get = module.exports = (ctx, path, def) => path ? (ctx ? base(ctx, ('' + path).split('.'), def) : def) : ctx;
 const base = get.base = (ctx, path, def) => {

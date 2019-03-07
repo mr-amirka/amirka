@@ -8,12 +8,12 @@ const extend = require('./extend');
 const support = require('./support');
 const delay = require('./delay');
 const __deferApply = require('./defer');
-const eachApply = require('./each-apply');
-const executeTry = require('./execute-try');
-const destroyProvider = require('./destroy-provider');
-const eachTry = require('./each-try');
-const isPromise = require('./is-promise');
-const isLength = require('./is-length');
+const eachApply = require('./eachApply');
+const executeTry = require('./executeTry');
+const destroyProvider = require('./destroyProvider');
+const eachTry = require('./eachTry');
+const isPromise = require('./isPromise');
+const isLength = require('./isLength');
 
 const { getter } = require('./get');
 

@@ -3,9 +3,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isLength = require('./is-length');
-const isPlainObject = require('./is-plain-object');
-const isObject = require('./is-object');
+const isPlainObject = require('./isPlainObject');
+const isObject = require('./isObject');
 const extend = require('./extend');
 
 /**
@@ -28,8 +27,8 @@ const extend = require('./extend');
  */
 module.exports = (mergingSrc, dst) => {
   if (!isObject(mergingSrc)) return dst === undefined ? mergingSrc : dst;
+  if (!(mergingSrc instanceof Array)) return extend(dst, mergingSrc);
   const length = mergingSrc.length;
-  if (!isLength(length)) return extend(dst, mergingSrc);
   let tmp = isObject(dst) ? dst : undefined;
   for (let v, i = 0; i < length; i++) {
     if ((v = mergingSrc[i]) === undefined) continue;

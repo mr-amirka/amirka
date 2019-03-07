@@ -1,5 +1,5 @@
 
-module.exports = (initialId, prefix) => {
+module.exports = (prefix, initialId) => {
   initialId || (initialId = 0);
   prefix || (prefix = '');
   return () => {

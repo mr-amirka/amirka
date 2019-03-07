@@ -3,8 +3,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isPromise = require('./is-promise');
-const isFunction = require('./is-function');
+const isPromise = require('./isPromise');
+const isFunction = require('./isFunction');
 
 module.exports = (fn) => {
 	let _cancel;

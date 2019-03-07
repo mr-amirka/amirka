@@ -3,8 +3,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isPlainObject = require('./is-plain-object');
-const isObject = require('./is-object');
+const isPlainObject = require('./isPlainObject');
+const isObject = require('./isObject');
 
 const extendDepth = module.exports = (dst, src, depth) => {
   if (src === undefined) return dst;

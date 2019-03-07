@@ -15,8 +15,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const mapperProvider = require('./mapper-provider');
-const isFunction = require('./is-function');
+const mapperProvider = require('./mapperProvider');
+const isFunction = require('./isFunction');
 module.exports = (regexp, keys) => {
   const mapper = isFunction(keys) ? keys : mapperProvider(keys);
   return (text, dst) => {

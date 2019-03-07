@@ -4,8 +4,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isRegExp = require('./is-reg-exp');
-const escapeRegExp = require('./escape-reg-exp');
+const isRegExp = require('./isRegExp');
+const escapeRegExp = require('./escapeRegExp');
 const unslash = require('./unslash');
 module.exports = (separator) => {
 	separator = isRegExp(separator)

@@ -3,8 +3,8 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isPlainObject = require('./is-plain-object');
-const isObject = require('./is-object');
+const isPlainObject = require('./isPlainObject');
+const isObject = require('./isObject');
 const complement = module.exports = (dst, src, depth) => {
   depth || (depth = 0);
   if (depth < 0 || !isPlainObject(src)) return dst === undefined ? src : dst;

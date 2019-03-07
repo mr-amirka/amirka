@@ -3,16 +3,17 @@
  * @author Absolutely Amir <mr.amirka@ya.ru>
  */
 
-const isLength = require('./is-length');
-const iterateeNormalize = require('./iteratee-normalize');
+const iterateeNormalize = require('./iterateeNormalize');
 
 module.exports = (collection, iteratee, dst) => {
+  const hasArray = dst instanceof Array;
   if (!collection) return dst || [];
   const _iteratee = iterateeNormalize(iteratee);
   const length = collection.length;
   let v;
-  if (isLength(length)) {
+  if (hasArray || collection instanceof Array) {
     dst || (dst = []);
+    const length = collection.length || 0;
     for (let i = 0; i < length; i++) {
       if (_iteratee(v = collection[i], i)) dst.push(v);
     }

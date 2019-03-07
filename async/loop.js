@@ -1,7 +1,7 @@
 const immediate = require('../immediate');
 const noop = require('../noop');
 const Deal = require('../deal');
-const isPromise = require('../is-promise');
+const isPromise = require('../isPromise');
 
 module.exports = (checkFn, statementFn, __immediate) => {
   __immediate || (__immediate = immediate);
