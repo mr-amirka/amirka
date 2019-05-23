@@ -1,17 +1,18 @@
 /**
  * @overview anyval
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  * Преобразовывает значение в число
  */
 
 /**
  * @description
+ * Возвращает число
+ *
  * @param value {any} - значение
  * @param default? {Number} - значение по умолчанию, если значение нельзя преобразовать
  * @param minValue? {Number} - минимальная допустимая величина
  * @param maxValue? {Number} - максимальная допустимая величина
  *
- * Возвращает число
  *
  * @example
  *

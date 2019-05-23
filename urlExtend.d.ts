@@ -2,7 +2,7 @@
  * @overview urlExtend
  * - парсит и мерджит url
  *
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 import { UrlOptions } from './urlParse';

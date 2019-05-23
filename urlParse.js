@@ -2,13 +2,15 @@
  * @overview url
  * - парсит URL
  *
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const breakup = require('./breakup');
 const unparam = require('./unparam');
+const isDefined = require('./isDefined');
 const breakupLast = breakup.last;
-const urlParse = module.exports = (href) => {
+const urlParse = module.exports = (_href) => {
+  const href = isDefined(_href) ? _href : '';
   let parts = breakup(href, '#');
   const hash = parts[1];
   const unhash = parts[0];
@@ -21,8 +23,7 @@ const urlParse = module.exports = (href) => {
 
   parts = protocol ? breakup(rootPath, '/') : [ '', rootPath ];
 
-  const path = parts[1];
-  const hasDelimeter = parts[2];
+  const path = (parts[2] ? '/' : '') + parts[1];
 
   const userpart = (parts = breakup(parts[0], '@', true))[0];
   const userParts = breakup(userpart, ':');
@@ -38,7 +39,7 @@ const urlParse = module.exports = (href) => {
   const unpath = login ? (protocol + '://' + login) : (host ? (protocol + '://' + host) : '');
 
   parts = breakupLast(path, '/', true);
-  const dirname = (hasDelimeter ? '/' : '') + parts[0] + (parts[2] ? '/' : '');
+  const dirname = parts[0] + (parts[2] ? '/' : '');
   const filename = parts[1];
 
   const unalias = unpath + dirname;

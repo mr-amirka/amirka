@@ -1,6 +1,6 @@
 /**
  * @overview extendByPathsMap
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const extend = require("./extend");

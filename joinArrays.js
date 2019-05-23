@@ -7,7 +7,7 @@
  * 	'Володя стоит', 'Вася стоит', 'Володя бежит', 'Вася бежит'
  * ]
  *
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 module.exports = (output, prefixes, suffixes, separator) => {

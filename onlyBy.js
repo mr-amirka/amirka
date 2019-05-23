@@ -1,6 +1,6 @@
 /**
  * @overview onlyBy
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const iterateeNormalize = require('./iterateeNormalize');

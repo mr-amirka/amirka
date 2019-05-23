@@ -1,7 +1,7 @@
 /**
  * @overview unslash
  * - удаляет слэши из строки
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 module.exports = v => v.replace(re, replacer);

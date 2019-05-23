@@ -1,6 +1,6 @@
 /**
  * @overview delay
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 import { fn }  from "./global";

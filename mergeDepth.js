@@ -1,11 +1,12 @@
 /**
  * @overview mergeDepth
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-const isLength = require('./isLength');
+const isArray = require('./isArray');
 const isPlainObject = require('./isPlainObject');
 const isObject = require('./isObject');
+const isDefined = require('./isDefined');
 const complement = require('./complement');
 
 /**
@@ -30,17 +31,15 @@ const complement = require('./complement');
 module.exports = (mergingSrc, dst, depth) => {
   depth || (depth = 0);
   if (depth < 0) return dst;
-  if (!isObject(mergingSrc)) return dst === undefined ? mergingSrc : dst;
-  let i = mergingSrc.length;
-  if (!isLength(i)) return complement(dst, mergingSrc, depth);
-  let tmp = isObject(dst) ? dst : undefined;
-  for (let v; i--;) {
-    if ((v = mergingSrc[i]) === undefined) continue;
-    if (isPlainObject(v)) {
+  if (!isObject(mergingSrc)) return isDefined(dst) ? dst : mergingSrc;;
+  if (!isArray(mergingSrc)) return complement(dst, mergingSrc, depth);
+  let last, tmp = isObject(dst) ? dst : undefined;
+  for (let v, i = mergingSrc.length; i--;) {
+    if (isPlainObject(v = mergingSrc[i])) {
       tmp = complement(tmp || {}, v, depth);
     } else {
-      if (!tmp) return v;
+      if (isDefined(v)) last = v;
     }
   }
-  return tmp || dst;
+  return tmp || last || dst;
 };

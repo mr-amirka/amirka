@@ -1,6 +1,6 @@
 /**
  * @overview isIndex
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const re = /^\d+$/;

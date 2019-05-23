@@ -2,7 +2,7 @@
  * @overview urlExtend
  * - парсит и мерджит url
  *
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const mergeDepth = require('./mergeDepth');
@@ -15,11 +15,11 @@ const __normalize = v => {
   if (type === 'object') return v;
   return {};
 };
-const __def = (src, dst) => ((src === undefined ? dst : src) || '');
+const __def = (src, dst, def) => ((src === undefined ? dst : src) || def || '');
 const urlExtend = module.exports = (dst, src) => {
   dst = __normalize(dst);
   src = __normalize(src);
-  const dirname = __def(src.dirname, dst.dirname);
+
   const hostname = __def(src.hostname, dst.hostname);
   const protocol = __def(src.protocol, dst.protocol);
   const port = __def(src.port, dst.port);
@@ -30,11 +30,10 @@ const urlExtend = module.exports = (dst, src) => {
   const email = username ? (username + '@' + host) : '';
   const login = userpart ? (userpart + '@' + host) : '';
   const unpath = login ? (protocol + '://' + login) : (host ? (protocol + '://' + host) : '');
-  const extension = (src.extension === undefined ? dst.extension : src.extension) || '';
-  const alias = (src.alias === undefined ? dst.alias : src.alias) || '';
+  const extension = __def(src.extension, dst.extension);
+  const alias = __def(src.alias, dst.alias);
   const filename = alias + (extension ? '.' + extension : '');
-
-  //const unalias = unpath + (dirname ? ('/' + dirname) : '') + (filename ? '/' : '');
+  const dirname = __def(src.dirname, dst.dirname, filename ? '/' : '');
 
   const path = dirname + filename;
   const unalias = unpath + dirname;

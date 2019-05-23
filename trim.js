@@ -1,6 +1,6 @@
 /**
  * @overview trim
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 const trimProvider = require('./trimProvider');
 

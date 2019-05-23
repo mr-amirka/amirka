@@ -1,6 +1,6 @@
 /**
  * @overview mergeDepth
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 /**

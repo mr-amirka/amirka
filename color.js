@@ -1,6 +1,6 @@
 /**
  * @overview color
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const round = Math.round;

@@ -1,7 +1,7 @@
 /**
  * @overview escapedSplitProvider
  * Разбивает строку на подстроки с учетом экранирования служебного символа
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const isRegExp = require('./isRegExp');

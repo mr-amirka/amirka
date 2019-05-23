@@ -5,7 +5,7 @@
  * @example
  * variance('В(олод|ас)я'); => [ 'Володя', 'Вася' ]
  *
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 declare namespace variance {

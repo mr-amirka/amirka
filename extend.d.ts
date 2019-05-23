@@ -1,6 +1,6 @@
 /**
  * @overview extend
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 declare const extend: (dst: any, src: any) => any;

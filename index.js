@@ -1,6 +1,6 @@
 /**
  * @overview minimalist utils
- * @author Absolutely Amir <mr.amirka@ya.ru>
+ * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
 const merge = require('./merge');
