@@ -48,6 +48,7 @@ class Deal {
 			clear();
 		};
 		const reject = (_subject) => {
+      //console.error(_subject);
 			if (done) return;
 			done = error = true;
 			eachApply(poolReject, [ subject = _subject ]);
@@ -62,6 +63,7 @@ class Deal {
 					const _cancel = executor(_resolve, _reject);
 					if (typeof _cancel === 'function') __cancel = _cancel;
 				} catch (ex) {
+          //console.error(ex);
 					_reject(ex);
 				}
 			}) : cancelNoop;
@@ -99,6 +101,7 @@ class Deal {
 		    			try {
 		  					__resolve(onResolve(subject));
 		  				} catch (ex) {
+                //console.error(ex);
 		  					__reject(ex);
 		  				}
 		    		} : __resolve,
@@ -107,6 +110,7 @@ class Deal {
 		    			try {
 		  					__resolve(onReject(error));
 		  				} catch (ex) {
+                //console.error(ex);
 		  					__reject(ex);
 		  				}
 		    		} : __reject
