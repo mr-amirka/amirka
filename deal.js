@@ -125,17 +125,17 @@ class Deal {
 		self.finally = (onFinally) => {
 			return __then(
 				(subject) => {
-          executeTry(onFinally, [ null, subject ]);
+          onFinally && executeTry(onFinally, [ null, subject ]);
 					return subject;
 				},
 				(subject) => {
-          executeTry(onFinally, [ subject ]);
+          onFinally && executeTry(onFinally, [ subject ]);
 					throw subject;
 				},
         () => {
-          executeTry(onFinally);
+          onFinally && executeTry(onFinally);
 				}
-			);
+			)
 	  };
     self.watchCancel = (onCancel) => __then(null, null, null, onCancel);;
 	}
