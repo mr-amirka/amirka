@@ -54,6 +54,7 @@ merge([
     isEmpty: require('./isEmpty'),
     isInsign: require('./isInsign'),
     isString: require('./isString'),
+    isNumber: require('./isNumber'),
     isPlainObject: require('./isPlainObject'),
     isObject: require('./isObject'),
     isArray: require('./isArray'),
