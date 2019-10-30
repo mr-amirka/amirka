@@ -3,9 +3,9 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-const splice = [].splice;
-module.exports = (items, v) => {
-  let length = items.length, i = length;
-  for (; i--;) v === items[i] && splice.call(items, i, 1);
-  return length - items.length;
+const __splice = [].splice;
+module.exports = (collection, v) => {
+  let length = collection.length, i = length;
+  while (i--) v === collection[i] && __splice.call(collection, i, 1);
+  return length - collection.length;
 };

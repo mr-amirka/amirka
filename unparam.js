@@ -5,7 +5,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-const isObject = require('./isObject');
+const isObjectLike = require('./isObjectLike');
 const breakup = require('./breakup');
 const unparam = module.exports = s => {
   const type = typeof s;
@@ -36,7 +36,7 @@ const base = unparam.base = s => {
     c--;
     w = expVarname.exec(k);
     if (!w || !(k = w[1]) || w.length < 1) continue;
-    if (!isObject(d = r[k])) d = r[k] = {};
+    if (!isObjectLike(d = r[k])) d = r[k] = {};
     for (j = 0, q = b.length; j < q; j++) {
       if ((w = b[j]).length < 1) {
         w = 0;
@@ -47,7 +47,7 @@ const base = unparam.base = s => {
       if (j == c) {
         d[w] = v;
       } else {
-        d = isObject(t = d[w]) ? t : (d[w] = {});
+        d = isObjectLike(t = d[w]) ? t : (d[w] = {});
       }
     }
   }

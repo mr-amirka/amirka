@@ -1,5 +1,5 @@
 
-const immediate = require('./immediate');
+const defer = require('./defer');
 module.exports = (fn, result) => {
 	let hasDebounce, args, self;
 	const exec = () => {
@@ -11,7 +11,7 @@ module.exports = (fn, result) => {
     args = arguments;
 		if (hasDebounce) return result;
 		hasDebounce = true;
-    immediate(exec);
+    defer(exec);
 		return result;
 	};
 };

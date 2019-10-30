@@ -4,7 +4,7 @@
  */
 
 const isPlainObject = require('./isPlainObject');
-const isObject = require('./isObject');
+const isObjectLike = require('./isObjectLike');
 const isDefined = require('./isDefined');
 const extend = require('./extend');
 
@@ -25,13 +25,17 @@ const extend = require('./extend');
  *
  * var dst = {};
  * merge([ obj1, obj2 ], dst);
+ *
+ * Если в коллекции только скалярные значения, то возвращает последнее значимое скалярное значение
+ * Если в коллекции есть хотя бы один объект, то возвращает смердженный из элементов коллекции объект
+ * Если первый аргумент не является массивом, то он трактуется как единственный элемент коллекции
  */
 
-module.exports = (mergingSrc, dst) => {
-  if (!isObject(mergingSrc)) return isDefined(dst) ? dst : mergingSrc;
-  if (!(mergingSrc instanceof Array)) return extend(dst, mergingSrc);
+module.exports = (mergingSrc, dst, asArray) => {
+  if (!isObjectLike(mergingSrc)) return isDefined(dst) ? dst : mergingSrc;
+  if (!(asArray || mergingSrc && (mergingSrc instanceof Array))) return extend(dst, mergingSrc);
   const length = mergingSrc.length;
-  let last, tmp = isObject(dst) ? dst : undefined;
+  let last, tmp = isObjectLike(dst) ? dst : undefined;
   for (let v, i = 0; i < length; i++) {
     if (isPlainObject(v = mergingSrc[i])) {
       tmp = extend(tmp || {}, v);

@@ -1,4 +1,5 @@
 
 const filter = require('./filter');
+const keys = require('./keys');
 
-module.exports = (flags) => Object.keys(filter(flags));
+module.exports = (flags) => keys(filter(flags));

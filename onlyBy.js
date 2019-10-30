@@ -10,7 +10,7 @@ module.exports = (collection, iteratee, compare, hasArray) => {
   const _iteratee = iterateeNormalize(iteratee);
   const _compare = normalize(compare);
   let value, item, tmpItem, tmpValue;
-  if (hasArray || collection instanceof Array) {
+  if (hasArray || collection && (collection instanceof Array)) {
     const length = collection.length;
     for (let i = 0; i < length; i++) {
       tmpValue = _iteratee(tmpItem = collection[i], i);

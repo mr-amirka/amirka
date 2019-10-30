@@ -36,8 +36,7 @@ class Deal {
 				return deferApply(() => {
 					if (!isPromise(subject)) return onResolve(subject);
 					const next = subject.then(onResolve, onReject);
-					const _cancel = next && next.cancel;
-					if (_cancel) innerCancel = _cancel;
+					innerCancel = next && next.cancel || cancelNoop;
 				});
 			};
 		};
@@ -67,12 +66,11 @@ class Deal {
 					_reject(ex);
 				}
 			}) : cancelNoop;
-	    const cancel = () => {
+	    return () => {
       	innerCancel();
       	__cancel();
       	clear();
 	    };
-	    return cancel;
 		});
 
 		const __chain = (onResolve, onReject) => {
@@ -137,7 +135,7 @@ class Deal {
 				}
 			)
 	  };
-    self.watchCancel = (onCancel) => __then(null, null, null, onCancel);;
+    self.watchCancel = (onCancel) => __then(null, null, onCancel);;
 	}
 
 	static resolve(subject, deferApply) {
@@ -150,7 +148,6 @@ class Deal {
 		return new Deal((resolve, reject) => {
 			let stop;
 			const aggregateDeals = [];
-	    const childs = {};
 	    const clear = () => {
 	      stop = true;
 	      aggregateDeals.forEach(deal => deal.cancel && deal.cancel());
@@ -179,8 +176,6 @@ class Deal {
 		return new Deal((resolve, reject) => {
 			let stop;
 			const aggregateDeals = [];
-	    const childs = {};
-	    let loadedK = 0;
 	    const clear = () => {
 	      stop = true;
 	      aggregateDeals.forEach(deal => deal.cancel && deal.cancel());
@@ -274,8 +269,6 @@ const subscribleProvider = (executor) => {
 		return cancel;
 	};
 };
-
-
 
 const reduceAsync = (src, reducer, done, dst) => {
 	let loaded = 0;

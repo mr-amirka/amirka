@@ -5,13 +5,13 @@
 
 const isArray = require('./isArray');
 const isPlainObject = require('./isPlainObject');
-const isObject = require('./isObject');
+const isObjectLike = require('./isObjectLike');
 const isDefined = require('./isDefined');
 const complement = require('./complement');
 
 /**
  * Объединяет массив значений в одно значение до заданной глубины
- * @param mergingSrc {any} - значение или массив значений, которые нужно смерджить в один
+ * @param mergingCollection {array[any]|any} - значение или массив значений, которые нужно смерджить в одно
  * @param dst {any} - объект, в который осуществляется мердж или значение по умолчанию
  * @param depth {number|undefined} - глубина мерджа для вложенных объектов
  * Возвращает смердженный объект
@@ -28,14 +28,14 @@ const complement = require('./complement');
  * var dst = {};
  * mergeDepth([ obj1, obj2 ], dst);
  */
-module.exports = (mergingSrc, dst, depth) => {
+module.exports = (mergingCollection, dst, depth) => {
   depth || (depth = 0);
   if (depth < 0) return dst;
-  if (!isObject(mergingSrc)) return isDefined(dst) ? dst : mergingSrc;;
-  if (!isArray(mergingSrc)) return complement(dst, mergingSrc, depth);
-  let last, tmp = isObject(dst) ? dst : undefined;
-  for (let v, i = mergingSrc.length; i--;) {
-    if (isPlainObject(v = mergingSrc[i])) {
+  if (!isObjectLike(mergingCollection)) return isDefined(dst) ? dst : mergingCollection;;
+  if (!isArray(mergingCollection)) return complement(dst, mergingCollection, depth);
+  let last, tmp = isObjectLike(dst) ? dst : undefined;
+  for (let v, i = mergingCollection.length; i--;) {
+    if (isPlainObject(v = mergingCollection[i])) {
       tmp = complement(tmp || {}, v, depth);
     } else {
       if (isDefined(v)) last = v;

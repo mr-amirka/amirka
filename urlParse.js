@@ -16,12 +16,18 @@ const urlParse = module.exports = (_href) => {
   const unhash = parts[0];
   const unsearch = (parts = breakup(unhash, '?'))[0];
   const search = parts[1];
+
+  if (!search && unsearch.indexOf('=') > -1) {
+    search = unsearch;
+    unsearch = '';
+  }
+
   const query = unparam(search);
   const child = hash ? urlParse(hash) : null;
   const protocol = (parts = breakup(unsearch, '://' ,true))[0];
-  const rootPath = parts[1];
+  const basePath = parts[1];
 
-  parts = protocol ? breakup(rootPath, '/') : [ '', rootPath ];
+  parts = protocol ? breakup(basePath, '/') : [ '', basePath ];
 
   const path = (parts[2] ? '/' : '') + parts[1];
 
@@ -55,6 +61,7 @@ const urlParse = module.exports = (_href) => {
     hash,
     query,
     protocol,
+    basePath,
     path,
     unpath,
     hostname,
@@ -72,8 +79,7 @@ const urlParse = module.exports = (_href) => {
     login,
     password,
     email,
-    child,
-    rootPath
+    child
   };
 };
 

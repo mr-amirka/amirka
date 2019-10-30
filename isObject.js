@@ -3,5 +3,4 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-const re = /object|function/;
-module.exports = v => v && re.test(typeof v);
+module.exports = v => v && typeof v == 'object';

@@ -1,6 +1,20 @@
 /**
  * @overview complement
  * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @description
+ * Расширяет не целевой объект полями другого объекта до указанной глубины, но не заменяет поля,
+ * которые уже заполнены скалярными значениями
+ *
+ * Более эффективный способ глубокого объединения объектов, ибо так производится меньше копирований,
+ * чем при обычном глубоком копировании
+ * @example
+ * complement({
+ *    name: "Vasya"
+ * }, {
+ *    name: "Volodya",
+ *    age: 30
+ * }) // => {name: "Vasya", age: 30}
+ *
  */
 
 const isPlainObject = require('./isPlainObject');
@@ -12,8 +26,7 @@ const complement = module.exports = (dst, src, depth) => {
     if (dst !== undefined) return dst;
     dst = {};
   }
-  __complement(dst, src, depth);
-  return dst;
+  return __complement(dst, src, depth);
 };
 const __complement = complement.base = (dst, src, depth) => {
   depth--;

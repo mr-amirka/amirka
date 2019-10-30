@@ -4,4 +4,4 @@
  *
  */
 
-module.exports = v => v instanceof RegExp;
+module.exports = v => v && (v instanceof RegExp);

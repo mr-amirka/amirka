@@ -3,7 +3,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  *
  * @example
- * flags([ 'apple', 'ban', 'test.use' ]); // =>
+ * flagsSet([ 'apple', 'ban', 'test.use' ]); // =>
  * {
  *   apple: true,
  *   ban: true,

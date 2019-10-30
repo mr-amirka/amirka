@@ -6,6 +6,8 @@
 const isLength = require('./isLength');
 const execute = require('./executeTry');
 module.exports = (funcs, args, context) => {
+  context || (context = null);
+  args || (args = []);
   const length = funcs && funcs.length;
   if (isLength(length)) {
     for (let i = 0; i < length; i++) execute(funcs[i], args, context);

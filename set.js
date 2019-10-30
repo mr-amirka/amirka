@@ -3,7 +3,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-const isObject = require('./isObject');
+const isObjectLike = require('./isObjectLike');
 const isIndex = require('./isIndex');
 const set = module.exports = (ctx, path, value) => path ? base(ctx, ('' + path).split('.'), value) : ctx;
 const base = set.base = (ctx, path, value) => {
@@ -13,7 +13,7 @@ const base = set.base = (ctx, path, value) => {
   while (nested && i < lastIndex) {
     k = nextKey;
     nextKey = path[++i];
-    nested = isObject(next = nested[k]) ? next : (nested[k] = isIndex(nextKey) ? [] : {});
+    nested = isObjectLike(next = nested[k]) ? next : (nested[k] = isIndex(nextKey) ? [] : {});
   }
   nested[nextKey] = value;
   return ctx;

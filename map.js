@@ -6,10 +6,10 @@
 const iterateeNormalize = require('./iterateeNormalize');
 
 module.exports = (collection, iteratee, dst) => {
-  const hasArray = dst instanceof Array;
+  const hasArray = dst && (dst instanceof Array);
   if (!collection) return dst || {};
   const _iteratee = iterateeNormalize(iteratee);
-  if (hasArray || collection instanceof Array) {
+  if (hasArray || collectio && (collection instanceof Array)) {
     const length = collection.length || 0;
     dst || (dst = new Array(length));
     for (let i = 0; i < length; i++) dst[i] = _iteratee(collection[i], i);

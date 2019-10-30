@@ -56,6 +56,7 @@ merge([
     isString: require('./isString'),
     isNumber: require('./isNumber'),
     isPlainObject: require('./isPlainObject'),
+    isObjectLike: require('./isObjectLike'),
     isObject: require('./isObject'),
     isArray: require('./isArray'),
     isPromise: require('./isPromise'),

@@ -19,9 +19,7 @@ const __push = [].push;
 const __build = variance.build = (childs) => {
 	const length = childs.length;
 	const output = [];
-	let parts;
-	let child;
-	let end, pi, pl, i = 0;
+	let parts, child, end, pi, pl, i = 0;
 	let next, prev = [ '' ];
 	for (; i < length; i++) {
 		child = childs[i];

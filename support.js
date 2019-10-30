@@ -4,5 +4,9 @@
  */
 
 const cache = {};
-module.exports = (varName) =>
-  (cache[varName] || (cache[varName] = new Function('try{return ' + varName + ';}catch(ex){}')))();
+module.exports = function(expression) {
+  try {
+    return (cache[expression] || (cache[expression] = new Function('return ' + expression)))();
+  } catch(ex) {}
+  return null;
+};

@@ -1,10 +1,9 @@
 
 module.exports = (collection, iteratee, accumulator, hasArray) => {
-  if (hasArray || collection instanceof Array) {
-    const length = collection.length;
-    for (let i = 0; i < length; i++) accumulator = iteratee(accumulator, collection[i], i);
+  if (hasArray || collection && (collection instanceof Array)) {
+    for (var length = collection && collection.length || 0, i = 0; i < length; i++) accumulator = iteratee(accumulator, collection[i], i);
   } else {
-    for (let k in collection) accumulator = iteratee(accumulator, collection[k], k);
+    for (var k in collection) accumulator = iteratee(accumulator, collection[k], k);
   }
   return accumulator;
 };

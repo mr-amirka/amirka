@@ -3,4 +3,5 @@
  * @author Absalyamov Amir <mr.amirka@ya.ru>
  */
 
-module.exports = v => Object.values(v).length;
+const values = require('./values');
+module.exports = v => values(v).length;
