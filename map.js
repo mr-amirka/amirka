@@ -9,7 +9,7 @@ module.exports = (collection, iteratee, dst) => {
   const hasArray = dst && (dst instanceof Array);
   if (!collection) return dst || {};
   const _iteratee = iterateeNormalize(iteratee);
-  if (hasArray || collectio && (collection instanceof Array)) {
+  if (hasArray || collection && (collection instanceof Array)) {
     const length = collection.length || 0;
     dst || (dst = new Array(length));
     for (let i = 0; i < length; i++) dst[i] = _iteratee(collection[i], i);
