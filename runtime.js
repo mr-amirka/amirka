@@ -2,7 +2,7 @@ const support = require('./support');
 const time = require('./time');
 
 module.exports = support('performance.now')
-  ? (last => performance.now() - (last || 0))
+  ? (() => performance.now())
   : ((start) => {
-    return last => time() - start - (last || 0);
+    return () => time() - start;
   })(time());

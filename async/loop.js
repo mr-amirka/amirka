@@ -1,6 +1,6 @@
 const immediate = require('../immediate');
 const noop = require('../noop');
-const Deal = require('../deal');
+const Deal = require('../CancelablePromise');
 const isPromise = require('../isPromise');
 
 module.exports = (checkFn, statementFn, __immediate) => {
@@ -11,7 +11,9 @@ module.exports = (checkFn, statementFn, __immediate) => {
       try {
         if (checkFn()) {
           const result = statementFn();
-          cancel = isPromise(result) ? result.then(next, reject).cancel || noop : __immediate(next);
+          cancel = isPromise(result)
+            ? result.then(next, reject).cancel || noop
+            : __immediate(next);
         } else resolve();
       } catch (ex) {
         reject(ex);
@@ -22,6 +24,5 @@ module.exports = (checkFn, statementFn, __immediate) => {
     return () => {
       cancel();
     };
-
   }, __immediate);
 };

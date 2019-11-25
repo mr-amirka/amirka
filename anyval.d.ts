@@ -1,34 +1,38 @@
 /**
  * @overview anyval
  * @author Amir Absolutely <mr.amirka@ya.ru>
- * Преобразовывает значение в число
  */
 
 /**
  * @description
- * @param value {any} - значение
- * @param default? {Number} - значение по умолчанию, если значение нельзя преобразовать
- * @param minValue? {Number} - минимальная допустимая величина
- * @param maxValue? {Number} - максимальная допустимая величина
- *
- * Возвращает число
+ * Converts a value to an integer
  *
  * @example
+ * ```js
+ * intval('12'); // => 12
  *
- * _.intval('12'); // => 12
+ * intval('12', 0, -Infinity, 10); // => 10
  *
- * _.intval('12', 0, -Infinity, 10); // => 10
+ * intval('12dsafd', 0, -Infinity, 10); // => 0
  *
- * _.intval('12dsafd', 0, -Infinity, 10); // => 0
+ * intval('12dsafd', 5, -Infinity, 10); // => 5
  *
- * _.intval('12dsafd', 5, -Infinity, 10); // => 5
+ * intval('-17', 5, -Infinity, 10); // => -17
  *
- * _.intval('-17', 5, -Infinity, 10); // => -17
- *
- * _.intval('-17', 5, -10, 10); // => -10
- *
- * _.intval(value, default, min, max); // => ...
+ * intval('-17', 5, -10, 10); // => -10
+ * ```
  */
+export function intval(value: any, def?: number, minVal?: number, maxVal?: number): number;
 
-export declare const intval: (value: any, def?: number, minVal?: number, maxVal?: number) => number;
-export declare const floatval: (value: any, def?: number, minVal?: number, maxVal?: number) => number;
+/**
+ * @description
+ * Converts a value to an float
+ *
+ * @example
+ * ```js
+ * floatval('1.32'); // => 1.32
+ *
+ * floatval('13.67', 0, -Infinity, 9.9); // => 9.9
+ * ```
+ */
+export declare function floatval(value: any, def?: number, minVal?: number, maxVal?: number): number;

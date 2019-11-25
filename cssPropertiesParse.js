@@ -1,7 +1,6 @@
 /**
  * @overview css-parse
- * - парсит сss
- * TODO: не учитывает разделители внутри ковычек
+ * быстро парсит CSS без учета спец.символов внутри ковычек.
  * @author Absalyamov Amir <mr.amirka@ya.ru>
  */
 

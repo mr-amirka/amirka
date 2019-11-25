@@ -1,8 +1,8 @@
-
 const eachApply = require('./eachApply');
 module.exports = (subscriptions) => () => {
-  if (subscriptions) {
-    eachApply(subscriptions);
+  const _subscriptions = subscriptions;
+  if (_subscriptions) {
     subscriptions = null;
+    eachApply(_subscriptions);
   }
 };

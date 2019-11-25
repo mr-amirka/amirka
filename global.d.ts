@@ -1,18 +1,36 @@
 
-interface fn {
-	(...args: any[]): any
+interface IFlagsMap {
+  [name: string]: boolean;
 }
 
-interface FlagsMap {
-	[name: string]: boolean;
-}
+  /**
+   * @description
+   * any function
+   */
+type fn = (...args: any[]) => any;
 
-interface eachApply {
-	(funcs: fn[] | {[key: string]: fn}, args?: any[], context?: any): any;
-}
+  /**
+   * @description
+   * The function, the call of which canceled the subscription to an event or execute destructor
+   */
+type cancel = fn;
+
+  /**
+   * @description
+   * It execute functions array
+   */
+type eachApply = (funcs: fn[] | {[key: string]: fn}, args?: any[], context?: any) => any;
+
+  /**
+   * @description
+   * Performs defer function execution
+   */
+type defer = (callback: fn) => cancel;
 
 export {
+  IFlagsMap,
   fn,
-  FlagsMap,
-  eachApply
-}
+  cancel,
+  eachApply,
+  defer,
+};

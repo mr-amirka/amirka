@@ -1,7 +1,6 @@
-
-const __splice = [].splice;
-const __indexOf = [].indexOf;
+const indexOf = require('./indexOf');
+const push = require('./push');
 module.exports = (collection, item) => {
-  __indexOf.call(collection, item) > -1 || __push.call(collection, item);
+  indexOf(collection, item) > -1 || push(collection, item);
   return collection;
 };

@@ -1,10 +1,5 @@
-/**
- * @overview push
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
- 
-module.exports = function (dst) {
-  __push.apply(dst, __slice.call(arguments, 1));
+module.exports = function(dst) {
+  __push.apply(dst, __slice.call(arguments, 1)); // eslint-disable-line
   return dst;
 };
 const __push = [].push;

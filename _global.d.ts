@@ -3,5 +3,13 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-declare const _global: boolean;
+ /**
+  * @desctiption
+  * Global oblect:
+  *   - 'window' for browser
+  *   - 'self' for webworker
+  *   - 'global' for node.js
+  *   - 'this' or 'null' if other not support
+  */
+declare const _global: any;
 export = _global;

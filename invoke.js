@@ -7,7 +7,7 @@ const invoke = module.exports = (object, path, args, context) => base(
   args,
   context
 );
-const invoke = invoke.base = (object, path, args, context) => {
+const base = invoke.base = (object, path, args, context) => {
 	const length = path.length;
 	let i = 0;
   let fn = object;

@@ -10,6 +10,7 @@ const isDefined = require('./isDefined');
 const complement = require('./complement');
 
 /**
+ * @description
  * Объединяет массив значений в одно значение до заданной глубины
  * @param mergingCollection {array[any]|any} - значение или массив значений, которые нужно смерджить в одно
  * @param dst {any} - объект, в который осуществляется мердж или значение по умолчанию

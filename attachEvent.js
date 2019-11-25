@@ -3,7 +3,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-var noop = require('./noop');
+const noop = require('./noop');
 module.exports = function(node, eventName, callback, options) {
   if (node.addEventListener) {
     node.addEventListener(eventName, callback, options || (options = false));

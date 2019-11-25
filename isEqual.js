@@ -3,7 +3,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-module.exports = (src1, src2, depth) => !isNotEqual(src1, src2, depth || 10);
+module.exports = (src1, src2, depth) => !isNotEqual(src1, src2, depth || 0);
 const isNotEqual = (src1, src2, depth) => {
   if (src1 === src2) return;
   if (depth < 0) return true;

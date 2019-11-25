@@ -8,9 +8,10 @@ module.exports = (funcs, args, context) => {
   context || (context = null);
   args || (args = []);
   const length = funcs && funcs.length;
+  let i;
   if (isLength(length)) {
-    for (let i = 0; i < length; i++) funcs[i].apply(context, args);
+    for (i = 0; i < length; i++) funcs[i].apply(context, args);
   } else {
-    for (let k in funcs) funcs[k].apply(context, args);
+    for (i in funcs) funcs[i].apply(context, args); // eslint-disable-line
   }
 };
