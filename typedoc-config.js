@@ -15,7 +15,7 @@ module.exports = {
   plugin: 'none',
   listInvalidSymbolLinks: true,
   exclude: [
-    "node_modules",
-    "**/*.tmp*"
-  ]
+    'node_modules',
+    '**/*.tmp*',
+  ],
 };

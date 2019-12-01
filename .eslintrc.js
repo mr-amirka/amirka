@@ -16,9 +16,9 @@ module.exports = {
         MethodDefinition: false,
         ClassDeclaration: false,
         ArrowFunctionExpression: false,
-        FunctionExpression: false
-      }
-    }]
+        FunctionExpression: false,
+      },
+    }],
   },
   globals: {
     Atomics: 'readonly',
@@ -30,5 +30,5 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
-  ]
-}
+  ],
+};

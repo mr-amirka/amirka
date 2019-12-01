@@ -1,7 +1,9 @@
 /**
  * @overview routeParseProvider
  * @example
- * var routeParse = routeParseProvider('/(users|friends):api.method/([^/]*):uid/(pictures)');
+ * var routeParse = routeParseProvider(
+ *    '/(users|friends):api.method/([^/]*):uid/(pictures)'
+ * );
  * var params = {};
  * if (routeParse('/users/id6574334245/pictures', params)) {
  *   console.log(params); // =>
@@ -20,6 +22,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-import { regexpMapperProvider } from './regexpMapperProvider';
-declare const routeParseProvider: (route: string, defaultValueExp?: string) => regexpMapperProvider;
+import {regexpMapperProvider} from './regexpMapperProvider';
+declare const routeParseProvider: (route: string, defaultValueExp?: string)
+  => regexpMapperProvider;
 export = routeParseProvider;

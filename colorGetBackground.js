@@ -3,6 +3,7 @@ const splitProvider = require('./splitProvider');
 
 const regexpBg = /^([A-Fa-f0-9]+)(p([0-9]+)([a-z%]*))?$/i;
 const splitDelimeter = splitProvider('-');
+const splitSuffix = splitProvider(/_+/);
 
 module.exports = (input) => {
   let radial = '', repeating, matches, angle = 180, i, vi, v = input; // eslint-disable-line
@@ -13,7 +14,7 @@ module.exports = (input) => {
   if (matches = /^(.*)((\-r)_?(.*)|\-g(\-?[0-9]+))$/i.exec(v)) {
     v = matches[1];
     if (matches[3]) {
-      radial = (matches[4] || 'circle').split(/_+/gi).join(' ');
+      radial = splitSuffix(matches[4] || 'circle').join(' ');
     } else {
       vi = matches[5];
       angle = (angle + (vi ? parseInt(vi) : 0)) % 360;
