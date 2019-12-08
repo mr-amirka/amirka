@@ -1,5 +1,5 @@
 const noop = require('../noop');
-const combine = require('../emitterProvider/combine');
+const combine = require('../Emitter/combine');
 
 module.exports = ({ PureComponent }) => {
 

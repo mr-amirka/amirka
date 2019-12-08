@@ -1,6 +1,6 @@
 const forIn = require('../forIn');
 const forEach = require('../forEach');
-const emitterProvider = require('../emitterProvider');
+const emitterProvider = require('../Emitter');
 
 module.exports = ({request, essences, customs, keyValues}) => {
   const errors$ = emitterProvider([]);

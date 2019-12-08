@@ -4,7 +4,7 @@
  *
  */
 
-const emitterProvider = require('../emitterProvider');
+const emitterProvider = require('../Emitter');
 const expires = 400 * 86400000;
 const fromJson = (s) => {
   try { return JSON.parse(s); } catch(e) {}

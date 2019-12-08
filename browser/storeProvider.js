@@ -3,7 +3,7 @@ const noop = require('../noop');
 const isFunction = require('../isFunction');
 const aggregateSubscriptions = require('../aggregateSubscriptions');
 
-const emitterProvider = require('../emitterProvider');
+const emitterProvider = require('../Emitter');
 const isEmitter = emitterProvider.isEmitter;
 
 module.exports = (storage, prefix) => {

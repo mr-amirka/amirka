@@ -4,7 +4,7 @@
  */
 
 const forEach = require('../forEach');
-const emitterProvider = require('../emitterProvider');
+const emitterProvider = require('../Emitter');
 
 const fromJson = (s) => {
   try { return JSON.parse(s); } catch(e) {}

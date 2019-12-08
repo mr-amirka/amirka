@@ -47,7 +47,7 @@ const defaultOptions = {
   method: 'GET',
   timeout: 200000,
   responseType: 'json',
-  type: 'urlencoded',
+  encoding: 'urlencoded',
   tryLimit: 0,
   tryDelay: 10000,
   headers: {
@@ -67,15 +67,15 @@ const base = request.base = (_options) => {
   const method = _options.method;
   const timeout = _options.timeout;
   const responseType = _options.responseType;
-  const type = _options.type.toLowerCase();
-  const typeConfig = defaultTypes[type];
+  const encoding = _options.encoding.toLowerCase();
+  const encodingConfig = defaultTypes[encoding];
   const _url = _options.href;
 
   let headers = _options.headers;
   let encodedBody = body || '';
-  if (typeConfig && typeof typeConfig === 'object') {
-    headers = merge([headers, typeConfig.headers], {});
-    const encode = typeConfig.encode;
+  if (encodingConfig && typeof encodingConfig === 'object') {
+    headers = merge([headers, encodingConfig.headers], {});
+    const encode = encodingConfig.encode;
     if (typeof encode === 'function') encodedBody = encode(encodedBody);
   }
 

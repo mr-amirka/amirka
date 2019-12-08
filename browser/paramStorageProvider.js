@@ -8,7 +8,7 @@ const isEqual = require('../isEqual');
 const unparam = require('../unparam');
 const urlParse = require('../urlParse');
 const urlExtend = require('../urlExtend');
-const emitterProvider = require('../emitterProvider');
+const emitterProvider = require('../Emitter');
 
 module.exports = (win, forHash) => {
   const instance = emitterProvider();

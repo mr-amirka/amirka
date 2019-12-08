@@ -1,3 +1,10 @@
+/**
+ * @overview Emitter
+ * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @description
+ * альтернатива rxjs
+ */
+
 import {cancel} from "../global";
 import {Emitter} from "./emitter";
 

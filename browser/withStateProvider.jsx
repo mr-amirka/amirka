@@ -1,4 +1,4 @@
-const combine = require('../emitterProvider/combine');
+const combine = require('../Emitter/combine');
 
 module.exports = ({ dom, PureComponent }) => {
 

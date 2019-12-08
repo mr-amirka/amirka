@@ -4,7 +4,9 @@
  */
 
 const isLength = require('./isLength');
-const get = module.exports = (ctx, path, def) => path ? (ctx ? base(ctx, ('' + path).split('.'), def) : def) : ctx;
+const get = module.exports = (ctx, path, def) => path
+  ? (ctx ? base(ctx, ('' + path).split('.'), def) : def)
+  : ctx;
 const base = get.base = (ctx, path, def) => {
   const length = path.length;
   let i = 0;
@@ -35,10 +37,12 @@ const base = get.base = (ctx, path, def) => {
  *  getByNull(person) // => person
  *
  */
-get.getter = v => (handlers[typeof v] || noopHandle)(v);
-const noopHandle = v => v;
-const arrayHandleProvider = path => v => base(v, path);
+get.getter = (v) => v ? (handlers[typeof v] || noopHandle)(v) : v;
+const noopHandle = (v) => v;
+const arrayHandleProvider = (path) => (v) => base(v, path);
 const handlers = {
-  'string': v => arrayHandleProvider(v.split('.')),
-  'object': v => v && isLength(v.length) ? arrayHandleProvider(v) : noopHandle
+  'string': (v) => arrayHandleProvider(v.split('.')),
+  'object': (v) => v && isLength(v.length)
+    ? arrayHandleProvider(v)
+    : noopHandle,
 };

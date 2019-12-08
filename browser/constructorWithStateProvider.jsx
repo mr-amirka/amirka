@@ -18,7 +18,7 @@ const AnyComponent = constructorWithState((self, setState) => {
 */
 
 
-const combine = require('../emitterProvider/combine');
+const combine = require('../Emitter/combine');
 
 module.exports = (_) => {
   const { PureComponent } = _;

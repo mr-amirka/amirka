@@ -5,15 +5,15 @@ const isObject = require('../isObject');
 const set = require('../set');
 const get = require('../get');
 const aggregateSubscriptions = require('../aggregateSubscriptions');
-const emitterProvider = require('./pipe');
-const {fork, isEmitter} = emitterProvider;
+const Emitter = require('./index');
+const {isEmitter} = Emitter;
 const setBase = set.base;
 const getBase = get.base;
 
 const EMITTER_COMBINE_DEFAULT_DEPTH = 10;
 
 const combine = module.exports = (emitters) => {
-  if (!isObject(emitters)) return emitterProvider(emitters);
+  if (!isObject(emitters)) return new Emitter(emitters);
   each(emitters, (instance, key) => {
     instance === undefined && console.warn('WARNING: ' + key + ' is undefined');
   });
@@ -37,7 +37,7 @@ const combine = module.exports = (emitters) => {
     _subscription();
     _subscription = null;
   }
-  return fork({
+  return new Emitter({
     emit: (v) => combineEmitBase(emits, v, EMITTER_COMBINE_DEFAULT_DEPTH),
     getValue: () => _subscription ? _value : getValue(),
     on: (watcher) => {
@@ -75,7 +75,7 @@ function combineEmitBase(emit, src, depth) {
 
 combine.some = (emitters, _value) => {
   const ons = map(emitters, 'on');
-  return fork({
+  return new Emitter({
     getValue: () => _value,
     on: (watcher) => aggregateSubscriptions(map(ons, (on) => on((v) => {
       watcher(_value = v);

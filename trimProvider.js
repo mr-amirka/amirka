@@ -6,7 +6,7 @@ module.exports = (pattern, mode) => {
     ? pattern.toString().replace(regexpRegexpTrim, '')
     : escapeRegExp(pattern);
   const regexp = new RegExp((handles[mode] || defaultHandle)(p), 'g');
-  return (v) => v.replace(regexp, '');
+  return (v) => (v || '').replace(regexp, '');
 };
 const regexpRegexpTrim = /^\/|\/[^\/]*$/g;
 const handles = {

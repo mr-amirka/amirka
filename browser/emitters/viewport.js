@@ -1,5 +1,5 @@
 const attachEvent = require('../attachEvent');
-const emitterProvider = require('../emitterProvider');
+const emitterProvider = require('../Emitter');
 const w = window, d = w.document, de = d.documentElement; //eslint-disable-line
 function getValue() {
   return [

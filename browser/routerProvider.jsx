@@ -16,7 +16,7 @@ const routeParseProvider = require('../routeParseProvider');
 const isMatch = require('../isMatch');
 const getClass = require('../getClass');
 
-const emitterProvider = require('../emitterProvider');
+const emitterProvider = require('../Emitter');
 
 /*
 const withoutFields = [ 'hostname', 'protocol', 'port', 'username', 'password' ];
