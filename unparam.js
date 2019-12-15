@@ -6,7 +6,7 @@
  */
 
 const isObjectLike = require('./isObjectLike');
-const breakup = require('./breakup');
+const half = require('./half');
 const unparam = module.exports = s => {
   const type = typeof s;
   return type === 'string' ? base(s) : (type === 'object' ? s : {});
@@ -19,13 +19,13 @@ const expSpace = /\+/g;
 const expBrackets = /\[(.*?)\]/g;
 const expVarname = /(.+?)\[/;
 const base = unparam.base = s => {
-  const a = decodeURIComponent(breakup(s, '?', true)[1]).split('&');
+  const a = decodeURIComponent(half(s, '?', true)[1]).split('&');
   const l = a.length;
   const r = {};
   if (l < 1) return r;
   for (let w, t, k, v, b, c, d, j, n, ni, q, i = 0; i < l; i++) {
     if ((w = a[i]).length < 1) continue;
-    if ((k = (w = breakup(w, '='))[0]).length < 1) continue;
+    if ((k = (w = half(w, '='))[0]).length < 1) continue;
     v = decode(w[1].replace(expSpace, ' '));
     b = [];
     while (w = expBrackets.exec(k)) b.push(w[1]);

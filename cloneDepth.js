@@ -1,31 +1,23 @@
-/**
- * @overview cloneDepth
- * Копирует объект до определенной вторым аргументом глубины
- *
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
+const isArray = require('./isArray');
+const isObject = require('./isObject');
 
-
-const isLength = require('./isLength');
-
-const cloneDepth = module.exports = (src, depth) => __cloneDepth(src, depth || 0);
-const __cloneDepth = cloneDepth.base = (src, depth) => {
+module.exports = cloneDepth;
+cloneDepth.base = base;
+function cloneDepth(src, depth) {
+  return base(src, depth || 0);
+}
+function base(src, depth) {
   if (depth < 0) return src;
   depth--;
-  if (src && typeof src === 'object') {
-    if (Object.getPrototypeOf(src)) {
-      let i = src.length;
-      if (isLength(i)) {
-        let dst = new Array(i);
-        for (; i--;) dst[i] = __cloneDepth(src[i], depth);
-        return dst;
-      }
-    } else {
-      let k, dst = {};
-      for (k in src) dst[k] = __cloneDepth(src[k], depth);
+  let k, dst; // eslint-disable-line
+  if (isObject(src)) {
+    if (isArray(src)) {
+      for (dst = new Array(k = src.length); k--;) dst[i] = base(src[k], depth);
       return dst;
     }
-
+    dst = {};
+    for (k in src) dst[k] = base(src[k], depth); // eslint-disable-line
+    return dst;
   }
   return src;
 };

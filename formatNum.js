@@ -1,5 +1,5 @@
 
-const breakup = require('./breakup');
+const half = require('./half');
 
 module.exports = (v, fixed, dot, space) => {
   let val;
@@ -7,7 +7,7 @@ module.exports = (v, fixed, dot, space) => {
   space === undefined && (space = ' ');
   fixed === undefined && (fixed = 0);
   val = val.toFixed(fixed);
-  const parts = breakup(val, '.');
+  const parts = half(val, '.');
   val = parts[0];
   let result = '', balance, i = 0;
   for (; i < val.length; i++) {

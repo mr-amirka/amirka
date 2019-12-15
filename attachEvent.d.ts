@@ -3,7 +3,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-import { cancel } from "./global";
+import {cancel} from "./global";
 
  /**
   * @description

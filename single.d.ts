@@ -3,7 +3,17 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-import { fn } from "./global";
+import {fn} from "./global";
 
-declare const restart: (fn: fn) => fn;
-export = restart;
+/**
+ * @description
+ * Декорирует вызов асинхронной функции таким образом,
+ * чтобы при каждом следующем вызове,
+ * предыдущее асинхронное выполнение отменялось
+ * Оборачиваемая функция должна возврвщать колбэк функцию для отмены
+ * асинхронного процесса или отменяемый Promise (CancelablePromise)
+ * @param {function} fn
+ * @return {object}
+ */
+declare function single(fn: fn): fn;
+export = single;

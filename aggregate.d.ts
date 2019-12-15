@@ -3,7 +3,7 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-import { eachApply, fn } from "./global";
+import {eachApply, fn} from "./global";
 
 /**
  * @description
