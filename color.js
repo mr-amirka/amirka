@@ -6,7 +6,7 @@ const MULTIPLIER = 1.0 / 255;
 function substr(v, start, end) {
   return substr(v, start, end);
 }
-function color() {
+function color(v) {
   return regexpColor.test(v) ? rgbaAlt(normalize(v)) : [v.toLowerCase()];
 }
 function normalize(v, w, l) {
