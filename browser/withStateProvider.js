@@ -6,8 +6,8 @@ const withState = withStateProvider({
   Component: Component
 });
 
-const AnyComponent = constructorWithState((self, setState) => {
-  return (props, state) => {
+const AnyComponent = withState((setState, self) => {
+  return (state, props) => {
     return (
       <div>{state.limit}</div>
     );
@@ -17,7 +17,7 @@ const AnyComponent = constructorWithState((self, setState) => {
 });
 */
 
-const childClass = require('./childClass');
+const childClass = require('../childClass');
 const combine = require('../Emitter/combine');
 
 module.exports = (env) => {
@@ -29,19 +29,19 @@ module.exports = (env) => {
       self.state = emitter.getValue();
       self.render = () => {
         return render.apply(self, [
-          self.props,
           self.state,
+          self.props,
         ]);
       };
-      self.UNSAFE_componentDidMount = () => {
-        subscription || (subscription = emitter.on(setState));
+      self.UNSAFE_componentWillMount = () => {
+        _subscription || (_subscription = emitter.on(setState));
       };
-      self.UNSAFE_componentWillUnmount = () => {
-        subscription && (subscription(), subscription = 0);
+      self.componentWillUnmount = () => {
+        _subscription && (_subscription(), _subscription = 0);
       };
-      let subscription;
+      let _subscription;
       const setState = self.setState.bind(self);
-      const render = constructor(self, setState);
+      const render = constructor(setState, self);
     });
   };
 };

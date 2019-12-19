@@ -9,7 +9,7 @@ const half = require('./half');
 const unparam = require('./unparam');
 const isDefined = require('./isDefined');
 const halfLast = half.last;
-const urlParse = module.exports = (_href) => {
+function urlParse(_href) {
   const href = isDefined(_href) ? _href : '';
   let parts = half(href, '#');
   const hash = parts[1];
@@ -23,14 +23,13 @@ const urlParse = module.exports = (_href) => {
   }
 
   const query = unparam(search);
-  const child = hash ? urlParse(hash) : null;
-  const protocol = (parts = half(unsearch, '://' ,true))[0];
+  const child = hash ? urlParse(hash) : 0;
+  const protocol = (parts = half(unsearch, '://', 1))[0];
   const basePath = parts[1];
 
-  parts = protocol ? half(basePath, '/') : [ '', basePath ];
+  parts = protocol ? half(basePath, '/') : ['', basePath];
 
   const path = (parts[2] ? '/' : '') + parts[1];
-
   const userpart = (parts = half(parts[0], '@', true))[0];
   const userParts = half(userpart, ':');
   const username = userParts[0];
@@ -39,17 +38,13 @@ const urlParse = module.exports = (_href) => {
   const email = username ? (username + '@' + host) : '';
   const hostname = protocol ? (parts = half(host, ':'))[0] : '';
   const port = protocol ? parts[1] : '';
-
   const login = userpart ? (userpart + '@' + host) : '';
-
   const unpath = login ? (protocol + '://' + login) : (host ? (protocol + '://' + host) : '');
 
   parts = halfLast(path, '/', true);
   const dirname = parts[0] + (parts[2] ? '/' : '');
   const filename = parts[1];
-
   const unalias = unpath + dirname;
-
   const alias = (parts = halfLast(filename, '.'))[0];
   const unextension = unalias + alias;
   const extension = parts[1];
@@ -79,9 +74,10 @@ const urlParse = module.exports = (_href) => {
     login,
     password,
     email,
-    child
+    child,
   };
 };
+module.exports = urlParse;
 
 //console.log(urlParse('http://eko-press.dartline.ru/api/'));
 

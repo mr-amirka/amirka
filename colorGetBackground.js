@@ -2,16 +2,18 @@ const color = require('./color');
 const splitProvider = require('./splitProvider');
 
 const regexpBg = /^([A-Fa-f0-9]+)(p([0-9]+)([a-z%]*))?$/i;
+const regexpAngle = /^(.*)((\-r)_?(.*)|\-g(\-?[0-9]+))$/i;
+const regexpRepeat = /^(.*)rpt$/i;
 const splitDelimeter = splitProvider('-');
 const splitSuffix = splitProvider(/_+/);
 
 module.exports = (input) => {
   let radial = '', repeating, matches, angle = 180, i, vi, v = input; // eslint-disable-line
-  if (matches = /^(.*)rpt$/i.exec(v)) {
-    repeating = true;
+  if (matches = regexpRepeat.exec(v)) {
+    repeating = 1;
     v = matches[1];
   }
-  if (matches = /^(.*)((\-r)_?(.*)|\-g(\-?[0-9]+))$/i.exec(v)) {
+  if (matches = regexpAngle.exec(v)) {
     v = matches[1];
     if (matches[3]) {
       radial = splitSuffix(matches[4] || 'circle').join(' ');
@@ -37,7 +39,7 @@ module.exports = (input) => {
     alts = color(pmatches[1] || v || Math.round(i * 15 / end).toString(16));
     i || gradient.push.apply(gradient, alts); // eslint-disable-line
     rgb = alts[0];
-    (rgba = alts[1]) ? (hasAlpha = true) : (rgba = rgb);
+    (rgba = alts[1]) ? (hasAlpha = 1) : (rgba = rgb);
     outputRgb.push(rgb + suffix);
     outputRgba.push(rgba + suffix);
   }

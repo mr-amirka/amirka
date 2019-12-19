@@ -5,26 +5,29 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-const mergeDepth = require('./mergeDepth');
+const merge = require('./merge');
 const urlParse = require('./urlParse');
 const param = require('./param');
-const __normalize = v => {
+
+function normalize(v, type) {
   if (!v) return {};
-  let type = typeof v;
-  if (type === 'string') return urlParse(v);
-  if (type === 'object') return v;
-  return {};
-};
-const __def = (src, dst, def) => ((src === undefined ? dst : src) || def || '');
-const urlExtend = module.exports = (dst, src) => {
-  dst = __normalize(dst);
-  src = __normalize(src);
+  type = typeof v;
+  return type == 'string'
+    ? urlParse(v)
+    : (type == 'object' ? v : {});
+}
+function __def(src, dst, def) {
+  return ((src === undefined ? dst : src) || def || '');
+}
+function urlExtend(dst, src) {
+  dst = normalize(dst);
+  src = normalize(src);
 
   const hostname = __def(src.hostname, dst.hostname);
   const protocol = __def(src.protocol, dst.protocol);
   const port = __def(src.port, dst.port);
   const username = __def(src.username, dst.username);
-  const password =  __def(src.password, dst.password);
+  const password = __def(src.password, dst.password);
   const userpart = username ? (username + ':' + password) : '';
   const host = hostname || port ? (hostname + (port ? (':' + port) : '')) : '';
   const email = username ? (username + '@' + host) : '';
@@ -34,24 +37,19 @@ const urlExtend = module.exports = (dst, src) => {
   const alias = __def(src.alias, dst.alias);
   const filename = alias + (extension ? '.' + extension : '');
   const dirname = __def(src.dirname, dst.dirname, filename ? '/' : '');
-
   const path = dirname + filename;
   const unalias = unpath + dirname;
-
-  const
+  const // eslint-disable-line
     unextension = unalias + alias,
     unsearch = unextension + (extension ? '.' + extension : ''),
-
-    query = src.query === null ? {} : mergeDepth([ dst.query, src.query ], {}),
+    query = merge([dst.query, src.query], {}),
     search = param(query);
-
   const unhash = unsearch + (search ? '?' + search : '');
-  const srcChild = src.child, dstChild = dst.child;
-  const child = (srcChild || dstChild) ? urlExtend(dstChild || {}, srcChild || {}) : null;
+  const srcChild = src.child, dstChild = dst.child; // eslint-disable-line
+  const child = srcChild || dstChild
+    ? urlExtend(dstChild || {}, srcChild || {}) : 0;
   const hash = child && child.href || '';
   const href = unhash + (hash ? '#' + hash : '');
-
-
 
   return {
     href,
@@ -77,9 +75,10 @@ const urlExtend = module.exports = (dst, src) => {
     password,
     email,
     login,
-    child
+    child,
   };
-};
+}
+module.exports = urlExtend;
 
 //console.log(urlExtend('http://eko-press.dartline.ru/api/'));
 

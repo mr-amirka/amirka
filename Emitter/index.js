@@ -45,7 +45,7 @@ function initRootEmitter(self, _init, _value) {
   }
   function on(watcher) {
     _init && ((init) => {
-      _init = null;
+      _init = 0;
       const _watchers = [];
       init(
           emit,
@@ -75,15 +75,12 @@ function Emitter(_init, _value) {
   }
   function onDestroy() {
     _subscription();
-    _subscription = null;
+    _subscription = 0;
   }
   self.getValue = () => _subscription ? _value : getValue();
   self.on = (watcher) => {
     const subscription = subscribe(_watchers, watcher, onDestroy);
-    if (!_subscription) {
-      _value = getValue();
-      _subscription = on(onEmit);
-    }
+    _subscription || (_value = getValue(), _subscription = on(onEmit));
     return subscription;
   };
 }
@@ -91,10 +88,7 @@ function Emitter(_init, _value) {
 function subscribeProvider(watchers, watcher) {
   addOf(watchers, watcher);
   return function() {
-    if (watcher) {
-      removeOf(watchers, watcher);
-      watcher = watchers = null;
-    }
+    watcher && (removeOf(watchers, watcher), watcher = watchers = 0);
   };
 }
 function isEmitter(v) {
@@ -138,7 +132,7 @@ Emitter.prototype = {
     mapIn = getter(mapIn);
     const self = this;
     const {emit, on, getValue} = self;
-    let _value = value, cancelOut = noop, _watcher = noop, subscripion; // eslint-disable-line
+    let _value = value, cancelOut = noop, _watcher = noop, _subscripion; // eslint-disable-line
     const getValueOut = mapOut ? (() => {
       _subscripion || asyncable(mapOut(getValue()), update);
       return _value;
@@ -159,11 +153,7 @@ Emitter.prototype = {
           cancelOut = asyncable(mapOut(value), update);
         });
         return () => {
-          if (_subscripion) {
-            _watcher = noop;
-            _subscripion();
-            _subscripion = null;
-          }
+          _subscripion && (_watcher = noop, _subscripion(), _subscripion = 0);
         };
       }) : on,
     }, _value);
@@ -202,11 +192,11 @@ function asyncable(v, emit, hasAsync) {
 function subscribe(watchers, watcher, onDestroy) {
   addOf(watchers, watcher);
   return () => {
-    if (watcher) {
-      removeOf(watchers, watcher);
-      watchers.length < 1 && onDestroy();
-      onDestroy = watchers = watcher = null;
-    }
+    watcher && (
+      removeOf(watchers, watcher),
+      watchers.length < 1 && onDestroy(),
+      onDestroy = watchers = watcher = 0
+    );
   };
 }
 function tryWithValue(value) {

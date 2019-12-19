@@ -3,9 +3,9 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-const push = require('../push');
-const support = require('../support');
-const escapeQuote = require('../escapeQuote');
+const push = require('./push');
+const support = require('./support');
+const escapeQuote = require('./escapeQuote');
 
 module.exports = support('JSON') || {
   stringify(v) {

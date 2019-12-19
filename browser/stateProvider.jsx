@@ -1,5 +1,5 @@
 const combine = require('../Emitter/combine');
-const childClass = require('./childClass');
+const childClass = require('../childClass');
 
 module.exports = (env) => {
   return childClass(env.Component, function(props) {
@@ -9,7 +9,7 @@ module.exports = (env) => {
     const emitter = combine(props.state);
     const onChange = props.onChange;
     self.state = emitter.getValue();
-    self.componentDidMount = () => {
+    self.UNSAFE_componentWillMount = () => {
       subscription || (subscription = emitter.on(setState));
     };
     self.componentWillUnmount = () => {

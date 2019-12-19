@@ -11,8 +11,9 @@ const indexOf = require('./indexOf');
 * without(src, [ 'height', 'weight' ]) => // { name: 'Vasya', age: 10 }
 */
 
-module.exports = (src, without) => {
-  const dst = {};
-  for (let key in src) indexOf(without, key) < 0 && (dst[key] = src[key]);
+module.exports = (src, without, dst) => {
+  dst = dst || {};
+  let key;
+  for (key in src) indexOf(without, key) < 0 && (dst[key] = src[key]); //eslint-disable-line
   return dst;
 };

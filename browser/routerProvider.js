@@ -7,6 +7,7 @@
 const isEqual = require('../isEqual');
 const urlParse = require('../urlParse');
 const urlExtend = require('../urlExtend');
+const extend = require('../extend');
 const map = require('../map');
 const noop = require('../noop');
 const keys = require('../keys');
@@ -118,10 +119,10 @@ module.exports = ({Component, window, createElement}) => {
       const self = this;
       const setState = self.setState.bind(self);
       self.state = location$.getValue();
-      self.UNSAFE_componentDidMount = () => {
+      self.UNSAFE_componentWillMount = () => {
         subscription || (subscription = location$.on(setState));
       };
-      self.UNSAFE_componentWillUnmount = () => {
+      self.componentWillUnmount = () => {
         subscription && (subscription(), subscription = 0);
       };
       self.render = () => {

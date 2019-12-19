@@ -57,10 +57,10 @@ const forIn = require('../forIn');
 
 module.exports = (value, methods) => {
   const self = isEmitter(value) ? value : new Emitter(value);
-  const {getValue} = self;
+  const {getValue, emit} = self;
   forIn(merge(methods), (method, methodName) => {
     self[methodName] = (value) => {
-      self.emit(method(getValue(), value));
+      emit(method(value, getValue()));
     };
   });
   return self;

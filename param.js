@@ -6,27 +6,35 @@
  */
 
 const withoutEmpty = require('./withoutEmpty');
+const isObject = require('./isObject');
+const JSON = require('./json');
+
 const PARAM_WITHOUT_EMPTY_DEFAULT_DEPTH = 10;
-const param = module.exports = (v) => {
-  if (!v || typeof v !== 'object') return '';
-  const s = [];
+function param(v, s, k, l) {
+  if (!isObject(v)) return '';
+  s = [];
   function paramBuild(p, v) {
     v = withoutEmpty(v, PARAM_WITHOUT_EMPTY_DEFAULT_DEPTH);
     v === null || s.push(paramEscape(p) + '=' + paramEscape(
-      typeof v === 'object' ? JSON.stringify(v) : ('' + v)
+      isObject(v) ? JSON.stringify(v) : ('' + v),
     ));
     return s;
   }
   if (v && (v instanceof Array)) {
-    const l = v.length;
-    for (let i = 0; i < l; i++) paramBuild('' + i, v[i]);
+    l = v.length;
+    for (k = 0; k < l; k++) paramBuild('' + k, v[k]);
   } else {
-    for (let k in v) paramBuild(k, v[k]);
+    for (k in v) paramBuild(k, v[k]); // eslint-disable-line
   }
   return s.sort().join('&');
-};
-const paramEscape = param.escape = v => encodeURIComponent(v)
-  .replace(/%20/g, '+')
-  .replace(/%22/g, '"')
-  .replace(/%3A/g, ':')
-  .replace(/%2C/g, ',');
+}
+function paramEscape(v) {
+  return encodeURIComponent(v)
+      .replace(/%20/g, '+')
+      .replace(/%22/g, '"')
+      .replace(/%3A/g, ':')
+      .replace(/%2C/g, ',');
+}
+
+param.escape = paramEscape;
+module.exports = param;

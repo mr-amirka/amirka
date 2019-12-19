@@ -1,31 +1,24 @@
-/**
- * @overview unparam
- * - парсит GET-параметры URL
- *
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
 const isObjectLike = require('./isObjectLike');
 const half = require('./half');
-const unparam = module.exports = s => {
-  const type = typeof s;
-  return type === 'string' ? base(s) : (type === 'object' ? s : {});
-};
-const decode = s => {
-  try { return JSON.parse(s); } catch(e) {}
-  return s;
-};
+const decode = require('./tryJsonParse');
+
 const expSpace = /\+/g;
 const expBrackets = /\[(.*?)\]/g;
 const expVarname = /(.+?)\[/;
-const base = unparam.base = s => {
-  const a = decodeURIComponent(half(s, '?', true)[1]).split('&');
+
+function unparam(s) {
+  const type = typeof s;
+  return type === 'string' ? base(s) : (type === 'object' ? s : {});
+}
+function base(s) {
+  const a = decodeURIComponent(half(s, '?', 1)[1]).split('&');
   const l = a.length;
   const r = {};
+  let w, t, k, v, b, c, d, j, n, ni, q, i = 0; // eslint-disable-line
   if (l < 1) return r;
-  for (let w, t, k, v, b, c, d, j, n, ni, q, i = 0; i < l; i++) {
-    if ((w = a[i]).length < 1) continue;
-    if ((k = (w = half(w, '='))[0]).length < 1) continue;
+  for (;i < l; i++) {
+    k = (w = half(a[i], '='))[0];
+    if (!k) continue;
     v = decode(w[1].replace(expSpace, ' '));
     b = [];
     while (w = expBrackets.exec(k)) b.push(w[1]);
@@ -41,15 +34,15 @@ const base = unparam.base = s => {
       if ((w = b[j]).length < 1) {
         w = 0;
         for (n in d) {
-          if (!isNaN(ni = parseInt(n)) && ni >= 0 && (ni % 1 === 0) && ni >= w) w = ni + 1;
+          if (!isNaN(ni = parseInt(n)) && ni >= 0
+            && (ni % 1 === 0) && ni >= w) w = ni + 1;
         }
       }
-      if (j == c) {
-        d[w] = v;
-      } else {
-        d = isObjectLike(t = d[w]) ? t : (d[w] = {});
-      }
+      j == c ? (d[w] = v) : (d = isObjectLike(t = d[w]) ? t : (d[w] = {}));
     }
   }
   return r;
-};
+}
+
+unparam.base = base;
+module.exports = unparam;

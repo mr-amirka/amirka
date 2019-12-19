@@ -1,15 +1,15 @@
-/**
- * @overview padStart
- * @author Amir Absolutely <mr.amirka@ya.ru>
+const repeat = require('./repeat');
+const __padStart = ''.padStart;
+const defaultSpace = ' ';
 
-@example
-
-padStart('2', 4, '0'); // => '0002'
-
-*/
-const __padStart = ''.padStart || (String.prototype.padStart = function(length, space) {
-  let i = 0, output = [ this ];
-  for (; i < length; i++) output.push(space);
-  return output.join('');
-});
-module.exports = (v, length, space) => __padStart.call('' + v, length, space || ' ');
+module.exports = __padStart
+  ? ((v, length, space) => __padStart.call(
+      '' + v, length, space || defaultSpace,
+  ))
+  : ((v, length, space) => {
+    space = space || defaultSpace;
+    length -= v.length;
+    return length > 0
+      ? (repeat(space, Math.ceil(length / space.length)).substr(0, length) + v)
+      : v;
+  });

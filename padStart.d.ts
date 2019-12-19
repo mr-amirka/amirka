@@ -3,5 +3,11 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-declare const padStart: (value: string, length: number, space?: string) => string;
+ /**
+  * @example
+  * ```js
+  *   padStart('2', 4, '0'); // => '0002'
+  * ```
+  */
+declare function padStart(value: string, length: number, space?: string): string;
 export = padStart;
