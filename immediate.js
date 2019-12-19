@@ -18,5 +18,5 @@ module.exports = (fn, args, ctx) => {
     return delay(fn, 0, args, ctx);
   }
   index++;
-	return defer(fn, args, ctx);
+  return defer(fn, args, ctx);
 };

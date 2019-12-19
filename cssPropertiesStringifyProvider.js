@@ -3,30 +3,30 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
- const camelToKebabCase = require("./camelToKebabCase");
- const isArray = require("./isArray");
+const camelToKebabCase = require('./camelToKebabCase');
+const isArray = require('./isArray');
+const push = require('./push');
 
 module.exports = (prefixedAttrs, prefixes) => {
-  prefixedAttrs || (prefixedAttrs = {});
-  prefixes || (prefixes = {});
-  const stringify = (props) => {
-    let output = [], vs, vl, vi, prop, prefix, propPrefix, propertyName;
-    for (propertyName in props) {
+  function stringify(props) {
+    let output = [], vs, vl, vi, prop, prefix, propPrefix, propertyName; // eslint-disable-line
+    for (propertyName in props) { // eslint-disable-line
       propPrefix = camelToKebabCase(propertyName) + ':';
-      if (!isArray((vs = props[propertyName]))) vs = [ vs ];
+      if (!isArray((vs = props[propertyName]))) vs = [vs];
       if (prefixedAttrs[propertyName]) {
         for (vi = 0, vl = vs.length; vi < vl; vi++) {
           prop = propPrefix + vs[vi];
-          for (prefix in prefixes) output.push(prefix + prop);
-          output.push(prop);
+          for (prefix in prefixes) push(output, prefix + prop); // eslint-disable-line
+          push(output, prop);
         }
         continue;
       }
-      for (vi = 0, vl = vs.length; vi < vl; vi++) output.push(propPrefix + vs[vi]);
+      // eslint-disable-next-line
+      for (vi = 0, vl = vs.length; vi < vl; vi++) push(output, propPrefix + vs[vi]);
     }
     return output.join(';');
-  };
-  stringify.prefixedAttrs = prefixedAttrs;
-  stringify.prefixes = prefixes;
+  }
+  stringify.prefixedAttrs = prefixedAttrs = prefixedAttrs || {};
+  stringify.prefixes = prefixes || (prefixes = {});
   return stringify;
 };

@@ -1,17 +1,14 @@
-/**
- * @overview debounce
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
+const __delay = require('./delay');
 
-const delay = require('./delay');
-const noop = require('./noop');
-module.exports = (fn, _delay) => {
-	let hasDebounce, result;
-	const free = () => hasDebounce = false;
-	return function() {
-		if (hasDebounce) return result;
-		hasDebounce = true;
-		delay(free, _delay);
-		return result = fn.apply(this, arguments);
-	};
+module.exports = (fn, delay) => {
+  let hasDebounce, result; // eslint-disable-line
+  function free() {
+    hasDebounce = 0;
+  }
+  return function() {
+    if (hasDebounce) return result;
+    hasDebounce = 1;
+    __delay(free, delay);
+    return result = fn.apply(this, arguments); // eslint-disable-line
+  };
 };

@@ -32,10 +32,14 @@ const complement = require('./complement');
 module.exports = (mergingCollection, dst, depth) => {
   depth || (depth = 0);
   if (depth < 0) return dst;
-  if (!isObjectLike(mergingCollection)) return isDefined(dst) ? dst : mergingCollection;;
-  if (!isArray(mergingCollection)) return complement(dst, mergingCollection, depth);
-  let last, tmp = isObjectLike(dst) ? dst : undefined;
-  for (let v, i = mergingCollection.length; i--;) {
+  if (!isObjectLike(mergingCollection)) {
+    return isDefined(dst) ? dst : mergingCollection;
+  }
+  if (!isArray(mergingCollection)) {
+    return complement(dst, mergingCollection, depth);
+  }
+  let v, i = mergingCollection.length, last, tmp = isObjectLike(dst) ? dst : undefined; // eslint-disable-line
+  for (; i--;) {
     if (isPlainObject(v = mergingCollection[i])) {
       tmp = complement(tmp || {}, v, depth);
     } else {

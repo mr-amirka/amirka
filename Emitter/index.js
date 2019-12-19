@@ -9,6 +9,10 @@ const removeOf = require('../removeOf');
 const forEach = require('../forEach');
 const defer = require('../defer');
 const cancelableThen = require('../cancelableThen');
+const get = require('../get');
+const getter = get.getter;
+const getBase = get.base;
+const setBase = require('../set').base;
 
 module.exports = Emitter;
 
@@ -117,13 +121,76 @@ Emitter.prototype = {
    Поверхностно объединяет переданное значение с внутренним значением состояния.
   */
   set(updatedState) {
-    this.emit(isObjectLike(updatedState)
-      ? extend(extend({}, this.getValue()), updatedState) : updatedState);
+    this.emit(
+      isObjectLike(updatedState)
+        ? extend(extend({}, this.getValue()), updatedState)
+        : updatedState,
+    );
   },
 
   // операция сложения числа к текущему значению в эмиттере
-  calc(self, v) {
+  calc(v) {
     this.emit(this.getValue() + v);
+  },
+
+  map(mapOut, mapIn, value) {
+    mapOut = getter(mapOut);
+    mapIn = getter(mapIn);
+    const self = this;
+    const {emit, on, getValue} = self;
+    let _value = value, cancelOut = noop, _watcher = noop, subscripion; // eslint-disable-line
+    const getValueOut = mapOut ? (() => {
+      _subscripion || asyncable(mapOut(getValue()), update);
+      return _value;
+    }) : getValue;
+    const emitter = self.fork({
+      emit: mapIn ? (isFunction(mapIn) ? (value) => {
+        emitter._cancel();
+        emitter._cancel = asyncable(value, (value) => {
+          emit(mapIn(value, getValue));
+        });
+      } : emit) : noop,
+      getValue: getValueOut,
+      on: mapOut ? ((watcher) => {
+        _value = getValueOut();
+        _watcher = watcher;
+        _subscripion = on((value) => {
+          cancelOut();
+          cancelOut = asyncable(mapOut(value), update);
+        });
+        return () => {
+          if (_subscripion) {
+            _watcher = noop;
+            _subscripion();
+            _subscripion = null;
+          }
+        };
+      }) : on,
+    }, _value);
+    function update(value) {
+      _watcher(_value = value);
+    }
+    return emitter;
+  },
+
+  prop(path, defaultValue) {
+    path = path.split('.');
+    let cache;
+    return this.map(
+        (v) => (cache = v) && getBase(v, path),
+        (v) => setBase(extend({}, cache), path, v),
+        defaultValue,
+    );
+  },
+
+  filter(check) {
+    check = getter(check);
+    const {on} = this;
+    return this.fork({
+      on: (watcher) => on((value) => {
+        check(value) && watcher(value);
+      }),
+    });
   },
 };
 

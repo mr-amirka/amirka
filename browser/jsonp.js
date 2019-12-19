@@ -32,14 +32,14 @@ module.exports = (url, options) => {
         query: merge([
           options && options.query,
           {
-            //hostname: location.hostname,
+            // hostname: location.hostname,
             callback: globalName(function(response) {
               stop = true;
               resolve(response);
-            }, '_' + time())
-          }
-        ])
-      }
+            }, '_' + time()),
+          },
+        ]),
+      },
     ])).then(() => {
       stop || delay(() => {
         stop || reject('script error');

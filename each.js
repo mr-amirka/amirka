@@ -1,8 +1,7 @@
-const __forEach = [].forEach;
+const forEach = require('./forEach');
+const forIn = require('./forIn');
+
 module.exports = (collection, iteratee, hasArray) => {
-  if (hasArray || collection && (collection instanceof Array)) {
-    __forEach.call(collection, iteratee);
-  } else {
-    for (let k in collection) iteratee(collection[k], k);
-  }
+  ((hasArray || collection && (collection instanceof Array))
+    ? forEach : forIn)(collection, iteratee);
 };

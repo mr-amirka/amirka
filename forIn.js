@@ -1,5 +1,6 @@
 
 module.exports = (obj, iteratee) => {
-	for (let k in obj) iteratee(obj[k], k);
-	return obj;
+  let k;
+  for (k in obj) iteratee(obj[k], k); // eslint-disable-line
+  return obj;
 };

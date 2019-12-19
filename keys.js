@@ -1,6 +1,5 @@
-
 module.exports = Object.keys || function(obj) {
-  var output = [], prop;
-  for (prop in obj) output.push(prop);
+  var output = [], prop; // eslint-disable-line
+  for (prop in obj) output.push(prop); // eslint-disable-line
   return output;
 };

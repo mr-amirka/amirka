@@ -1,26 +1,23 @@
-/**
- * @overview destroyProvider
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
 const forEach = require('./forEach');
 const eachApply = require('./eachApply');
+
 function destroyProvider(destroyers) {
   destroyers || (destroyers = []);
   function instance() {
-    var _destroyers = destroyers;
-    destroyers = null;
+    const _destroyers = destroyers;
+    destroyers = 0;
     _destroyers && eachApply(_destroyers);
     return instance;
   }
-  var add = instance.add = function() {
-    forEach(arguments, function(fn) {
+  function add() {
+    forEach(arguments, function(fn) { // eslint-disable-line
       destroyers ? destroyers.push(fn) : fn();
     });
     return instance;
-  };
+  }
+  instance.add = add;
   instance.child = function() {
-    var child = destroyProvider();
+    const child = destroyProvider();
     add(child);
     return child;
   };

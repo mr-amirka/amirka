@@ -5,16 +5,16 @@
  * @example
  * flagsSet([ 'apple', 'ban', 'test.use' ]); // =>
  * {
- *   apple: true,
- *   ban: true,
+ *   apple: 1,
+ *   ban: 1,
  *   test: {
- *     use: true
+ *     use: 1
  *   }
  * }
  *
  */
- 
-import { FlagsMap } from "./global";
 
-declare const flags: (flags: string[], dst?: any) => FlagsMap;
+import {IFlagsMap} from "./global";
+
+declare const flags: (flags: string[], dst?: any) => IFlagsMap;
 export = flags;

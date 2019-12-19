@@ -5,13 +5,13 @@
  * @example
  * flags([ 'apple', 'ban' ]); // =>
  * {
- *   apple: true,
- *   ban: true,
+ *   apple: 1,
+ *   ban: 1,
  * }
  *
  */
 const reduce = require('./reduce');
 module.exports = (flags, dst) => reduce(flags, (dst, key) => {
-  dst[key] = true;
+  dst[key] = 1;
   return dst;
 }, dst || {});

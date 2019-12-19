@@ -1,9 +1,10 @@
-/**
- * @overview forEach
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
+const __forEach = [].forEach;
 
-module.exports = (src, fn) => src && base.call(src, fn);
-const base = [].forEach || (Array.prototype.forEach = function(fn) {
-  for (var l = this.length || 0, i = 0; i < l; i++) fn(this[i], i);
-});
+module.exports = __forEach
+  ? ((src, fn) => {
+    src && __forEach.call(src, fn);
+  })
+  : ((src, fn) => {
+    let l = src.length || 0, i = 0; // eslint-disable-line
+    for (; i < l; i++) fn(src[i], i);
+  });

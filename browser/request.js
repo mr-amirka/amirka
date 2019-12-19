@@ -14,13 +14,13 @@ const Deal = require('../CancelablePromise');
 const urlExtend = require('../urlExtend');
 const decorate = require('../decorate');
 const isString = require('../isString');
-const JSON = require('./json');
+const JSON = require('../json');
 
 const CONNECTION_ERRORS = [0, 408];
 
 const defaultTypes = {
   json: {
-    encode: (v) => JSON.stringify(v),
+    encode: JSON.stringify,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
     },

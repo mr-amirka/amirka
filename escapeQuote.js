@@ -1,8 +1,2 @@
-/**
- * @overview escapeQuote
- * Экранирует ковычки
- *
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
-module.exports = input => input.replace(/(['"\\])/g, '\\$1');
+module.exports = (v) => v.replace(regexp, '\\$1');
+const regexp = /(["\\])/g;

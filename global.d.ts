@@ -1,6 +1,6 @@
 
 interface IFlagsMap {
-  [name: string]: boolean;
+  [name: string]: number;
 }
 
   /**

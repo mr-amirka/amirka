@@ -15,7 +15,8 @@ interface IVariantsAst {
 
 /**
  * @desctiption
- * Парсит строку с альтернативными подстроками, возвращая массив строк
+ * Parses a string with alternative substrings, returning an array of strings.
+ * ru | Парсит строку с альтернативными подстроками, возвращая массив строк
  *
  * @example
  * ```js

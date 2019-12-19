@@ -1,3 +1,3 @@
 
 const __join = [].join;
-module.exports = delimeter => src => __join.call(src, delimeter);
+module.exports = (delimeter) => (src) => __join.call(src, delimeter);

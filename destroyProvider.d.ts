@@ -3,15 +3,15 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-import { fn }  from "./global";
+import { fn } from "./global";
 
 declare namespace destroyProvider {
   export interface destroyProvider {
-  	(..._destroyers: any[]): destroy;
+    (..._destroyers: any[]): destroy;
   }
   export interface destroy {
-  	(...args: any[]): destroy;
-  	add: (fn?: fn) => destroy;
+    (...args: any[]): destroy;
+    add: (fn?: fn) => destroy;
   }
 }
 

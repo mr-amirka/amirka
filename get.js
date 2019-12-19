@@ -1,17 +1,23 @@
-/**
- * @overview get
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
+const isArray = require('./isArray');
+const noopHandle = require('./noopHandle');
 
-const isLength = require('./isLength');
-const get = module.exports = (ctx, path, def) => path
-  ? (ctx ? base(ctx, ('' + path).split('.'), def) : def)
-  : ctx;
-const base = get.base = (ctx, path, def) => {
+function get(ctx, path, def) {
+  return path
+    ? (ctx ? base(ctx, ('' + path).split('.'), def) : def)
+    : ctx;
+}
+function base(ctx, path, def) {
   const length = path.length;
   let i = 0;
   while (ctx && i < length) ctx = ctx[path[i++]];
   return i === length ? ctx : def;
+}
+function arrayHandleProvider(path) {
+  return (v) => base(v, path);
+}
+const handlers = {
+  'string': (v) => arrayHandleProvider(v.split('.')),
+  'object': (v) => isArray(v) ? arrayHandleProvider(v) : noopHandle,
 };
 
 /**
@@ -38,11 +44,5 @@ const base = get.base = (ctx, path, def) => {
  *
  */
 get.getter = (v) => v ? (handlers[typeof v] || noopHandle)(v) : v;
-const noopHandle = (v) => v;
-const arrayHandleProvider = (path) => (v) => base(v, path);
-const handlers = {
-  'string': (v) => arrayHandleProvider(v.split('.')),
-  'object': (v) => v && isLength(v.length)
-    ? arrayHandleProvider(v)
-    : noopHandle,
-};
+get.base = base;
+module.exports = get;

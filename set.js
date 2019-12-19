@@ -1,14 +1,12 @@
-/**
- * @overview set
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
 const isObjectLike = require('./isObjectLike');
 const isIndex = require('./isIndex');
-const set = module.exports = (ctx, path, value) => path
-  ? base(ctx, ('' + path).split('.'), value)
-  : ctx;
-const base = set.base = (ctx, path, value) => {
+
+function set(ctx, path, value) {
+  return path
+    ? base(ctx, ('' + path).split('.'), value)
+    : ctx;
+}
+function base(ctx, path, value) {
   const length = path.length;
   const lastIndex = length - 1;
   let nested = ctx, k, nextKey = path[0], i = 0, next; //eslint-disable-line
@@ -22,3 +20,5 @@ const base = set.base = (ctx, path, value) => {
   nested[nextKey] = value;
   return ctx;
 };
+set.base = base;
+module.exports = set;

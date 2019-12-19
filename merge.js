@@ -33,10 +33,11 @@ const extend = require('./extend');
 
 module.exports = (mergingSrc, dst, asArray) => {
   if (!isObjectLike(mergingSrc)) return isDefined(dst) ? dst : mergingSrc;
-  if (!(asArray || mergingSrc && (mergingSrc instanceof Array))) return extend(dst, mergingSrc);
+  if (!(asArray || mergingSrc
+    && (mergingSrc instanceof Array))) return extend(dst, mergingSrc);
   const length = mergingSrc.length;
-  let last, tmp = isObjectLike(dst) ? dst : undefined;
-  for (let v, i = 0; i < length; i++) {
+  let last, v, i = 0, tmp = isObjectLike(dst) ? dst : undefined; // eslint-disable-line
+  for (; i < length; i++) {
     if (isPlainObject(v = mergingSrc[i])) {
       tmp = extend(tmp || {}, v);
     } else {

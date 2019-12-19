@@ -5,10 +5,10 @@
  * @example
  * flagsSet([ 'apple', 'ban', 'test.use' ]); // =>
  * {
- *   apple: true,
- *   ban: true,
+ *   apple: 1,
+ *   ban: 1,
  *   test: {
- *     use: true
+ *     use: 1
  *   }
  * }
  *
@@ -17,6 +17,6 @@ const set = require('./set');
 const reduce = require('./reduce');
 module.exports = (flags, dst) => reduce(flags, reducer, dst || {});
 const reducer = (dst, key) => {
-  set(dst, key, true);
+  set(dst, key, 1);
   return dst;
 };
