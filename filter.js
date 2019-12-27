@@ -4,19 +4,18 @@
  */
 
 const iterateeNormalize = require('./iterateeNormalize');
+const isArray = require('./isArray');
 
 module.exports = (collection, iteratee, dst) => {
-  const hasArray = dst && (dst instanceof Array);
   if (!collection) return dst || [];
-  const _iteratee = iterateeNormalize(iteratee);
-  let v;
-  if (hasArray || collection && (collection instanceof Array)) {
-    dst || (dst = []);
-    const length = collection.length || 0;
-    for (let i = 0; i < length; i++) _iteratee(v = collection[i], i) && dst.push(v);
+  iteratee = iterateeNormalize(iteratee);
+  let hasArray = isArray(dst), v, k = 0, l; // eslint-disable-line
+  if (hasArray || isArray(collection)) {
+    dst = dst || [];
+    for (l = collection && collection.length || 0; k < l; k++) iteratee(v = collection[k], k) && dst.push(v); // eslint-disable-line
   } else {
-    dst || (dst = {});
-    for (let k in collection) _iteratee(v = collection[k], k) && (dst[k] = v);
+    dst = dst || {};
+    for (k in collection) iteratee(v = collection[k], k) && (dst[k] = v); // eslint-disable-line
   }
   return dst;
 };

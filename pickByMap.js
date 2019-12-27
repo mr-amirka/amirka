@@ -4,7 +4,7 @@
  */
 
 module.exports = (src, _map, dst) => {
-  dst || (dst = {});
+  dst = dst || {};
   let v, k; //eslint-disable-line
   for (k in _map) (v = src[k]) === undefined || (dst[k] = v); //eslint-disable-line
   return dst;

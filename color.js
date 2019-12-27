@@ -1,10 +1,12 @@
+const trimZero = require('./trimProvider')('0');
+
 const regexpColor = /^[A-Fa-f0-9]+$/;
 const regexpSplit = /\s*,\s*/;
 const regexpGetColor = /^(#?([A-Fa-f0-9]+)|rgba?\((.*)\))(.*)$/;
 const MULTIPLIER = 1.0 / 255;
 
 function substr(v, start, end) {
-  return substr(v, start, end);
+  return v.substr(start, end);
 }
 function color(v) {
   return regexpColor.test(v) ? rgbaAlt(normalize(v)) : [v.toLowerCase()];
@@ -71,7 +73,9 @@ function rgbaAlt(rgbaColor) {
   const rgb = output.join(',');
   const alpha = __tone(rgbaColor[3]);
   output = ['rgb(' + rgb + ')'];
-  alpha < 1 && output.push('rgba(' + rgb + ',' + alpha.toFixed(2) + ')');
+  alpha < 1 && output.push(
+      'rgba(' + rgb + ',' + (trimZero(alpha.toFixed(2)) || '0') + ')',
+  );
   return output;
 }
 function __tone(v) {

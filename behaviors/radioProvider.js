@@ -1,22 +1,16 @@
-const isArray = require('../isArray');
 const merge = require('../merge');
 
-function _radioProvider(name) {
-  return {
-    [name + 'Select']: (state, id) => ({
-      ...state,
-      [name]: id,
-    }),
-    [name + 'Clear']: (state) => ({
-      ...state,
-      [name]: 0,
-    }),
-    [name + 'Toggle']: (state, id) => ({
-      ...state,
-      [name]: state[name] === id ? 0 : id,
-    }),
+module.exports = require('./behaviorsProvider')((name) => {
+  const instance = {};
+  instance[name + 'Select'] = (emit, id, getState) => {
+    emit(merge([getState(), {[name]: id}]));
   };
-};
-module.exports = (name) => isArray(name)
-    ? merge(name.map(_radioProvider), {})
-    : _radioProvider(name);
+  instance[name + 'Clear'] = (emit, _, getState) => {
+    emit(merge([getState(), {[name]: 0}]));
+  };
+  instance[name + 'Toggle'] = (emit, id, getState) => {
+    const state = getState();
+    emit(merge([state, {[name]: state[name] === id ? 0 : id}]));
+  };
+  return instance;
+});

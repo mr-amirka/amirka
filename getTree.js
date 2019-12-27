@@ -1,5 +1,5 @@
 const merge = require('./merge');
-const base = (src, id, dst, depth) => {
+function base(src, id, dst, depth) {
   const length = src.length;
   depth--;
   for (let _id, item, i = 0; i < length; i++) {
@@ -7,8 +7,8 @@ const base = (src, id, dst, depth) => {
       _id = item.id;
       dst.push(depth > 0 ? merge([
         item,
-        {childs: _id ? base(src, _id, [], depth) : []}
-      ])  : item);
+        {childs: _id ? base(src, _id, [], depth) : []},
+      ]) : item);
     }
   }
   return dst;

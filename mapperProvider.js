@@ -14,7 +14,9 @@ module.exports = (keys) => {
   return (values, dst) => {
     dst || (dst = {});
     if (!values) return dst;
-    for (let i = 0; i < l; i++) set(dst, '' + keys[i], values[i] || '');
+    for (let i = 0, v; i < l; i++) {
+      (v = values[i]) === undefined || set(dst, keys[i], v);
+    }
     return dst;
   };
 };

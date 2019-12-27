@@ -1,6 +1,2 @@
-/**
- * @overview isIndex
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
-module.exports = v => /^\d+$/.test(v);
+module.exports = (v) => regexp.test(v);
+const regexp = /^\d+$/;

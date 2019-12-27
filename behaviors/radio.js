@@ -1,5 +1,11 @@
 module.exports = {
-  select: (state, id) => id,
-  clear: () => 0,
-  toggle: (state, id) => state === id ? 0 : id,
+  select(emit, id) {
+    emit(id);
+  },
+  clear(emit) {
+    emit(0);
+  },
+  toggle(emit, id, getState) {
+    emit(getState() === id ? 0 : id);
+  },
 };

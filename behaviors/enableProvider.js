@@ -1,22 +1,16 @@
-const isArray = require('../isArray');
 const merge = require('../merge');
-function _enableProvider(name) {
-  return {
-    [name + 'Enable']: (state) => ({
-      ...state,
-      [name]: true,
-    }),
-    [name + 'Disable']: (state) => ({
-      ...state,
-      [name]: false,
-    }),
-    [name + 'Toggle']: (state) => ({
-      ...state,
-      [name]: !state[name],
-    }),
-  };
-}
 
-module.exports = (name) => isArray(name)
-    ? merge(name.map(_enableProvider), {})
-    : _enableProvider(name);
+module.exports = require('./behaviorsProvider')((name) => {
+  const instance = {};
+  instance[name + 'Enable'] = (emit, _, getState) => {
+    emit(merge([getState(), {[name]: 1}]));
+  };
+  instance[name + 'Disable'] = (emit, _, getState) => {
+    emit(merge([getState(), {[name]: 0}]));
+  };
+  instance[name + 'Toggle'] = (emit, _, getState) => {
+    const state = getState();
+    emit(merge([state, {[name]: !state[name]}]));
+  };
+  return instance;
+});

@@ -1,5 +1,6 @@
 const noop = require('../noop');
 const extend = require('../extend');
+const merge = require('../merge');
 const reduce = require('../reduce');
 const isObjectLike = require('../isObjectLike');
 const isPromise = require('../isPromise');
@@ -7,7 +8,9 @@ const isFunction = require('../isFunction');
 const addOf = require('../addOf');
 const removeOf = require('../removeOf');
 const forEach = require('../forEach');
+const forIn = require('../forIn');
 const defer = require('../defer');
+const withReDelay = require('../withReDelay');
 const cancelableThen = require('../cancelableThen');
 const get = require('../get');
 const getter = get.getter;
@@ -44,9 +47,10 @@ function initRootEmitter(self, _init, _value) {
     return _value;
   }
   function on(watcher) {
-    _init && ((init) => {
-      _init = 0;
+    if (_init) {
       const _watchers = [];
+      const init = _init;
+      _init = 0;
       init(
           emit,
           getValue,
@@ -55,7 +59,7 @@ function initRootEmitter(self, _init, _value) {
       on((value) => {
         forEach(_watchers, tryWithValue(value));
       });
-    })(_init);
+    }
     return subscribeProvider(_watchers, watcher);
   }
 }
@@ -80,7 +84,7 @@ function Emitter(_init, _value) {
   self.getValue = () => _subscription ? _value : getValue();
   self.on = (watcher) => {
     const subscription = subscribe(_watchers, watcher, onDestroy);
-    _subscription || (_value = getValue(), _subscription = on(onEmit));
+    _subscription || (_subscription = on(onEmit), _value = getValue());
     return subscription;
   };
 }
@@ -100,13 +104,72 @@ Emitter.prototype = {
   emit: noop,
   on: () => noop,
   getValue: noop,
+  /*
+    Добавление экземпляру эмиттера методов.
+    @example:
+    const emitter = emitterProvider(0);
+
+    // добавление методов
+    emitter.behave({
+      enable: (emit) => emit(1),
+      disable: (emit) => emit(0),
+      toggle: (emit, _, getState) => emit(!getState()),
+    });
+
+    // использование методов
+    emitter.enable();
+    emitter.disable();
+    emitter.toggle(); // переключение тумблера
+
+
+    @example:
+    const emitter = emitterProvider(0);
+    // добавление методов
+    emitter.behave({
+      select: (emit, id) => emit(id),
+      clear: (emit) => emit(0),
+      toggle: (emit, id, getState) => emit(getState() === id ? 0 : id),
+    });
+
+    // использование методов
+    emitter.select(10); // выбрали пункт меню с id 10
+    emitter.clear(); // очистка
+    emitter.toggle(10); // если этот элемент был выбран, то очистка,
+      если элемент не был выбран, то он выбирается.
+
+    @example:
+    const emitter = emitterProvider(0);
+    const enableBehavior = {
+      enable: (emit) => emit(1),
+      disable: (emit) => emit(0),
+    };
+    const toggleBehavior = {
+      toggle: (emit, _, getState) => emit(!getState()),
+    };
+
+    // добавление методов
+    emitter.behave([ enableBehavior, toggleBehavior ]);
+
+    // использование методов
+    emitter.enable();
+    emitter.disable();
+    emitter.toggle();
+  */
+
+  behave(methods) {
+    const self = this;
+    const {getValue, emit} = self;
+    forIn(merge(methods), (method, methodName) => {
+      self[methodName] = (value) => method(emit, value, getValue);
+    });
+    return self;
+  },
+
   pipe() {
-    return reduce(arguments, (emitter, pipe) => { // eslint-disable-line
-      return pipe(emitter);
-    }, this);
+    return reduce(arguments, (emitter, pipe) => pipe(emitter), this); // eslint-disable-line
   },
   fork(extended, value) {
-    return extend(new Emitter(this, value), extended);
+    return new Emitter(extend(extend({}, this), extended), value);
   },
 
   /*
@@ -180,6 +243,25 @@ Emitter.prototype = {
       on: (watcher) => on((value) => {
         check(value) && watcher(value);
       }),
+    });
+  },
+
+  /*
+    Получить дочерний эмиттер, который будет эмититься с задержкой "wait"
+    от родительского эмиттера.
+    Можно указать занчение по умочланию "_value".
+  */
+  delay(wait, _value) {
+    const self = this;
+    const __on = self.on;
+    if (_value === undefined) _value = self.getValue();
+    return self.fork({
+      on: (watcher) => {
+        return __on(withReDelay((value) => {
+          watcher(_value = value);
+        }, wait));
+      },
+      getValue: () => _value,
     });
   },
 };

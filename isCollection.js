@@ -1,8 +1,5 @@
-/**
- * @overview isCollection
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
-const isLength = require('./isLength');
+const isObject = require('./isObject');
+const isArrayLike = require('./isArrayLike');
 const isPlainObject = require('./isPlainObject');
-module.exports = v => isPlainObject(v) || v && typeof v === 'object' && isLength(v.length);
+
+module.exports = (v) => isPlainObject(v) || isObject(v) && isArrayLike(v);

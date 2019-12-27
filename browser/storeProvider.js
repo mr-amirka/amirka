@@ -18,17 +18,18 @@ module.exports = (storage, prefix) => {
       const v = __get(name);
       return v === undefined || v === null ? value : v;
     }
+    function __emit(value) {
+      __set(name, value);
+    }
     const emitter = new Emitter((emit, getValue, on) => {
       emit(getInitialValue());
-      init(emit, getValue, on);
+      init(__emit, getValue, on);
     }, getInitialValue());
     const emit = emitter.emit;
     __on((e) => {
       e.key === name && emit(value = e.value);
     });
-    emitter.emit = (value) => {
-      __set(name, value);
-    };
+    emitter.emit = __emit;
     return emitter;
   };
 };

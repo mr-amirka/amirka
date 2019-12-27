@@ -1,31 +1,24 @@
-/**
- * @overview throttleCancelable
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
 const delay = require('./delay');
-const single = require('./single');
+const isFunction = require('./isFunction');
+const noop = require('./noop');
+
 module.exports = (fn, _delay) => {
-	let hasDebounce, self, args, hasCalled, _cancel;
-	const exec = () => {
-		let _hasCalled = hasCalled;
-		hasCalled = hasDebounce = false;
-		_hasCalled && fn.apply(self, args);
-	};
-	const cnacel = () => {
-		hasCalled = hasDebounce = false;
-		_cancel();
-	};
-	return single(function() {
-		if (hasDebounce) {
-			self = this;
-			args = arguments;
-			hasCalled = true;
-			return _cancel;
-		}
-		hasDebounce = true;
-		fn.apply(this, arguments);
-		_cancel = delay(exec, _delay);
-		return cnacel;
-	});
+  let hasDebounce, self, args, hasCalled, _cancelDelay = noop, _cancelApply = noop; // eslint-disable-line
+  function execute() {
+    cancelDelay = delay(exec, _delay);
+    isFunction(_cancelApply = fn.apply(self, args))
+      || (_cancelApply = noop);
+  }
+  function exec() {
+    hasCalled ? (hasCalled = 0, execute()) : (hasDebounce = 0);
+  }
+  function cancel() {
+    hasCalled = hasDebounce = 0;
+  }
+  return function() {
+    self = this;
+    args = arguments; // eslint-disable-line
+    hasDebounce ? (hasCalled = 1) : (hasDebounce = 1, execute());
+    return cancel;
+  };
 };

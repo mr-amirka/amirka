@@ -30,7 +30,7 @@ const complement = require('./complement');
  * mergeDepth([ obj1, obj2 ], dst);
  */
 module.exports = (mergingCollection, dst, depth) => {
-  depth || (depth = 0);
+  depth || (depth = 10);
   if (depth < 0) return dst;
   if (!isObjectLike(mergingCollection)) {
     return isDefined(dst) ? dst : mergingCollection;

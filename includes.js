@@ -5,7 +5,7 @@ module.exports = __includes
   : ((self, v) => {
     let i = self && self.length || 0; // eslint-disable-line
     while (i > 0) {
-      if (self[--i] === v) return true;
+      if (self[--i] === v) return 1;
     }
-    return false;
+    return 0;
   });

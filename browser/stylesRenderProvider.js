@@ -13,7 +13,7 @@ module.exports = (document, prefix) => {
     if (styleSheet) {
       styleSheet.cssText = text;
     } else {
-      while (ci) node.removeChild(cs[ci--]);
+      while (--ci > -1) node.removeChild(cs[ci]);
       node.appendChild(document.createTextNode(text));
     }
   }

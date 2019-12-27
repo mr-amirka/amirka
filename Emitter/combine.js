@@ -12,13 +12,15 @@ const getBase = get.base;
 
 const EMITTER_COMBINE_DEFAULT_DEPTH = 10;
 
-const combine = module.exports = (emitters) => {
+function combine(emitters) {
   if (!isObject(emitters)) return new Emitter(emitters);
   each(emitters, (instance, key) => {
     instance === undefined && console.warn('WARNING: ' + key + ' is undefined');
   });
   const watchEmitters = [];
   const emits = {};
+  extract([], emitters, EMITTER_COMBINE_DEFAULT_DEPTH);
+  let _subscription, _value; //eslint-disable-line
   function extract(path, src, depth) {
     if (isEmitter(src)) {
       setBase(emits, path, src.emit);
@@ -29,47 +31,48 @@ const combine = module.exports = (emitters) => {
     if (depth < 1 || !isObjectLike(src)) return src;
     return map(src, (v, k) => extract(path.concat([k]), v, depth));
   }
-  const bone = extract([], emitters, EMITTER_COMBINE_DEFAULT_DEPTH);
-  const getValue
-    = () => combineGetValueBase(bone, EMITTER_COMBINE_DEFAULT_DEPTH);
-  let _subscription, _value; //eslint-disable-line
   function onDestroy() {
     _subscription();
-    _subscription = null;
+    _subscription = 0;
+  }
+  function getValue() {
+    return combineGetValueBase(emitters, EMITTER_COMBINE_DEFAULT_DEPTH);
   }
   return new Emitter({
     emit: (v) => combineEmitBase(emits, v, EMITTER_COMBINE_DEFAULT_DEPTH),
     getValue: () => _subscription ? _value : getValue(),
     on: (watcher) => {
-      _value = getValue();
+      let subscribed = 0;
       _subscription = aggregateSubscriptions(
-          map(watchEmitters, function([path, emitter]) {
-            return emitter.on((item) => {
-              if (item === getBase(_value, path)) return;
-              setBase(_value = map(_value), path, item);
-              watcher(_value);
+          map(watchEmitters, function(args) {
+            const path = args[0];
+            return args[1].on((item) => {
+              item === getBase(_value, path)
+                || subscribed
+                && watcher(setBase(_value = map(_value), path, item));
             });
           }),
       );
+      _value = getValue();
+      subscribed = 1;
       return onDestroy;
     },
   });
-};
-
+}
 function combineGetValueBase(src, depth) {
-  if (isEmitter(src)) return src.getValue();
-  depth--;
-  if (depth < 1 || !isObject(src)) return src;
-  return map(src, (v, k) => combineGetValueBase(v, depth));
+  return isEmitter(src)
+    ? src.getValue()
+    : (
+      depth-- < 1 || !isObject(src)
+        ? src
+        : map(src, (v) => combineGetValueBase(v, depth))
+    );
 }
 function combineEmitBase(emit, src, depth) {
-  if (isFunction(emit)) {
-    emit(src);
-    return;
-  }
+  if (isFunction(emit)) return emit(src);
   if (depth < 1) return;
   depth--;
-  var k, e; //eslint-disable-line
+  let k, e; //eslint-disable-line
   for (k in src) (e = emit[k]) && combineEmitBase(e, src[k], depth); //eslint-disable-line
 }
 
@@ -82,3 +85,4 @@ combine.some = (emitters, _value) => {
     }))),
   });
 };
+module.exports = combine;

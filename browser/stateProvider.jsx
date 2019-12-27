@@ -8,9 +8,11 @@ module.exports = (env) => {
     const setState = self.setState.bind(self);
     const emitter = combine(props.state);
     const onChange = props.onChange;
-    self.state = emitter.getValue();
+    const {getValue} = emitter;
+    self.state = getValue();
     self.UNSAFE_componentWillMount = () => {
-      subscription || (subscription = emitter.on(setState));
+      subscription || (subscription
+        = emitter.on(setState), setState(getValue()));
     };
     self.componentWillUnmount = () => {
       subscription && (subscription(), subscription = 0);

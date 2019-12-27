@@ -1,9 +1,10 @@
+const isArray = require('./isArray');
 
-module.exports = (collection, iteratee, accumulator, hasArray) => {
-  if (hasArray || collection && (collection instanceof Array)) {
-    for (var length = collection && collection.length || 0, i = 0; i < length; i++) accumulator = iteratee(accumulator, collection[i], i);
+module.exports = (collection, iteratee, accumulator, hasArray, i, l) => {
+  if (hasArray || isArray(collection)) {
+    for (l = collection && collection.length || 0, i = 0; i < l; i++) accumulator = iteratee(accumulator, collection[i], i); //eslint-disable-line
   } else {
-    for (var k in collection) accumulator = iteratee(accumulator, collection[k], k);
+    for (i in collection) accumulator = iteratee(accumulator, collection[i], i); //eslint-disable-line
   }
   return accumulator;
 };

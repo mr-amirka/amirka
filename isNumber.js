@@ -3,4 +3,4 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-module.exports = v => typeof v == 'number';
+module.exports = (v) => typeof v == 'number';

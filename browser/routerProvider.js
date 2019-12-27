@@ -130,8 +130,8 @@ module.exports = ({Component, window, createElement}) => {
         const matchs = urlExtend(props.href, props.options);
         const _props = extend({}, props);
         _props.className = getClass({
-          active: state.path === matchs.path
-            && isMatch(state.query, matchs.query),
+          active: (state.path || '/') === matchs.path
+            && isMatch(state.query || {}, matchs.query),
         }, props.className);
         return createElement(Link, _props);
       };

@@ -1,5 +1,4 @@
-
-module.exports =  (fn, args, context) => {
+module.exports = (fn, args, context) => {
   try {
     return fn.apply(context, args || []);
   } catch (ex) {

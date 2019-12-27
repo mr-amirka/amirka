@@ -5,6 +5,6 @@
  */
 
 module.exports = (window) => {
-  var n = window.navigator, u = n ? n.userAgent : '';
-  return u.indexOf("MSIE") > -1 || u.indexOf("Trident") > -1;
+  var n = window.navigator, u = n ? n.userAgent : ''; // eslint-disable-line
+  return u.indexOf('MSIE') > -1 || u.indexOf('Trident') > -1;
 };

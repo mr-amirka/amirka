@@ -1,17 +1,11 @@
-/**
- * @overview eachTry
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
-const isLength = require('./isLength');
+const isArrayLike = require('./isArrayLike');
 const execute = require('./executeTry');
+const each = require('./each');
+
 module.exports = (funcs, args, context) => {
   context || (context = null);
   args || (args = []);
-  const length = funcs && funcs.length;
-  if (isLength(length)) {
-    for (let i = 0; i < length; i++) execute(funcs[i], args, context);
-  } else {
-    for (let k in funcs) execute(funcs[k], args, context);
-  }
+  each(funcs, (fn) => {
+    execute(fn, args, context);
+  }, isArrayLike(funcs));
 };

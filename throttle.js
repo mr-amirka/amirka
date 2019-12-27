@@ -1,29 +1,17 @@
-/**
- * @overview throttle
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
 const delay = require('./delay');
+
 module.exports = (fn, _delay) => {
-	let hasDebounce, result, self, args, hasCalled;
-	const exec = () => {
-		if (hasCalled) {
-			hasCalled = false;
-			result = fn.apply(self, args);
-			delay(exec, _delay);
-		} else {
-			hasDebounce = false;
-		}
-	};
-	return function() {
-		if (hasDebounce) {
-			self = this;
-			args = arguments;
-			hasCalled = true;
-			return result;
-		}
-		hasDebounce = true;
-		delay(exec, _delay);
-		return result = fn.apply(this, arguments);
-	};
+  let hasDebounce, result, self, args, hasCalled; // eslint-disable-line
+  function exec() {
+    hasCalled
+      ? (hasCalled = 0, delay(exec, _delay), result = fn.apply(self, args))
+      : (hasDebounce = 0);
+  }
+  return function() {
+    self = this;
+    args = arguments; // eslint-disable-line
+    return hasDebounce
+      ? (hasCalled = 1, result)
+      : (hasDebounce = 1, delay(exec, _delay), result = fn.apply(self, args));
+  };
 };
