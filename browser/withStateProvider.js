@@ -26,7 +26,7 @@ const noop = require('../noop');
 module.exports = (env) => {
   const {Component} = env;
   return (constructor, emitters) => {
-    const emitter = combine(emitters);
+    const emitter = combine(emitters || {});
     const {getValue} = emitter;
     return childClass(Component, function() {
       const self = this;
@@ -72,25 +72,27 @@ module.exports = (env) => {
       };
       self.UNSAFE_componentWillUpdate = checkEffects;
       self.UNSAFE_componentWillMount = () => {
-        if (_subscription) return;
-        _subscription = emitter.on(setState);
-        setState(getValue());
-        forEach(_mountWatchers, mountIteratee);
-        checkEffects();
+        _subscription || (
+          _subscription = emitter.on(setState),
+          setState(getValue()),
+          forEach(_mountWatchers, mountIteratee),
+          checkEffects()
+        );
       };
       self.componentWillUnmount = (w) => {
-        if (!_subscription) return;
-        _subscription();
-        _subscription = 0;
-        _mountWatchers = [];
-        w = _mountSubscriptions;
-        _mountSubscriptions = [];
-        eachTry(w);
-        w = _effectSubscriptions;
-        _effectSubscriptions = [];
-        eachTry(w);
-        _effects = [];
-        _prevEffects = [];
+        _subscription && (
+          _subscription(),
+          _subscription = 0,
+          _mountWatchers = [],
+          w = _mountSubscriptions,
+          _mountSubscriptions = [],
+          eachTry(w),
+          w = _effectSubscriptions,
+          _effectSubscriptions = [],
+          eachTry(w),
+          _effects = [],
+          _prevEffects = []
+        );
       };
       let _subscription;
       let _mountWatchers = [];

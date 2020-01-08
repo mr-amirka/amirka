@@ -150,21 +150,18 @@ module.exports = ({Component, window, createElement}) => {
       changeState(query);
       locked = 0;
     }
-    function set(key, value) {
-      if (isEqual(value, state[key])) return;
-      const nextState = map(state);
-      if (!value && value !== 0) {
-        delete nextState[key];
-      } else {
-        nextState[key] = value;
-      }
-      setState(nextState);
+    function set(key, v, nextState) {
+      isEqual(v, state[key]) || (
+        nextState = map(state),
+        nextState[key] = v || null,
+        setState(nextState)
+      );
       return instance;
     }
 
     instance.set = set;
     instance.get = (key) => state[key];
-    instance.remove = (key) => set(key, null);
+    instance.remove = (key) => set(key);
     instance.getKeys = () => keys(state);
     instance.clear = () => {
       setState({});
@@ -174,17 +171,17 @@ module.exports = ({Component, window, createElement}) => {
       const prev = state;
       const exclude = {};
       const changed = {};
-      let value, key; // eslint-disable-line
+      let v, k; // eslint-disable-line
       state = nextState;
-      for (key in state) { // eslint-disable-line
-        exclude[key] = 1;
-        isEqual(prev[key], value = state[key]) || (changed[key] = value);
+      for (k in state) { // eslint-disable-line
+        exclude[k] = 1;
+        isEqual(prev[k], v = state[k]) || (changed[k] = v);
       }
-      for (key in prev) exclude[key] // eslint-disable-line
-        || isEqual(prev[key], value = state[key]) || (changed[key] = value);
-      for (key in changed) emit({ // eslint-disable-line
-        key: key,
-        value: changed[key],
+      for (k in prev) exclude[k] // eslint-disable-line
+        || isEqual(prev[k], v = state[k]) || (changed[k] = v);
+      for (k in changed) emit({ // eslint-disable-line
+        key: k,
+        value: changed[k],
       });
     }
     location$.on((state) => {

@@ -1,16 +1,11 @@
 const attachEvent = require('../attachEvent');
 const Emitter = require('../Emitter');
-const w = window, d = w.document, de = d.documentElement; //eslint-disable-line
-function getValue() {
-  return [
-    w.innerWidth || d.width || de.clientWidth,
-    w.innerHeight || d.height || de.clientHeight,
-  ];
-};
+const getViewportSize = require('../browser/getViewportSize');
+
 module.exports = new Emitter((emit) => {
   function trigger() {
-    emit(getValue());
+    emit(getViewportSize());
   }
   trigger();
-  return attachEvent(w, 'resize', trigger);
-}, getValue());
+  return attachEvent(window, 'resize', trigger);
+}, getViewportSize());

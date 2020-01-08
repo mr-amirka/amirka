@@ -1,32 +1,43 @@
+const isObject = require('./isObject');
 const trimZero = require('./trimProvider')('0');
 
 const regexpColor = /^[A-Fa-f0-9]+$/;
 const regexpSplit = /\s*,\s*/;
 const regexpGetColor = /^(#?([A-Fa-f0-9]+)|rgba?\((.*)\))(.*)$/;
 const MULTIPLIER = 1.0 / 255;
+const MULTIPLIER_ONE = 1.0 / 15;
 
-function substr(v, start, end) {
-  return v.substr(start, end);
-}
 function color(v) {
   return regexpColor.test(v) ? rgbaAlt(normalize(v)) : [v.toLowerCase()];
+}
+function one(v) {
+  return parseInt(v, 16) * MULTIPLIER_ONE;
+}
+function double(v, start) {
+  return parseInt(v.substr(start, 2), 16) * MULTIPLIER;
 }
 function normalize(v, w, l) {
   if (!v) return [0, 0, 0, 1];
   l = v.length;
   if (l < 2) {
-    v += v;
-    return getBase([v, v, v]);
+    v = one(v);
+    return [v, v, v, 1];
   }
   if (l < 3) {
-    w = v[0] + v[0];
-    return getBase([w, w, w, v[1] + v[1]]);
+    w = one(v[0]);
+    return [w, w, w, one(v[1])];
   }
-  if (l < 5) return getBase([v[0] + v[0], v[1] + v[1], v[2] + v[2], v[3] + v[3]]); // eslint-disable-line
-  if (l < 6) return getBase([v[0] + v[0], v[1] + v[1], v[2] + v[2], substr(v, 3, 2)]); // eslint-disable-line
-  if (l < 7) return getBase([substr(v, 0, 2), substr(v, 2, 2), substr(v, 4, 2)]); // eslint-disable-line
-  if (l < 8) return getBase([substr(v, 0, 2), substr(v, 2, 2), substr(v, 4, 2), v[6] + v[6]]); // eslint-disable-line
-  return getBase([substr(v, 0, 2), substr(v, 2, 2), substr(v, 4, 2), substr(v, 6, 2)]); // eslint-disable-line
+  if (l < 4) return [one(v[0]), one(v[1]), one(v[2]), 1];
+  if (l < 5) return [one(v[0]), one(v[1]), one(v[2]), one(v[3])];
+  if (l < 6) return [one(v[0]), one(v[1]), one(v[2]), double(v, 3)];
+  if (l < 7) return [double(v, 0), double(v, 2), double(v, 4), 1];
+  if (l < 8) return [double(v, 0), double(v, 2), double(v, 4), one(v[6])];
+  return [
+    double(v, 0), double(v, 2), double(v, 4),
+    l < 8
+      ? one(v[6])
+      : double(v, 6),
+  ];
 }
 function getColor(input, parts, v, i, output) {
   parts = regexpGetColor.exec(input);
@@ -39,17 +50,9 @@ function getColor(input, parts, v, i, output) {
   for (;i--;) isNaN(v = parseInt(parts[i])) || (output[i] = v * MULTIPLIER);
   return output;
 }
-function getBase(args) {
-  const rgbaColor = [0, 0, 0, 1];
-  let v, l = args.length; // eslint-disable-line
-  for (;l--;) isNaN(v = parseInt(args[l], 16)) || (rgbaColor[l] = v * MULTIPLIER); // eslint-disable-line
-  return rgbaColor;
-}
 function prepare(args) {
   let arg, l = args.length, output = new Array(l); // eslint-disable-line
-  for (; l--;) {
-    output[l] = typeof(arg = args[l]) === 'object' ? arg : getColor(arg);
-  }
+  for (; l--;) output[l] = isObject(arg = args[l]) ? arg : getColor(arg);
   return output;
 }
 function join(args) {
@@ -79,11 +82,10 @@ function rgbaAlt(rgbaColor) {
   return output;
 }
 function __tone(v) {
-  return v > 1 ? 1 : (v < 0 ? 0 : v);
+  return Math.min(1, Math.max(0, v));
 }
 
 join.base = joinBase;
-getColor.base = getBase;
 color.rgbaAlt = rgbaAlt;
 color.rgba = rgba;
 color.join = join;

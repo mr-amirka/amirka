@@ -1,9 +1,10 @@
 const color = require('./color');
 const splitProvider = require('./splitProvider');
+const camelToKebabCase = require('./camelToKebabCase');
 
 const regexpBg = /^([A-Fa-f0-9]+)(p([0-9]+)([a-z%]*))?$/i;
-const regexpAngle = /^(.*)((\-r)_?(.*)|\-g(\-?[0-9]+))$/i;
-const regexpRepeat = /^(.*)rpt$/i;
+const regexpAngle = /^(.*)((\_r)_?([A-Za-z_]*)|\_g(\-?[0-9]+))$/i;
+const regexpRepeat = /^(.*)_rpt$/i;
 const splitDelimeter = splitProvider('-');
 const splitSuffix = splitProvider(/_+/);
 
@@ -16,7 +17,7 @@ module.exports = (input) => {
   if (matches = regexpAngle.exec(v)) {
     v = matches[1];
     if (matches[3]) {
-      radial = splitSuffix(matches[4] || 'circle').join(' ');
+      radial = splitSuffix(camelToKebabCase(matches[4] || 'circle')).join(' ');
     } else {
       vi = matches[5];
       angle = (angle + (vi ? parseInt(vi) : 0)) % 360;

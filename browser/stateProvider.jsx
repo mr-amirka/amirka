@@ -6,7 +6,7 @@ module.exports = (env) => {
     let subscription;
     const self = this;
     const setState = self.setState.bind(self);
-    const emitter = combine(props.state);
+    const emitter = combine(props.state || {});
     const onChange = props.onChange;
     const {getValue} = emitter;
     self.state = getValue();
