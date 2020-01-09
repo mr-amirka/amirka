@@ -8,7 +8,8 @@ const isArray = require('./isArray');
 const push = require('./push');
 
 module.exports = (prefixedAttrs, prefixes) => {
-  function stringify(props) {
+  function stringify(props, important) {
+    const suffix = important ? '!important': '';
     let output = [], vs, vl, vi, prop, prefix, propPrefix, propertyName; // eslint-disable-line
     for (propertyName in props) { // eslint-disable-line
       propPrefix = camelToKebabCase(propertyName) + ':';
@@ -22,7 +23,7 @@ module.exports = (prefixedAttrs, prefixes) => {
         continue;
       }
       // eslint-disable-next-line
-      for (vi = 0, vl = vs.length; vi < vl; vi++) push(output, propPrefix + vs[vi]);
+      for (vi = 0, vl = vs.length; vi < vl; vi++) push(output, propPrefix + vs[vi] + suffix);
     }
     return output.join(';');
   }
