@@ -1,8 +1,3 @@
-/**
- * @overview cssPropertiesStringifyProvider
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
 const camelToKebabCase = require('./camelToKebabCase');
 const isArray = require('./isArray');
 const push = require('./push');
@@ -28,6 +23,6 @@ module.exports = (prefixedAttrs, prefixes) => {
     return output.join(';');
   }
   stringify.prefixedAttrs = prefixedAttrs = prefixedAttrs || {};
-  stringify.prefixes = prefixes || (prefixes = {});
+  stringify.prefixes = prefixes = prefixes || {};
   return stringify;
 };
