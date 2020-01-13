@@ -11,7 +11,7 @@ module.exports = (prefixedAttrs, prefixes) => {
       if (!isArray((vs = props[propertyName]))) vs = [vs];
       if (prefixedAttrs[propertyName]) {
         for (vi = 0, vl = vs.length; vi < vl; vi++) {
-          prop = propPrefix + vs[vi];
+          prop = propPrefix + vs[vi] + suffix;
           for (prefix in prefixes) push(output, prefix + prop); // eslint-disable-line
           push(output, prop);
         }
