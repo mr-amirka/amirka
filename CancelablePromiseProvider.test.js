@@ -145,11 +145,18 @@ describe('CancelablePromise', () => {
     const cancelablePromise = new CancelablePromise((resolve) => {
       resolve('Hello world!');
     });
-    const childCancelablePromise = cancelablePromise.finally((error, val) => {
-      expect(val).toBe('Hello world!');
-      expect(error).toBe(null);
-    });
-    expect(await childCancelablePromise).toBe('Hello world!');
+    const childCancelablePromise = cancelablePromise
+        .then((v) => {
+          return v + '!';
+        })
+        .then((v) => {
+          return v + '!';
+        })
+        .finally((error, val) => {
+          expect(val).toBe('Hello world!!!');
+          expect(error).toBe(null);
+        });
+    expect(await childCancelablePromise).toBe('Hello world!!!');
   });
 
   test('it should execute "finally" callback if rejected promise', async () => {

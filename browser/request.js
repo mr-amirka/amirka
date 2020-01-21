@@ -14,7 +14,8 @@ const Deal = require('../CancelablePromise');
 const urlExtend = require('../urlExtend');
 const decorate = require('../decorate');
 const isString = require('../isString');
-const JSON = require('../json');
+const jsonStringify = require('../jsonStringify');
+const jsonParse = require('../jsonParse');
 
 const CONNECTION_ERRORS = [0, 408];
 
@@ -32,7 +33,7 @@ const defaultTypes = {
     },
   },
   text: {
-    encode: (v) => isString(v) ? v : JSON.stringify(v),
+    encode: (v) => isString(v) ? v : jsonStringify(v),
     headers: {
       'Content-Type': 'text/plain; charset=UTF-8',
     },
@@ -134,7 +135,7 @@ const base = request.base = (_options) => {
     };
   }).then(
       (response) => typeof response === 'string' && responseType === 'json'
-        ? JSON.parse(response)
+        ? jsonParse(response)
         : response,
   );
 };

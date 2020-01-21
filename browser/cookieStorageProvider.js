@@ -6,6 +6,7 @@
 
 const Emitter = require('../Emitter');
 const tryJsonParse = require('../tryJsonParse');
+const jsonStringify = require('../jsonStringify');
 const keys = require('../keys');
 
 const expires = 400 * 86400000;
@@ -43,7 +44,7 @@ module.exports = (ctx) => {
       delete cache[key];
       __set(key, '');
     } else {
-      __set(key, JSON.stringify(cache[key] = value));
+      __set(key, jsonStringify(cache[key] = value));
     }
   });
   instance.set = set;

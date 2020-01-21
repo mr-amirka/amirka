@@ -1,7 +1,7 @@
-const JSON = require('./json');
+const jsonParse = require('./jsonParse');
 module.exports = (s) => {
   try {
-    return JSON.parse(s);
+    return jsonParse(s);
   } catch (e) {}
   return s;
 };

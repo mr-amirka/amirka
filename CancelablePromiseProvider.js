@@ -11,12 +11,12 @@ const forEach = require('./forEach');
 const {getter} = require('./get');
 
 module.exports = function(ctx) {
-  ctx || (ctx = {});
+  ctx = ctx || {};
   const __deferApply = ctx.defer || defer;
   const ParentClass = ctx.ParentClass;
 
   function CancelablePromise(executor, deferApply) {
-    deferApply || (deferApply = __deferApply);
+    deferApply = deferApply || __deferApply;
     const self = this;
     let poolResolve = [];
     let poolReject = [];
@@ -24,11 +24,11 @@ module.exports = function(ctx) {
     let subject;
     let error;
     let innerCancel = self.cancel = cancelNoop;
-    const clear = () => {
+    function clear() {
       poolResolve = [];
       poolReject = [];
-    };
-    const normalizeWrap = (onResolve, onReject) => {
+    }
+    function normalizeWrap(onResolve, onReject) {
       return (subject) => {
         return deferApply(() => {
           if (!isPromise(subject)) return onResolve(subject);
@@ -36,19 +36,21 @@ module.exports = function(ctx) {
           innerCancel = next && next.cancel || cancelNoop;
         });
       };
-    };
-    const resolve = (_subject) => {
-      if (done) return;
-      done = true;
-      eachApply(poolResolve, [subject = _subject]);
-      clear();
-    };
-    const reject = (_subject) => {
-      if (done) return;
-      done = error = true;
-      eachApply(poolReject, [subject = _subject]);
-      clear();
-    };
+    }
+    function resolve(_subject) {
+      done || (
+        done = 1,
+        eachApply(poolResolve, [subject = _subject]),
+        clear()
+      );
+    }
+    function reject(_subject) {
+      done || (
+        done = error = 1,
+        eachApply(poolReject, [subject = _subject]),
+        clear()
+      );
+    }
 
     const _resolve = self.resolve = normalizeWrap(resolve, reject);
     const _reject = self.reject = normalizeWrap(reject, reject);
@@ -68,13 +70,12 @@ module.exports = function(ctx) {
       };
     });
 
-    const __chain = (onResolve, onReject) => {
+    function __chain(onResolve, onReject) {
       if (done) return (error ? onReject : onResolve)(subject);
       poolResolve.push(onResolve);
       poolReject.push(onReject);
-    };
-
-    const __then = self.then = (onResolve, onReject, onCancel) => {
+    }
+    function __then(onResolve, onReject, onCancel) {
       onResolve = getter(onResolve);
       onReject = getter(onReject);
 
@@ -114,7 +115,8 @@ module.exports = function(ctx) {
       );
       promise.cancel = cancel;
       return promise;
-    };
+    }
+    self.then = __then;
     self.catch = (onReject, onCancel) => __then(null, onReject, onCancel);
     self.finally = (onFinally) => {
       return onFinally ? __then(
@@ -149,7 +151,7 @@ module.exports = function(ctx) {
         throw new TypeError('argument may only be an Object: ' + promises);
       }
       function clear() {
-        stop = true;
+        stop = 1;
         forEach(pendingPromises, cancelPromise);
       }
       function onReject(subject) {
@@ -199,7 +201,7 @@ module.exports = function(ctx) {
         throw new TypeError('argument may only be an Object: ' + promises);
       }
       function clear() {
-        stop = true;
+        stop = 1;
         forEach(pendingPromises, cancelPromise);
       }
       function onResolve(subject) {
@@ -262,7 +264,9 @@ module.exports = function(ctx) {
 
   return CancelablePromise;
 };
-const cancelNoop = () => false;
+function cancelNoop() {
+  return 0;
+}
 function cancelPromise(promise) {
   promise.cancel && promise.cancel();
 }
@@ -273,12 +277,12 @@ function subscribleInit(init) {
     count++;
     count == 1 && (cancel = init());
     return () => {
-      if (count < 1) return false;
+      if (count < 1) return 0;
       if (--count < 1) {
         cancel();
         cancel = null;
       }
-      return true;
+      return 1;
     };
   };
 }
@@ -291,14 +295,14 @@ function subscribleProvider(executor) {
   const cancel = executor(
       (subject) => {
         if (_done) return;
-        _done = true;
+        _done = 1;
         _subject = subject;
         __onResolve && __onResolve(subject);
         __onResolve = __onReject = null;
       },
       (subject) => {
         if (_done) return;
-        _error = _done = true;
+        _error = _done = 1;
         _subject = subject;
         __onReject && __onReject(subject);
         __onResolve = __onReject = null;

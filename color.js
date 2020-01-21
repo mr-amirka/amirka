@@ -1,14 +1,17 @@
 const isObject = require('./isObject');
+const lowerFirst = require('./lowerFirst');
 const trimZero = require('./trimProvider')('0');
 
-const regexpColor = /^[A-Fa-f0-9]+$/;
+const regexpColor = /^([A-Fa-f0-9]+)(\.[0-9]+)?$/;
 const regexpSplit = /\s*,\s*/;
 const regexpGetColor = /^(#?([A-Fa-f0-9]+)|rgba?\((.*)\))(.*)$/;
 const MULTIPLIER = 1.0 / 255;
 const MULTIPLIER_ONE = 1.0 / 15;
 
-function color(v) {
-  return regexpColor.test(v) ? rgbaAlt(normalize(v)) : [v.toLowerCase()];
+function color(v, m) {
+  return (m = regexpColor.exec(v))
+    ? rgbaAlt(normalize(m[1], m[2]))
+    : [lowerFirst(v)];
 }
 function one(v) {
   return parseInt(v, 16) * MULTIPLIER_ONE;
@@ -16,21 +19,22 @@ function one(v) {
 function double(v, start) {
   return parseInt(v.substr(start, 2), 16) * MULTIPLIER;
 }
-function normalize(v, w, l) {
-  if (!v) return [0, 0, 0, 1];
+function normalize(v, alpha, w, l) {
+  alpha = alpha ? parseFloat('0' + alpha) : 1;
+  if (!v) return [0, 0, 0, alpha];
   l = v.length;
   if (l < 2) {
     v = one(v);
-    return [v, v, v, 1];
+    return [v, v, v, alpha];
   }
   if (l < 3) {
     w = one(v[0]);
     return [w, w, w, one(v[1])];
   }
-  if (l < 4) return [one(v[0]), one(v[1]), one(v[2]), 1];
+  if (l < 4) return [one(v[0]), one(v[1]), one(v[2]), alpha];
   if (l < 5) return [one(v[0]), one(v[1]), one(v[2]), one(v[3])];
   if (l < 6) return [one(v[0]), one(v[1]), one(v[2]), double(v, 3)];
-  if (l < 7) return [double(v, 0), double(v, 2), double(v, 4), 1];
+  if (l < 7) return [double(v, 0), double(v, 2), double(v, 4), alpha];
   if (l < 8) return [double(v, 0), double(v, 2), double(v, 4), one(v[6])];
   return [
     double(v, 0), double(v, 2), double(v, 4),
@@ -67,22 +71,34 @@ function joinBase(args) {
 }
 function rgba(rgbaColor) {
   let output = [0, 0, 0, __tone(rgbaColor[3])], i = 3; // eslint-disable-line
-  for (; i--;) output[i] = Math.round(__tone(rgbaColor[i]) * 255);
+  while (i--) output[i] = Math.round(__tone(rgbaColor[i]) * 255);
   return 'rgba(' + output.join(',') + ')';
 }
 function rgbaAlt(rgbaColor) {
-  let output = [0, 0, 0], i = 3; // eslint-disable-line
-  for (; i--;) output[i] = Math.round(__tone(rgbaColor[i]) * 255);
-  const rgb = output.join(',');
-  const alpha = __tone(rgbaColor[3]);
-  output = ['rgb(' + rgb + ')'];
-  alpha < 1 && output.push(
-      'rgba(' + rgb + ',' + (trimZero(alpha.toFixed(2)) || '0') + ')',
-  );
-  return output;
+  let tmp = [0, 0, 0], i = 3, alpha = rgbaColor[3]; // eslint-disable-line
+  while (i--) tmp[i] = Math.round(rgbaColor[i] * 255);
+  return alpha < 1 ? [
+    rgbStringify(tmp),
+    'rgba(' + tmp.join(',') + ',' + (trimZero(alpha.toFixed(2)) || '0') + ')',
+  ] : [rgbStringify(tmp)];
 }
 function __tone(v) {
   return Math.min(1, Math.max(0, v));
+}
+
+function rgbStringify(rgb) {
+  let v, output = [0, 0, 0], i = 3, one = 1 // eslint-disable-line
+  while (i--) {
+    v = rgb[i].toString(16);
+    if (v.length < 2) v += '0';
+    if (v[0] != v[1]) one = 0;
+    output[i] = v;
+  }
+  return '#' + (
+    one
+      ? ('' + output[0][0] + output[1][0] + output[2][0])
+      : output.join('')
+  );
 }
 
 join.base = joinBase;

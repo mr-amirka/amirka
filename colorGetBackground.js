@@ -2,7 +2,7 @@ const color = require('./color');
 const splitProvider = require('./splitProvider');
 const camelToKebabCase = require('./camelToKebabCase');
 
-const regexpBg = /^([A-Fa-f0-9]+)(p([0-9]+)([a-z%]*))?$/i;
+const regexpBg = /^([A-Fa-f0-9]+(\.[0-9]+)?)(p([0-9]+)([a-z%]*))?$/i;
 const regexpAngle = /^(.*)((\_r)_?([A-Za-z_]*)|\_g(\-?[0-9]+))$/i;
 const regexpRepeat = /^(.*)_rpt$/i;
 const splitDelimeter = splitProvider('-');
@@ -35,8 +35,8 @@ module.exports = (input) => {
   for (i = 0; i < l; i++) {
     pmatches = regexpBg.exec(v = vls[i]) || [];
     suffix = ' '
-      + (pmatches[3] || (end ? Math.round(i * 100 / end) : 0))
-      + (pmatches[4] || '%');
+      + (pmatches[4] || (end ? Math.round(i * 100 / end) : 0))
+      + (pmatches[5] || '%');
     alts = color(pmatches[1] || v || Math.round(i * 15 / end).toString(16));
     i || gradient.push.apply(gradient, alts); // eslint-disable-line
     rgb = alts[0];

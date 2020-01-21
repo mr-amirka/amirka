@@ -4,7 +4,7 @@
  *
  */
 
-module.exports = (window) => {
-  var n = window.navigator, u = n ? n.userAgent : ''; // eslint-disable-line
-  return u.indexOf('MSIE') > -1 || u.indexOf('Trident') > -1;
+const regexp = /MSIE|Trident/;
+module.exports = (window, n) => {
+  return (n = window.navigator) && regexp.test(n.userAgent);
 };

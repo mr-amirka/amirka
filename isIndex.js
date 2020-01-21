@@ -1,2 +1,2 @@
-module.exports = (v) => regexp.test(v);
 const regexp = /^\d+$/;
+module.exports = (v) => regexp.test(v);

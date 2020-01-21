@@ -3,10 +3,8 @@ const pushArray = require('./pushArray');
 
 const regexp = /(\()|(\))?:([_A-Za-z0-9.]+)|(\))/g;
 
-module.exports = (route, defaultValueExp) => {
-  const valueExp = defaultValueExp || '([^/]*)';
-  const suffixExp = valueExp + ')';
-  const keys = ['$find'], levels = [keys]; // eslint-disable-line
+module.exports = (route) => {
+  const keys = ['all'], levels = [keys]; // eslint-disable-line
   let index = 0, depth = 0, lastDepth = 0; // eslint-disable-line
   // eslint-disable-next-line
   const prematcher = route.replace(regexp, (haystack, start, hasKey, key, end) => {
@@ -22,7 +20,7 @@ module.exports = (route, defaultValueExp) => {
       levels[lastDepth] = [];
     }
     lastDepth = depth;
-    return hasKey || end ? ')' : suffixExp;
+    return hasKey || end ? ')' : '([^/]*))';
   });
   return regexpMapperProvider(new RegExp(prematcher), keys);
 };

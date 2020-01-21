@@ -1,7 +1,7 @@
 const forEach = require('../forEach');
 const Emitter = require('../Emitter');
-const JSON = require('../json');
 const tryJsonParse = require('../tryJsonParse');
+const jsonStringify = require('../jsonStringify');
 const attachEvent = require('../attachEvent');
 
 module.exports = (win) => {
@@ -32,7 +32,7 @@ module.exports = (win) => {
     if (locked) return;
     value === null || value === undefined
       ? originLocalStorage.removeItem(key)
-      : originLocalStorage.setItem(key, JSON.stringify(value));
+      : originLocalStorage.setItem(key, jsonStringify(value));
   });
   instance.set = __set;
   instance.get = (key) => tryJsonParse(originLocalStorage.getItem(key));

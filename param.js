@@ -7,7 +7,8 @@
 
 const withoutEmpty = require('./withoutEmpty');
 const isObject = require('./isObject');
-const JSON = require('./json');
+const isArray = require('./isArray');
+const jsonStringify = require('./jsonStringify');
 
 const PARAM_WITHOUT_EMPTY_DEFAULT_DEPTH = 10;
 function param(v, s, k, l) {
@@ -16,13 +17,12 @@ function param(v, s, k, l) {
   function paramBuild(p, v) {
     v = withoutEmpty(v, PARAM_WITHOUT_EMPTY_DEFAULT_DEPTH);
     v === null || s.push(paramEscape(p) + '=' + paramEscape(
-      isObject(v) ? JSON.stringify(v) : ('' + v),
+      isObject(v) ? jsonStringify(v) : ('' + v),
     ));
     return s;
   }
-  if (v && (v instanceof Array)) {
-    l = v.length;
-    for (k = 0; k < l; k++) paramBuild('' + k, v[k]);
+  if (isArray(v)) {
+    for (k = 0, l = v.length; k < l; k++) paramBuild('' + k, v[k]);
   } else {
     for (k in v) paramBuild(k, v[k]); // eslint-disable-line
   }

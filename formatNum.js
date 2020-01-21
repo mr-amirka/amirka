@@ -6,14 +6,13 @@ module.exports = (v, fixed, dot, space) => {
   if (isNaN(val = parseFloat(v || 0)) || !isFinite(val)) return v;
   space === undefined && (space = ' ');
   fixed === undefined && (fixed = 0);
-  val = val.toFixed(fixed);
-  const parts = half(val, '.');
+  const parts = half(val.toFixed(fixed), '.');
   val = parts[0];
-  let result = '', balance, i = 0;
-  for (; i < val.length; i++) {
-    balance = (val.length - i) % 3;
+  let result = '', balance, i = 0, l = val.length, right = parts[1]; // eslint-disable-line
+  for (; i < l; i++) {
+    balance = (l - i) % 3;
     if (!balance && i) result += space;
     result += val[i];
   }
-  return parts[1] ? (result + (dot ? dot : '.') + parts[1]) : result;
+  return right ? (result + (dot ? dot : '.') + right) : result;
 };

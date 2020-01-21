@@ -1,4 +1,5 @@
 const merge = require('./merge');
+
 function base(src, id, dst, depth) {
   const length = src.length;
   depth--;
@@ -12,6 +13,6 @@ function base(src, id, dst, depth) {
     }
   }
   return dst;
-};
+}
 
 module.exports = (src, id, dst, depth) => base(src, id, dst || [], depth || 10);

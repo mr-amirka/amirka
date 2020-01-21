@@ -3,4 +3,5 @@
  * @author Amir Absolutely <mr.amirka@ya.ru>
  */
 
-module.exports = (v) => v && /object|function/.test(typeof v);
+const regexp = /object|function/;
+module.exports = (v) => v && regexp.test(typeof v);

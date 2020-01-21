@@ -14,12 +14,11 @@ const keys = require('../keys');
 const without = require('../without');
 const routeParseProvider = require('../routeParseProvider');
 const isMatch = require('../isMatch');
-const getClass = require('../getClass');
 const childClass = require('../childClass');
 const Emitter = require('../Emitter');
 
-const withoutFieldsLink = [
-  'onClick', 'options', 'component', 'timeout', 'href',
+const WITHOUT_FIELDS_LINK = [
+  'onClick', 'options', 'component', 'timeout', 'href', 'activeAsParent',
 ];
 
 function mergeLocation(prev, exten) {
@@ -109,7 +108,7 @@ module.exports = ({Component, window, createElement}) => {
       }
       return createElement(
           props.component || 'a',
-          without(props, withoutFieldsLink, addition),
+          without(props, WITHOUT_FIELDS_LINK, addition),
       );
     };
   }
@@ -129,10 +128,12 @@ module.exports = ({Component, window, createElement}) => {
         const {props, state} = self;
         const matchs = urlExtend(props.href, props.options);
         const _props = extend({}, props);
-        _props.className = getClass({
-          active: (state.path || '/') === matchs.path
-            && isMatch(state.query || {}, matchs.query),
-        }, props.className);
+        (
+          props.activeAsParent
+            ? matchs.path === matchs.path.split('/')[1]
+            : (state.path || '/') === matchs.path
+              && isMatch(state.query || {}, matchs.query)
+        ) && (_props.className = 'active ' + (props.className || ''));
         return createElement(Link, _props);
       };
     });
