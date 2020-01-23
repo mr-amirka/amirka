@@ -126,13 +126,19 @@ module.exports = ({Component, window, createElement}) => {
       };
       self.render = () => {
         const {props, state} = self;
+        const path = state.path || '/';
         const matchs = urlExtend(props.href, props.options);
+        const targetPath = matchs.path;
         const _props = extend({}, props);
         (
           props.activeAsParent
-            ? matchs.path === matchs.path.split('/')[1]
-            : (state.path || '/') === matchs.path
-              && isMatch(state.query || {}, matchs.query)
+            && path.startsWith(
+              targetPath.slice(-1) === '/' ? targetPath : (targetPath + '/'),
+            )
+            || (
+              path === targetPath
+                && isMatch(state.query || {}, matchs.query)
+            )
         ) && (_props.className = 'active ' + (props.className || ''));
         return createElement(Link, _props);
       };

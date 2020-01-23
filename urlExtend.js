@@ -1,23 +1,16 @@
-/**
- * @overview urlExtend
- * - парсит и мерджит url
- *
- * @author Amir Absolutely <mr.amirka@ya.ru>
- */
-
 const merge = require('./merge');
 const urlParse = require('./urlParse');
 const param = require('./param');
 
 function normalize(v, type) {
-  if (!v) return {};
-  type = typeof v;
-  return type == 'string'
-    ? urlParse(v)
-    : (type == 'object' ? v : {});
+  return v ? (
+    (type = typeof v) == 'string'
+      ? urlParse(v)
+      : (type == 'object' ? v : {})
+  ) : {};
 }
 function __def(src, dst, def) {
-  return ((src === undefined ? dst : src) || def || '');
+  return (src === undefined ? dst : src) || def || '';
 }
 function urlExtend(dst, src) {
   dst = normalize(dst);
