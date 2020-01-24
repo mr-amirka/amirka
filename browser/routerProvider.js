@@ -160,7 +160,7 @@ module.exports = ({Component, window, createElement}) => {
     function set(key, v, nextState) {
       isEqual(v, state[key]) || (
         nextState = map(state),
-        nextState[key] = v || null,
+        nextState[key] = v,
         setState(nextState)
       );
       return instance;

@@ -48,8 +48,7 @@ function initRootEmitter(self, _init, _value) {
   }
   function on(watcher) {
     if (_init) {
-      const _watchers = [];
-      const init = _init;
+      const _watchers = [], init = _init; // eslint-disable-line
       _init = 0;
       init(
           emit,

@@ -1,7 +1,6 @@
 const map = require('../map');
 const each = require('../each');
-const isObjectLike = require('../isObjectLike');
-const isObject = require('../isObject');
+const isCollection = require('../isCollection');
 const set = require('../set');
 const get = require('../get');
 const aggregateSubscriptions = require('../aggregateSubscriptions');
@@ -12,24 +11,25 @@ const getBase = get.base;
 
 const EMITTER_COMBINE_DEFAULT_DEPTH = 10;
 
+function iterateeWarning(instance, key) {
+  instance === undefined && console.warn('WARNING: ' + key + ' is undefined');
+}
+
 function combine(emitters) {
-  if (!isObject(emitters)) return new Emitter(emitters);
-  each(emitters, (instance, key) => {
-    instance === undefined && console.warn('WARNING: ' + key + ' is undefined');
-  });
-  const watchEmitters = [];
-  const emits = {};
+  if (!isCollection(emitters)) return new Emitter(emitters);
+  let watchEmitters = [], emits = {}, _subscription, _value; // eslint-disable-line
+  each(emitters, iterateeWarning);
   extract([], emitters, EMITTER_COMBINE_DEFAULT_DEPTH);
-  let _subscription, _value; //eslint-disable-line
   function extract(path, src, depth) {
-    if (isEmitter(src)) {
-      setBase(emits, path, src.emit);
-      watchEmitters.push([path, src]);
-      return src;
-    }
-    depth--;
-    if (depth < 1 || !isObjectLike(src)) return src;
-    return map(src, (v, k) => extract(path.concat([k]), v, depth));
+    return isEmitter(src) ? (
+      setBase(emits, path, src.emit),
+      watchEmitters.push([path, src]),
+      src
+    ) : (
+      --depth < 1 || !isCollection(src)
+        ? src
+        : map(src, (v, k) => extract(path.concat([k]), v, depth))
+    );
   }
   function onDestroy() {
     _subscription();
@@ -63,7 +63,7 @@ function combineGetValueBase(src, depth) {
   return isEmitter(src)
     ? src.getValue()
     : (
-      depth-- < 1 || !isObject(src)
+      depth-- < 1 || !isCollection(src)
         ? src
         : map(src, (v) => combineGetValueBase(v, depth))
     );

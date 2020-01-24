@@ -4,4 +4,4 @@
  */
 
 const values = require('./values');
-module.exports = v => values(v).length;
+module.exports = (v) => values(v).length;
