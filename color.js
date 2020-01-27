@@ -79,7 +79,8 @@ function rgbaAlt(rgbaColor) {
   while (i--) tmp[i] = Math.round(rgbaColor[i] * 255);
   return alpha < 1 ? [
     rgbStringify(tmp),
-    'rgba(' + tmp.join(',') + ',' + (trimZero(alpha.toFixed(2)) || '0') + ')',
+    'rgba(' + tmp.join(',') + ','
+      + (alpha ? trimZero(alpha.toFixed(2)) : '0') + ')',
   ] : [rgbStringify(tmp)];
 }
 function __tone(v) {

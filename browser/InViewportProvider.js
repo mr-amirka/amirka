@@ -24,14 +24,22 @@ module.exports = (env) => {
     const {getValue} = emitter;
     let _ref;
     let _subscription;
+    let _show = false;
+
+    function check() {
+      const rect = _ref && _ref.getBoundingClientRect();
+      const show
+        = !(!rect || rect.bottom < 0 || rect.top > getViewportSize()[1]);
+      show === _show || (_show = show, setState({}));
+    }
+
     function handleRef(ref) {
-      ref && ref !== _ref && (_ref = ref, setState(getValue()));
+      ref && ref !== _ref && (_ref = ref, check());
     }
     self.state = getValue();
     self.render = () => {
       const {props} = self;
       const {ref} = props;
-      const rect = _ref && _ref.getBoundingClientRect();
       return createElement(
           props.component || 'div',
           without(props, withoutProps, {
@@ -40,15 +48,13 @@ module.exports = (env) => {
               ref(_ref);
             } : handleRef,
           }),
-          !rect || rect.bottom < 0 || rect.top > getViewportSize()[1]
-            ? null
-            : props.render(self.state),
+          _show ? props.render(self.state) : null,
       );
     };
     self.UNSAFE_componentWillMount = () => {
       _subscription || (
-        _subscription = emitter.on(setState),
-        setState(getValue())
+        _subscription = emitter.on(check),
+        check()
       );
     };
     self.componentWillUnmount = (w) => {

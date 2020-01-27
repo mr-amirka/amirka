@@ -97,6 +97,7 @@ function subscribeProvider(watchers, watcher) {
 function isEmitter(v) {
   return v && isFunction(v.on) && isFunction(v.getValue);
 }
+Emitter.provider = (init, value) => new Emitter(init, value);
 Emitter.isEmitter = isEmitter;
 Emitter.prototype = {
   _cancel: noop,
