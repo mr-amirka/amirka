@@ -1,7 +1,7 @@
 /**
  * @overview escapedSplitProvider
  * Разбивает строку на подстроки с учетом экранирования служебного символа
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 declare namespace escapedSplitProvider {

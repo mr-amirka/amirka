@@ -4,7 +4,7 @@
  * const mapper = mapperProvider([ 'name', 'age']);
  * mapper([ 'Вася', 30 ]) //=> {name: 'Вася', age: 30}
  *
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 const set = require('./set');

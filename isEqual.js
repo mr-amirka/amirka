@@ -1,6 +1,6 @@
 /**
  * @overview isEqual
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 module.exports = (src1, src2, depth) => !isNotEqual(src1, src2, depth || 0);

@@ -1,6 +1,6 @@
 /**
  * @overview indexOf
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 const __indexOf = [].indexOf;

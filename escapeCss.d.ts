@@ -2,7 +2,7 @@
  * @overview escapeCss
  * Экранирует ковычки
  *
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 declare const escapeCss: (input: string) => string;

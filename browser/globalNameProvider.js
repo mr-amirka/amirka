@@ -1,6 +1,6 @@
 /**
  * @overview globalNameProvider
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 const _global = require('../_global');

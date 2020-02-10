@@ -10,7 +10,7 @@
  *    'Вася бежит': 1
  * }
  *
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 module.exports = (dst, prefixes, suffixes, separator) => {

@@ -2,7 +2,7 @@
  * @overview cloneDepth
  * Копирует объект до определенной вторым аргументом глубины
  *
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 declare namespace cloneDepth {

@@ -1,6 +1,6 @@
 /**
  * @overview JSON
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 module.exports = require('./support')('JSON') || {

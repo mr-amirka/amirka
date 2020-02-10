@@ -1,6 +1,6 @@
 /**
  * @overview InViewportProvider
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  * @example
  * const InViewport = InViewportProvider({
  *   Component: Component,

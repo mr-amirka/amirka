@@ -1,12 +1,12 @@
 {
   "name": "mn-utils",
-  "version": "0.0.78",
+  "version": "0.0.79",
   "description": "utils",
   "keywords": [
     "utils"
   ],
   "author": {
-    "name": "Amir Absolutely",
+    "name": "Amir Absalyamov",
     "email": "mr.amirka@ya.ru",
     "url": "https://github.com/mr-amirka"
   },
@@ -28,5 +28,7 @@
     "eslint-config-google": "^0.14.0",
     "jest": "^24.9.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "js-sha512": "^0.8.0"
+  }
 }

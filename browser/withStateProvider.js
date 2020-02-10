@@ -1,6 +1,6 @@
 /**
  * @overview withStateProvider
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  * @example
 const withState = withStateProvider({
   Component: Component

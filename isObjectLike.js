@@ -1,6 +1,6 @@
 /**
  * @overview isObjectLike
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 const regexp = /object|function/;

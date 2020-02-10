@@ -1,6 +1,6 @@
 /**
  * @overview remove
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 const isObject = require('./isObject');

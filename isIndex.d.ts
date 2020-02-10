@@ -1,6 +1,6 @@
 /**
  * @overview isIndex
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 declare const isIndex: (v: any) => boolean;

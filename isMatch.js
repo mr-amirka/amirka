@@ -1,6 +1,6 @@
 /**
  * @overview isMatch
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 module.exports = (src, matchs, depth) => !isNotMatch(src, matchs, depth || 10);

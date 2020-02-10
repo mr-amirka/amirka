@@ -4,7 +4,7 @@
  * где находит разделяющую подстроку separator.
  * Игнорирует разделилель, если он экранрован слэшем (\)
  *
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  *
  */
 

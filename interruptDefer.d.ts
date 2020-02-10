@@ -1,6 +1,6 @@
 /**
  * @overview interruptDefer
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  * @description
  * Функция может использоваться внутри отменяемых Promise на случай
  * необходимости прерывания асинхронного процесса внутри воркера.

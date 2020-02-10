@@ -1,6 +1,6 @@
 /**
  * @overview extendDepth
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
 interface IExtendDepth {

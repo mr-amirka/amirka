@@ -1,6 +1,6 @@
 /**
  * @overview flagsSet
- * @author Amir Absolutely <mr.amirka@ya.ru>
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
  *
  * @example
  * flagsSet([ 'apple', 'ban', 'test.use' ]); // =>
