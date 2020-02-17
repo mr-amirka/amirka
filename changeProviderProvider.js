@@ -1,6 +1,5 @@
 const baseGet = require('./get').base;
 const noopHandle = require('./noopHandle');
-
 const defaultPath = ['value'];
 
 module.exports = (set) => {

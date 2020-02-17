@@ -27,7 +27,33 @@ type eachApply = (funcs: fn[] | {[key: string]: fn}, args?: any[], context?: any
    */
 type defer = (callback: fn) => cancel;
 
+interface IUrlOptions {
+  href?: string;
+  search?: string;
+  unhash?: string;
+  hash?: string;
+  query?: any;
+  protocol?: string;
+  path?: string;
+  hostname?: string;
+  host?: string;
+  port?: string;
+  unalias?: string;
+  dirname?: string;
+  filename?: string;
+  alias?: string;
+  unextension?: string;
+  extension?: string;
+  unsearch?: string;
+  userpart?: string;
+  username?: string;
+  password?: string;
+  email?: string;
+  child?: IUrlOptions;
+}
+
 export {
+  IUrlOptions,
   IFlagsMap,
   fn,
   cancel,

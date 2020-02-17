@@ -73,9 +73,8 @@ function urlExtend(dst, src) {
 }
 module.exports = urlExtend;
 
-//console.log(urlExtend('http://eko-press.dartline.ru/api/'));
-
-//console.log(urlExtend('http://username:password@eko-press.dartline.ru/api.php?callback=JSONP_1&entity=navigation&method=GET&timestamp=1546178631496'));
+// console.log(urlExtend('http://eko-press.dartline.ru/api/'));
+// console.log(urlExtend('http://username:password@eko-press.dartline.ru/api.php?callback=JSONP_1&entity=navigation&method=GET&timestamp=1546178631496'));
 
 /*
 const defaultConfig: UrlOptions = {
@@ -85,7 +84,8 @@ const defaultConfig: UrlOptions = {
 
 const location = support('location');
 if (location) {
-  location.protocol && (defaultConfig.protocol = location.protocol.replace(/:/, ''));
+  location.protocol
+    && (defaultConfig.protocol = location.protocol.replace(/:/, ''));
   location.hostname && (defaultConfig.hostname = location.hostname);
   location.port && (defaultConfig.port = location.port);
 }

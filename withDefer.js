@@ -8,9 +8,7 @@ module.exports = (fn, result) => {
   return function() {
     self = this;
     args = arguments; // eslint-disable-line
-    if (hasDebounce) return result;
-    hasDebounce = 1;
-    defer(exec);
+    hasDebounce || (hasDebounce = 1, defer(exec));
     return result;
   };
 };

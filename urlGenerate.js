@@ -1,21 +1,4 @@
-/**
- * @overview urlGenerate
- * - гененрирует url alias из кирилических символов
- *
- * @author Amir Absalyamov <mr.amirka@ya.ru>
- */
-
-module.exports = (input) => {
-  input = input.toLowerCase();
-  const length = input.length;
-  let output = '', ch, i = 0; // eslint-disable-line
-  for (; i < length; i++) {
-    output += regexpWord.test(ch = input[i]) ? ch : (translite[ch] || space);
-  }
-  return output.replace(regexpSpace, space).replace(regexpTrim, '');
-};
 const space = '-';
-
 const translite = {
   'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
   'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm',
@@ -26,3 +9,13 @@ const translite = {
 const regexpWord = /[A-Za-z]/;
 const regexpSpace = /\-+/g;
 const regexpTrim = /^\-*|\-*$/g;
+
+module.exports = (input) => {
+  input = input.toLowerCase();
+  const length = input.length;
+  let output = '', ch, i = 0; // eslint-disable-line
+  for (; i < length; i++) {
+    output += regexpWord.test(ch = input[i]) ? ch : (translite[ch] || space);
+  }
+  return output.replace(regexpSpace, space).replace(regexpTrim, '');
+};

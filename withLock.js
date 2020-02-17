@@ -1,11 +1,10 @@
-
 module.exports = (fn) => {
   let locked;
-	return function() {
+  return function() {
     if (locked) return;
-    locked = true;
-    const result = fn.apply(this, arguments);
-    locked = false;
-		return result;
-	};
+    locked = 1;
+    const result = fn.apply(this, arguments); // eslint-disable-line
+    locked = 0;
+    return result;
+  };
 };

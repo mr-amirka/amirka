@@ -1,6 +1,6 @@
-module.exports = (fn, result) => {
+module.exports = (fn, result, ctx) => {
   return function() {
-    fn.apply(this, arguments); // eslint-disable-line
+    fn.apply(ctx || this, arguments); // eslint-disable-line
     return result;
   };
 };

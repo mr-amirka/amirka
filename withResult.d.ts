@@ -1,3 +1,7 @@
+/**
+ * @overview withResult
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
+ */
 
-declare const withResult: <A> (fn: (...args: any[]) => any, result: A) => A;
+declare function withResult<A>(fn: (...args: any[]) => any, result: A): A;
 export = withResult;

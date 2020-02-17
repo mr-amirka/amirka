@@ -1,11 +1,12 @@
+/**
+ * @overview withoutEmpty
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
+ */
 
-
-declare namespace withoutEmpty {
-  export interface withoutEmpty {
-    (data: any, depth?: number): any;
-    base: (data: any, depth?: number) => any;
-  }
+interface IWithoutEmpty {
+  (data: any, depth?: number): any;
+  base: (data: any, depth?: number) => any;
 }
 
-declare const withoutEmpty: withoutEmpty.withoutEmpty;
+declare const withoutEmpty: IWithoutEmpty;
 export = withoutEmpty;

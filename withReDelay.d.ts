@@ -1,10 +1,9 @@
 /**
- * @overview redelay
+ * @overview withReDelay
  * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
-import { fn } from "./global";
+import {fn} from "./global";
 
-
-declare const withReDelay: (fn: fn, _delay: number) => fn;
+declare function withReDelay(fn: fn, delay: number): fn;
 export = withReDelay;

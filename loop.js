@@ -1,5 +1,3 @@
-
 module.exports = (length, fn, start) => {
-  let i = start || 0;
-  for (; i < length; i++) fn(i);
+  for (start = start || 0; start < length; start++) fn(start);
 };

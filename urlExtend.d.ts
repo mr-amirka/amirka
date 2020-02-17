@@ -5,12 +5,9 @@
  * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
-import { UrlOptions } from './urlParse';
-declare namespace urlExtend {
-  export interface urlExtend {
-    (dst: string | UrlOptions, src: string | UrlOptions): UrlOptions;
-  }
-}
+import {IUrlOptions} from "./global";
 
-declare const urlExtend: urlExtend.urlExtend;
-export = urlExtend;
+export declare function urlExtend(
+  dst: string | IUrlOptions,
+  src: string | IUrlOptions,
+): IUrlOptions;

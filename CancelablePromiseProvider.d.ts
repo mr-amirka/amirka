@@ -4,7 +4,7 @@
  */
 
 import CancelablePromise = require("./CancelablePromise");
-import { defer } from "./global";
+import {defer} from "./global";
 
 /**
  * @desctiption
@@ -27,5 +27,5 @@ import { defer } from "./global";
  * });
  * ```
  */
-declare const CancelablePromiseProvider: (defaultDefer?: defer, parentClass?: any) => CancelablePromise;
+declare function CancelablePromiseProvider(defaultDefer?: defer, parentClass?: any): CancelablePromise<any>;
 export = CancelablePromiseProvider;

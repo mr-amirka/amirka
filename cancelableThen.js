@@ -1,4 +1,3 @@
-
 module.exports = (promise, onThen) => {
   let stop;
   return promise.then((value) => {

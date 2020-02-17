@@ -1,4 +1,7 @@
+/**
+ * @overview camelToKebabCase
+ * @author Amir Absalyamov <mr.amirka@ya.ru>
+ */
 
-
-declare const camelToKebabCase: (v: string)  => string;
+declare function camelToKebabCase(v: string): string;
 export = camelToKebabCase;
