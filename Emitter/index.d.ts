@@ -11,5 +11,5 @@ import {Emitter} from "./emitter";
 declare function emitterProvider(
   initial: ((emit: (v: any) => void) => cancel | any) | any,
   defaultInitial: any,
-): Emitter;
+): Emitter<any>;
 export = emitterProvider;

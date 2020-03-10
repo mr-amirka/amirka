@@ -8,19 +8,10 @@
  *
  */
 
-declare namespace escapedHalfProvider {
-  export interface escapedhalfResult {
-    prefix: string,
-    suffix: string,
-    value: string
-  }
-  export interface escapedhalf {
-    (input: string): escapedhalfResult;
-    core: escapedhalfCore;
-  }
-  export interface escapedhalfCore {
-    (input: string): escapedhalfResult;
-  }
+interface IEscapedHalf {
+  (input: string): [string, string, string];
+  base: (input: string) => [string, string, string];
 }
-declare const escapedHalfProvider: (separator: string | RegExp) => escapedHalfProvider.escapedhalf;
+
+declare function escapedHalfProvider(separator: string | RegExp): IEscapedHalf;
 export = escapedHalfProvider;

@@ -1,9 +1,3 @@
-/**
- * @overview css-parse
- * быстро парсит CSS без учета спец.символов внутри ковычек.
- * @author Absalyamov Amir <mr.amirka@ya.ru>
- */
-
 const kebabToCamelCase = require('./kebabToCamelCase');
 const isArray = require('./isArray');
 const includes = require('./includes');

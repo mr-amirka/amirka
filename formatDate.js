@@ -1,12 +1,13 @@
 const padStart = require('./padStart');
 const isArray = require('./isArray');
 
-var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
-var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
-var timezoneClip = /[^-+\dA-Z]/g;
+const token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
+const timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
+const timezoneClip = /[^-+\dA-Z]/g;
 
-var formatDate = module.exports = function (date, mask, utc, gmt) {
+module.exports = formatDate;
 
+function formatDate(date, mask, utc, gmt) {
   // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
   if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
     mask = date;
@@ -15,12 +16,11 @@ var formatDate = module.exports = function (date, mask, utc, gmt) {
 
   date = date || new Date;
 
-  if(!(date instanceof Date)) date = new Date(date);
+  if (!(date instanceof Date)) date = new Date(date);
 
   if (isNaN(date)) throw TypeError('Invalid date');
 
-
-  const { masks } = formatDate;
+  const {masks} = formatDate;
 
   mask = String(masks[mask] || mask || masks['default']);
 
@@ -109,8 +109,9 @@ formatDate.i18n = {
     'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
   ],
   monthNames: [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
+    'Dec', 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December',
   ]
 };
 

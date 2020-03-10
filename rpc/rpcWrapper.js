@@ -72,7 +72,7 @@ function rpcProvider(env, init, emit, on) {
     }
   };
   handlers[RPC_MSG_RESPONSE] = (taskId, res) => {
-    start(); // warning!
+    start();
     const task = defers[taskId];
     delete defers[taskId];
     const args = task && task[RPC_TASK_ARGS];

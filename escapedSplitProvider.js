@@ -1,14 +1,9 @@
-/**
- * @overview escapedSplitProvider
- * Разбивает строку на подстроки с учетом экранирования служебного символа
- * @author Amir Absalyamov <mr.amirka@ya.ru>
- */
-
 const isRegExp = require('./isRegExp');
 const escapeRegExp = require('./escapeRegExp');
 const unslash = require('./unslash');
 const push = require('./push');
 const map = require('./map');
+const joinOnly = require('./joinOnly');
 
 module.exports = (separator) => {
   separator = isRegExp(separator)
@@ -23,19 +18,19 @@ module.exports = (separator) => {
     const output = [];
     let v = [];
     input.replace(regexp, function(all, escaped, separator) {
-      const offset = arguments[arguments.length - 2]; // eslint-disable-line
+      const args = arguments, offset = args[args.length - 2]; // eslint-disable-line
       push(v, input.substr(lastOffset, offset - lastOffset));
-      if (escaped) {
-        push(v, escaped);
-      } else {
-        dstSeparators && push(dstSeparators, separator);
-        push(output, v.join(''));
-        v = [];
-      }
+      escaped
+        ? push(v, escaped)
+        : (
+          dstSeparators && push(dstSeparators, separator),
+          push(output, joinOnly(v)),
+          v = []
+        );
       lastOffset = offset + all.length;
     });
     push(v, input.substr(lastOffset));
-    return push(output, v.join(''));
+    return push(output, joinOnly(v));
   }
   escapedSplit.base = base;
   return escapedSplit;

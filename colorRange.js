@@ -1,13 +1,14 @@
-const {rgba} = require('./color');
-
-const rangeColors = module.exports = (colors, precision) => {
+function rgba(rgbaColor) {
+  let output = [0, 0, 0, __tone(rgbaColor[3])], i = 3; // eslint-disable-line
+  while (i--) output[i] = Math.round(__tone(rgbaColor[i]) * 255);
+  return 'rgba(' + output.join(',') + ')';
+}
+function rangeColors(colors, precision) {
   let output = base(prepare(colors), precision || 0), i = output.length; // eslint-disable-line
   for (; i--;) output[i] = rgba(output[i]);
   return output;
-};
-
-const __push = [].push;
-const base = rangeColors.base = (input, precision) => {
+}
+function base(input, precision) {
   const l = input.length;
   let output = [], i, prev = input[ l - 1 ], follow; // eslint-disable-line
   for (i = 0; i < l; i++) {
@@ -16,8 +17,7 @@ const base = rangeColors.base = (input, precision) => {
     output.push(prev = follow);
   }
   return output;
-};
-
+}
 function __rangeColor(c0, c1, precision) {
   const max = precision + 1, cl = 4; // eslint-disable-line
   let kl, kr, tmp, i, il, ci, output = new Array(precision); // eslint-disable-line
@@ -30,3 +30,8 @@ function __rangeColor(c0, c1, precision) {
   }
   return output;
 }
+
+const __push = [].push;
+
+rangeColors.base = base;
+module.exports = rangeColors;

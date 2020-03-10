@@ -18,22 +18,3 @@ module.exports = (v, delimeter) => {
     return isObject(v) ? map(v, iteratee, []).join(delimeter) : ('' + v);
   }, []).join('\n') : '';
 };
-
-/*
-const delimeter = '|';
-const csvParse = require('mn-utils/csvParse');
-const csvStringify = require('mn-utils/csvStringify');
-
-const text = csvStringify([
-  ['LS-14', 'Процессинговый Сервис (Processing Service)'],
-  ['LS-14', '"Процессинговый Сервис (Processing Service)"'],
-  ['LS-14', 'Процессинговый Сервис, (Processing Service)'],
-  ['LS-14', 'Процессинговый Сервис; (Processing Service)'],
-  ['LS-14', 'Процессинговый Сервис \\" (Processing Service)'],
-], delimeter);
-
-console.log({
-  text,
-  csv: csvParse(text, delimeter),
-});
-*/

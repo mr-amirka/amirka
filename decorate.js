@@ -1,18 +1,3 @@
-/**
- * @overview decorate
- * @author Amir Absalyamov <mr.amirka@ya.ru>
- *
- */
-
-/*
-@example
-const wrappedFn = decorate(innerFn);
-wrappedFn.use((innerFn) => (args) => {
-  console.log('dynamic log: ', args);
-  return innerFn(args)
-});
-*/
-
 const isFunction = require('./isFunction');
 const forEach = require('./forEach');
 

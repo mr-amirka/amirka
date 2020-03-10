@@ -5,5 +5,5 @@
 
 import {fn} from "./global";
 
-declare const debounce: (fn: fn, _delay: number) => fn;
+declare function debounce(fn: fn, delay: number): fn;
 export = debounce;

@@ -1,6 +1,5 @@
 const Deal = require('../../CancelablePromise');
 const {rpcProvider} = require('../rpcWrapper');
-const isHasFunctions = require('../isHasFunctions');
 
 module.exports = (childWindow, env) => {
   let parent = childWindow.parent;
@@ -15,7 +14,7 @@ module.exports = (childWindow, env) => {
         emit(e.data);
       }, false);
     }).finally((err, response) => {
-      !err && isHasFunctions(response) || terminate();
+      err && terminate();
     }).then((exports) => ({
       terminate,
       exports,

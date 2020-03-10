@@ -1,16 +1,13 @@
-const isObject = require('./isObject');
 const lowerFirst = require('./lowerFirst');
 const trimZero = require('./trimProvider')('0');
 
 const regexpColor = /^([A-Fa-f0-9]+)(\.[0-9]+)?$/;
-const regexpSplit = /\s*,\s*/;
-const regexpGetColor = /^(#?([A-Fa-f0-9]+)|rgba?\((.*)\))(.*)$/;
 const MULTIPLIER = 1.0 / 255;
 const MULTIPLIER_ONE = 1.0 / 15;
 
-function color(v, m) {
+function color(v, alt, m) {
   return (m = regexpColor.exec(v))
-    ? rgbaAlt(normalize(m[1], m[2]))
+    ? base(normalize(m[1], m[2]), alt)
     : [lowerFirst(v)];
 }
 function one(v) {
@@ -43,50 +40,15 @@ function normalize(v, alpha, w, l) {
       : double(v, 6),
   ];
 }
-function getColor(input, parts, v, i, output) {
-  parts = regexpGetColor.exec(input);
-  if (!parts) return [0, 0, 0, 1];
-  if (v = parts[2]) return normalize(v);
-  parts = parts[3].split(regexpSplit);
-  output = [0, 0, 0, 1];
-  i = parts.length;
-  i > 3 && (i = 3, isNaN(v = parseFloat(v = parts[3])) || (output[3] = v));
-  for (;i--;) isNaN(v = parseInt(parts[i])) || (output[i] = v * MULTIPLIER);
-  return output;
-}
-function prepare(args) {
-  let arg, l = args.length, output = new Array(l); // eslint-disable-line
-  for (; l--;) output[l] = isObject(arg = args[l]) ? arg : getColor(arg);
-  return output;
-}
-function join(args) {
-  return rgba(joinBase(prepare(args)));
-}
-function joinBase(args) {
-  let i, output = [0, 0, 0, 0], input, l = args.length; // eslint-disable-line
-  for (; l--;) {
-    for (input = args[l], i = input.length; i--;) output[i] += (input[i] || 0);
-  }
-  return output;
-}
-function rgba(rgbaColor) {
-  let output = [0, 0, 0, __tone(rgbaColor[3])], i = 3; // eslint-disable-line
-  while (i--) output[i] = Math.round(__tone(rgbaColor[i]) * 255);
-  return 'rgba(' + output.join(',') + ')';
-}
-function rgbaAlt(rgbaColor) {
-  let tmp = [0, 0, 0], i = 3, alpha = rgbaColor[3]; // eslint-disable-line
+function base(rgbaColor, alt) {
+  let tmp = [0, 0, 0], i = 3, alpha = rgbaColor[3], v; // eslint-disable-line
   while (i--) tmp[i] = Math.round(rgbaColor[i] * 255);
-  return alpha < 1 ? [
-    rgbStringify(tmp),
-    'rgba(' + tmp.join(',') + ','
+  return alpha < 1 ? (
+    v = 'rgba(' + tmp.join(',') + ','
       + (alpha ? trimZero(alpha.toFixed(2)) : '0') + ')',
-  ] : [rgbStringify(tmp)];
+    alt ? [rgbStringify(tmp), v] : [v]
+  ) : [rgbStringify(tmp)];
 }
-function __tone(v) {
-  return Math.min(1, Math.max(0, v));
-}
-
 function rgbStringify(rgb) {
   let v, output = [0, 0, 0], i = 3, one = 1 // eslint-disable-line
   while (i--) {
@@ -102,11 +64,9 @@ function rgbStringify(rgb) {
   );
 }
 
-join.base = joinBase;
-color.rgbaAlt = rgbaAlt;
-color.rgba = rgba;
-color.join = join;
-color.get = getColor;
-color.prepare = prepare;
+color.one = one;
+color.double = double;
 color.normalize = normalize;
+color.base = base;
+color.rgbStringify = rgbStringify;
 module.exports = color;

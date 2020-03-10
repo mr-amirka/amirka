@@ -1,14 +1,9 @@
 /**
  * @overview css-parse
- * - парсит сss
- * TODO: не учитывает разделители внутри ковычек
+ * - быстро парсит CSS без учета спец.символов внутри ковычек.
  * @author Absalyamov Amir <mr.amirka@ya.ru>
  */
+import {ICssProps} from "./global";
 
-declare namespace cssPropertiesParse {
-  export interface CssProps {
-    [name: string]: string | string[];
-  }
-}
-declare const cssPropertiesParse: (text: string, output?: cssPropertiesParse.CssProps) => cssPropertiesParse.CssProps;
+declare function cssPropertiesParse(input: string, output?: ICssProps): ICssProps;
 export = cssPropertiesParse;

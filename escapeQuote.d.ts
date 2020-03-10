@@ -5,5 +5,5 @@
  * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
-declare const escapeQuote: (input: string) => string;
+declare function escapeQuote(input: string): string;
 export = escapeQuote;

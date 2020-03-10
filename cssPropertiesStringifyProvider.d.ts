@@ -2,22 +2,11 @@
  * @overview cssPropertiesStringifyProvider
  * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
- 
-import { FlagsMap }  from "./global";
 
-declare namespace cssPropertiesStringifyProvider {
-  export interface cssPropertiesStringify {
-    (props: CssProps): string;
-    prefixedAttrs?: FlagsMap;
-    prefixes?: FlagsMap;
-  }
-  export interface CssProps {
-    [n: string]: string | string[];
-  }
-  export interface cssPropertiesStringifyProvider {
-    (prefixedAttrs?: FlagsMap, prefixes?: FlagsMap): cssPropertiesStringify;
-  }
-}
+import {ICssPropertiesStringify, IFlagsMap} from "./global";
 
-declare const cssPropertiesStringifyProvider: cssPropertiesStringifyProvider.cssPropertiesStringifyProvider;
+declare function cssPropertiesStringifyProvider(
+  prefixedAttrs?: IFlagsMap,
+  prefixes?: IFlagsMap,
+): ICssPropertiesStringify;
 export = cssPropertiesStringifyProvider;

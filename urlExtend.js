@@ -9,27 +9,29 @@ function normalize(v, type) {
       : (type == 'object' ? v : {})
   ) : {};
 }
-function __def(src, dst, def) {
-  return (src === undefined ? dst : src) || def || '';
-}
+
 function urlExtend(dst, src) {
   dst = normalize(dst);
   src = normalize(src);
 
-  const hostname = __def(src.hostname, dst.hostname);
-  const protocol = __def(src.protocol, dst.protocol);
-  const port = __def(src.port, dst.port);
-  const username = __def(src.username, dst.username);
-  const password = __def(src.password, dst.password);
+  function __def(prop, def, v) {
+    return ((v = src[prop]) === undefined ? dst[prop] : v) || def || '';
+  }
+
+  const hostname = __def('hostname');
+  const protocol = __def('protocol');
+  const port = __def('port');
+  const username = __def('username');
+  const password = __def('password');
   const userpart = username ? (username + ':' + password) : '';
   const host = hostname || port ? (hostname + (port ? (':' + port) : '')) : '';
   const email = username ? (username + '@' + host) : '';
   const login = userpart ? (userpart + '@' + host) : '';
   const unpath = login ? (protocol + '://' + login) : (host ? (protocol + '://' + host) : '');
-  const extension = __def(src.extension, dst.extension);
-  const alias = __def(src.alias, dst.alias);
+  const extension = __def('extension');
+  const alias = __def('alias');
   const filename = alias + (extension ? '.' + extension : '');
-  const dirname = __def(src.dirname, dst.dirname, filename ? '/' : '');
+  const dirname = __def('dirname', filename ? '/' : '');
   const path = dirname + filename;
   const unalias = unpath + dirname;
   const // eslint-disable-line
@@ -72,21 +74,3 @@ function urlExtend(dst, src) {
   };
 }
 module.exports = urlExtend;
-
-// console.log(urlExtend('http://eko-press.dartline.ru/api/'));
-// console.log(urlExtend('http://username:password@eko-press.dartline.ru/api.php?callback=JSONP_1&entity=navigation&method=GET&timestamp=1546178631496'));
-
-/*
-const defaultConfig: UrlOptions = {
-  protocol: 'http',
-  hostname: 'localhost'
-};
-
-const location = support('location');
-if (location) {
-  location.protocol
-    && (defaultConfig.protocol = location.protocol.replace(/:/, ''));
-  location.hostname && (defaultConfig.hostname = location.hostname);
-  location.port && (defaultConfig.port = location.port);
-}
-*/

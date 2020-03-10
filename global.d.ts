@@ -1,5 +1,5 @@
 
-interface IFlagsMap {
+export interface IFlagsMap {
   [name: string]: number;
 }
 
@@ -7,27 +7,27 @@ interface IFlagsMap {
    * @description
    * any function
    */
-type fn = (...args: any[]) => any;
+export type fn = (...args: any[]) => any;
 
   /**
    * @description
    * The function, the call of which canceled the subscription to an event or execute destructor
    */
-type cancel = fn;
+export type cancel = fn;
 
   /**
    * @description
    * It execute functions array
    */
-type eachApply = (funcs: fn[] | {[key: string]: fn}, args?: any[], context?: any) => any;
+export type eachApply = (funcs: fn[] | {[key: string]: fn}, args?: any[], context?: any) => any;
 
   /**
    * @description
    * Performs defer function execution
    */
-type defer = (callback: fn) => cancel;
+export type defer = (callback: fn) => cancel;
 
-interface IUrlOptions {
+export interface IUrlOptions {
   href?: string;
   search?: string;
   unhash?: string;
@@ -52,11 +52,11 @@ interface IUrlOptions {
   child?: IUrlOptions;
 }
 
-export {
-  IUrlOptions,
-  IFlagsMap,
-  fn,
-  cancel,
-  eachApply,
-  defer,
-};
+export interface ICssPropertiesStringify {
+  (props: ICssProps): string;
+  prefixedAttrs?: IFlagsMap;
+  prefixes?: IFlagsMap;
+}
+export interface ICssProps {
+  [propName: string]: string | string[];
+}

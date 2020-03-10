@@ -4,5 +4,5 @@
  *
  */
 
-declare const escapeRegExp: (v: string) => string;
+declare function escapeRegExp(v: string): string;
 export = escapeRegExp;

@@ -18,8 +18,9 @@ function base(object, path, args, context) {
     fn = object[path[i++]];
   }
   return i === length && isFunction(fn)
-    ? fn.apply(context || object, args || []) : undefined;
-};
+    ? fn.apply(context || object, args || [])
+    : undefined;
+}
 
 invoke.base = base;
 module.exports = invoke;

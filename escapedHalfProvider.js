@@ -1,13 +1,3 @@
-/**
- * @overview escapedHalfProvider
- * Возвращает функцию, которая разбивает строку на две части в том месте,
- * где находит разделяющую подстроку separator.
- * Игнорирует разделилель, если он экранрован слэшем (\)
- *
- * @author Amir Absalyamov <mr.amirka@ya.ru>
- *
- */
-
 const isRegExp = require('./isRegExp');
 const escapeRegExp = require('./escapeRegExp');
 const map = require('./map');
@@ -24,11 +14,11 @@ module.exports = (separator) => {
   function base(input) {
     let prefix = input, value = '', suffix = ''; // eslint-disable-line
     input.replace(regexp, (all, escaped, _suffix, _value, offset) => {
-      if (!escaped) {
-        suffix = _suffix;
-        value = _value;
-        prefix = input.substr(0, offset);
-      }
+      escaped || (
+        suffix = _suffix,
+        value = _value,
+        prefix = input.substr(0, offset)
+      );
     });
     return [prefix, suffix, value];
   }
