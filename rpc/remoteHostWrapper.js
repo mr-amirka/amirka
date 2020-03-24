@@ -1,17 +1,17 @@
 const WebSocketServer = new require('ws'); // eslint-disable-line
 const sha512 = require('../sha512');
 const noop = require('../noop');
-const Deal = require('../CancelablePromise');
+const CancelablePromise = require('../CancelablePromise');
 const forEach = require('../forEach');
 const uniqIdProvider = require('../uniqIdProvider');
 const cacheProvider = require('../cacheProvider');
-const {rpcProvider} = require('../rpcWrapper');
+const {rpcProvider} = require('./rpcWrapper');
 
 const WS_EVENT_CONNECT = 0;
 const WS_EVENT_MESSAGE = 1;
 
-module.exports = (init, onConnection) => {
-  const sessionsCache = cacheProvider(3600000 * 24);
+module.exports = (options) => {
+  const sessionsCache = options.sessionsCache || cacheProvider(3600000 * 24);
   const getSession = sessionsCache.get;
   const setSession = sessionsCache.set;
   const getClientId = uniqIdProvider();
@@ -27,12 +27,15 @@ module.exports = (init, onConnection) => {
             [[WS_EVENT_CONNECT, sessionId], noop],
           ],
         },
+        () => {
+          rpc && rpc.destroy();
+        },
     );
-    rpcProvider(
+    const rpc = rpcProvider(
         0,
-        init,
+        options.init,
         (data) => {
-          const promise = new Deal();
+          const promise = new CancelablePromise();
           rpcClient.onmessage([[WS_EVENT_MESSAGE, data], promise.resolve]);
           return promise;
         },
@@ -43,7 +46,7 @@ module.exports = (init, onConnection) => {
     return rpcClient;
   };
 
-  onConnection((ws) => {
+  options.onConnection((ws) => {
     let terminated;
     let rpcClient;
     ws.onmessage = (__message) => {
@@ -56,9 +59,10 @@ module.exports = (init, onConnection) => {
           if (rpcClient) return;
           rpcClient = getClient(value);
           const onmessage = rpcClient.onmessage = (message) => {
-            terminated ? defers.push(message) : ws.send(message[0], (err) => {
-              err ? defers.push(message) : message[1]();
-            });
+            terminated ? defers.push(message) : (
+              ws.send(message[0]),
+              message[1]()
+            );
           };
           const defers = [];
           forEach(rpcClient.defers, onmessage);

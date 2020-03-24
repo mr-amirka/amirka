@@ -13,6 +13,7 @@ const defer = require('../defer');
 const withReDelay = require('../withReDelay');
 const cancelableThen = require('../cancelableThen');
 const get = require('../get');
+const iterateeNormalize = require('../iterateeNormalize');
 const getter = get.getter;
 const getBase = get.base;
 const setBase = require('../set').base;
@@ -237,13 +238,17 @@ Emitter.prototype = {
   },
 
   filter(check) {
-    check = getter(check);
+    check = iterateeNormalize(check);
     const {on} = this;
     return this.fork({
       on: (watcher) => on((value) => {
         check(value) && watcher(value);
       }),
     });
+  },
+
+  is(standart) {
+    return this.map((v) => v === standart);
   },
 
   /*

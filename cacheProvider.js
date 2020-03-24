@@ -8,17 +8,20 @@ function normalizeKey(key) {
 
 const CACHE_EXPIRES_PROMISE = 0;
 const CACHE_VALUE = 1;
+const CACHE_DESTROY = 2;
 
 module.exports = (expires) => {
   expires || (expires = 3600000);
   const cache = {};
-  function __remove(key) {
+  function __remove(key, item, destroy) {
+    (item = cache[key])
+      && (destroy = item[CACHE_DESTROY])
+      && destroy();
     delete cache[key];
   }
   return {
-    set: (key, value) => {
-      key = normalizeKey(key);
-      const item = cache[key];
+    set: (key, value, destroy, item, promise) => {
+      item = cache[key = normalizeKey(key)];
       if (value === null || value === undefined) {
         if (item) {
           item[CACHE_EXPIRES_PROMISE].cancel();
@@ -26,27 +29,24 @@ module.exports = (expires) => {
         }
         return;
       }
-      const promise = dealDelay(expires, key).then(__remove);
-      if (item) {
-        item[CACHE_EXPIRES_PROMISE].cancel();
-        item[CACHE_EXPIRES_PROMISE] = promise;
-        item[CACHE_VALUE] = value;
-        return;
-      }
-      cache[key] = [promise, value];
+      promise = dealDelay(expires, key).then(__remove);
+      item ? (
+        item[CACHE_EXPIRES_PROMISE].cancel(),
+        item[CACHE_EXPIRES_PROMISE] = promise,
+        item[CACHE_VALUE] = value,
+        item[CACHE_DESTROY] = destroy
+      ) : (cache[key] = [promise, value, destroy]);
     },
-    get: (key) => {
-      key = normalizeKey(key);
-      const item = cache[key];
-      if (item) {
+    get: (key, item) => {
+      if (item = cache[key = normalizeKey(key)]) {
         item[CACHE_EXPIRES_PROMISE].cancel();
         item[CACHE_EXPIRES_PROMISE] = dealDelay(expires, key).then(__remove);
         return item[CACHE_VALUE];
       }
     },
-    delete: (key) => {
-      const item = cache[key = normalizeKey(key)];
-      if (item) {
+    delete: (key, item, destroy) => {
+      if (item = cache[key = normalizeKey(key)]) {
+        (destroy = item[CACHE_DESTROY]) && destroy();
         item[CACHE_EXPIRES_PROMISE].cancel();
         delete cache[key];
       }

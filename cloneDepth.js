@@ -12,7 +12,7 @@ function base(src, depth) {
   let k, dst; // eslint-disable-line
   if (isObject(src)) {
     if (isArray(src)) {
-      for (dst = new Array(k = src.length); k--;) dst[i] = base(src[k], depth);
+      for (dst = new Array(k = src.length); k--;) dst[k] = base(src[k], depth);
       return dst;
     }
     dst = {};

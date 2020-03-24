@@ -1,5 +1,5 @@
 {
-  "name": "rpc-iframe.app",
+  "name": "rpc-browse-iframe-host",
   "version": "0.0.0",
   "scripts": {
     "start": "webpack-dev-server --inline --config webpack.config.js --progress --watch",

@@ -1,0 +1,8 @@
+{
+  "name": "rpc-node-ws-client",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "supervisor src/index.js"
+  }
+}

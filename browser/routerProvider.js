@@ -40,7 +40,6 @@ function getChild(v) {
 module.exports = ({Component, window, createElement}) => {
   let hasDurationLink;
   const {location, history} = window;
-  const getLocation = () => urlParse(location.href);
   const location$ = new Emitter(getLocation());
   const path$ = location$.map(getPath);
   const hashLocation$ = location$.map(getChild);
@@ -54,6 +53,9 @@ module.exports = ({Component, window, createElement}) => {
     location$.emit(getLocation());
   });
 
+  function getLocation() {
+    return urlParse(location.href);
+  }
   function pushLocation(extendsLocation) {
     const location = mergeLocation(location$.getValue(), extendsLocation);
     history.pushState(null, null, location.href);

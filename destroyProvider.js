@@ -1,4 +1,5 @@
 const forEach = require('./forEach');
+const removeOf = require('./removeOf');
 const eachApply = require('./eachApply');
 
 function destroyProvider(destroyers) {
@@ -16,6 +17,10 @@ function destroyProvider(destroyers) {
     return instance;
   }
   instance.add = add;
+  instance.remove = function(fn) {
+    removeOf(destroyers, fn);
+    return instance;
+  };
   instance.child = function() {
     const child = destroyProvider();
     add(child);

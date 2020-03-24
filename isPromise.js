@@ -5,4 +5,4 @@
  */
 
 const isFunction = require('./isFunction');
-module.exports = v => v && isFunction(v.then);
+module.exports = (v) => v && isFunction(v.then);

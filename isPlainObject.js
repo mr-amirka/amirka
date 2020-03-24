@@ -4,4 +4,5 @@
  */
 
 const protoOf = Object.getPrototypeOf;
-module.exports = v => v && typeof v === 'object' && !((v = protoOf(v)) && protoOf(v));
+module.exports
+  = (v) => v && typeof v === 'object' && !((v = protoOf(v)) && protoOf(v));

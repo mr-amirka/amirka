@@ -1,18 +1,24 @@
-const Deal = require('../CancelablePromise');
+const CancelablePromise = require('../CancelablePromise');
 const isArray = require('../isArray');
 const isPromise = require('../isPromise');
+const isDate = require('../isDate');
 const noop = require('../noop');
 const map = require('../map');
 const uniqIdProvider = require('../uniqIdProvider');
 const __get = require('../get');
+const protoOf = Object.getPrototypeOf;
 
 const RPC_RESULT_HAS_ERROR = 0;
 const RPC_RESULT_DATA = 1;
 const RPC_RESULT_ERROR = 2;
 
-const RPC_TYPE_SCALAR = 0; // eslint-disable-line
+const RPC_TYPE_SCALAR = 0;
 const RPC_TYPE_FUNCTION = 1;
 const RPC_TYPE_OBJECT = 2;
+const RPC_TYPE_TIME = 3;
+const RPC_TYPE_PROMISE = 4; // eslint-disable-line
+const RPC_TYPE_EMITTER = 5; // eslint-disable-line
+const RPC_TYPE_REGEXP = 6; // eslint-disable-line
 
 const RPC_MSG_INIT = 0;
 const RPC_MSG_DONE = 1;
@@ -28,22 +34,22 @@ const RPC_TASK_CANCEL = 2;
 const __slice = [].slice;
 
 function rpcProvider(env, init, emit, on) {
-  const deal = new Deal();
+  const deal = new CancelablePromise();
 
   const getTaskId = uniqIdProvider();
   const getFnId = uniqIdProvider();
 
   let current, last = []; // eslint-disable-line
-  const defers = {};
-  const fns = {};
-  const handlers = [];
-  const promises = {};
+  let defers = {};
+  let fns = {};
+  let handlers = [];
+  let promises = {};
   function __apply(taskId, fn, params) {
     const result = execute(fn, params);
     const data = result[RPC_RESULT_DATA];
     return isPromise(data)
       ? data.then(normalizePromise, errorProvider)
-      : Deal.resolve(result);
+      : CancelablePromise.resolve(result);
   }
   handlers[RPC_MSG_DONE] = (taskId, response) => {
     response && (
@@ -57,7 +63,7 @@ function rpcProvider(env, init, emit, on) {
         .then((response) => {
           return [RPC_MSG_DONE, [taskId, rpcEncode(response, fns, getFnId())]];
         })
-    ).then(emit).then(() => {
+    ).then(emit).finally(() => {
       delete promises[taskId];
     });
   };
@@ -65,7 +71,7 @@ function rpcProvider(env, init, emit, on) {
     if (req) {
       (promises[taskId] = __apply(taskId, __get(fns, req[0]), req[1])
           .then((response) => [RPC_MSG_RESPONSE, [taskId, rpcEncode(response)]])
-      ).then(emit).then(() => {
+      ).then(emit).finally(() => {
         delete promises[taskId];
       });
       emit([RPC_MSG_GET_TASK]);
@@ -110,7 +116,7 @@ function rpcProvider(env, init, emit, on) {
   }
   function invoke(ctx) {
     const slotId = getFnId();
-    return new Deal((resolve, reject) => {
+    return new CancelablePromise((resolve, reject) => {
       last = last[RPC_TASK_NEXT] = [
         [rpcEncode(ctx, fns, slotId), resolve, reject],
       ];
@@ -131,13 +137,19 @@ function rpcProvider(env, init, emit, on) {
     const options = response[1] || [];
     const taskId = options[0];
     const promise = promises[taskId];
-    if (promise) return promise.then(emit);
+    if (promise) return promise;
     const handle = handlers[response[0]];
     handle && handle(taskId, rpcDecode(options[1], getFn));
   });
 
   env && emit([RPC_MSG_INIT, [getTaskId(), rpcEncode([env], fns, getFnId())]]);
-  return deal;
+  return {
+    promise: deal,
+    destroy: (k, v) => {
+      for (k in promises) (v = promises[k]) && v(); // eslint-disable-line
+      promises = {};
+    },
+  };
 }
 function rpcEncode(src, scope, name) {
   function withFn(src, scope, name, prefix) {
@@ -148,6 +160,7 @@ function rpcEncode(src, scope, name) {
       return [RPC_TYPE_FUNCTION, prefix + name];
     }
     if (type === 'object') {
+      if (isDate(src)) return [RPC_TYPE_TIME, src.toISOString()];
       prefix += name + '.';
       scope = scope[name] = {};
       let k, dst, length; // eslint-disable-line
@@ -155,9 +168,13 @@ function rpcEncode(src, scope, name) {
         dst = new Array(length = src.length);
         for (k = 0; k < length; k++) dst[k] = withFn(src[k], scope, k, prefix);
       } else {
-        dst = {};
-        // eslint-disable-next-line
-        for (k in src) dst[k] = withFn(src[k], scope, k, prefix);
+        if (isOtherObject(src)) {
+          return '' + src;
+        } else {
+          dst = {};
+          // eslint-disable-next-line
+          for (k in src) dst[k] = withFn(src[k], scope, k, prefix);
+        }
       }
       return [RPC_TYPE_OBJECT, dst];
     }
@@ -171,7 +188,17 @@ function rpcEncode(src, scope, name) {
           ? null
           : (
             type === 'object'
-              ? [RPC_TYPE_OBJECT, map(src, base)]
+              ? (
+                isDate(src)
+                  ? [RPC_TYPE_TIME, src.toISOString()]
+                  : (
+                    isOtherObject(src) ? (
+                      isArray(src)
+                        ? [RPC_TYPE_OBJECT, map(src, base)]
+                        : ('' + src)
+                    ) : [RPC_TYPE_OBJECT, map(src, base)]
+                  )
+              )
               : src
           )
       )
@@ -181,12 +208,23 @@ function rpcEncode(src, scope, name) {
 }
 function rpcDecode(value, getFn) {
   getFn = getFn || noop;
-  function unpack(v) {
+  function unpack(v, t) {
     return isArray(v)
-      ? (v[0] === RPC_TYPE_FUNCTION ? getFn(v[1]) : map(v[1], unpack))
+      ? (
+        (t = v[0]) === RPC_TYPE_FUNCTION
+          ? getFn(v[1])
+          : (
+            t === RPC_TYPE_TIME
+              ? new Date(v[1])
+              : map(v[1], unpack)
+          )
+      )
       : v;
   }
   return unpack(value);
+}
+function isOtherObject(v) {
+  return (v = protoOf(v)) && protoOf(v);
 }
 function normalizePromise(data) {
   return [0, data];
@@ -219,6 +257,10 @@ module.exports = {
 
   RPC_TYPE_SCALAR,
   RPC_TYPE_FUNCTION,
+  RPC_TYPE_TIME,
+  RPC_TYPE_PROMISE,
+  RPC_TYPE_EMITTER,
+  RPC_TYPE_REGEXP,
   RPC_RESULT_ERROR,
 
   RPC_MSG_INIT,
