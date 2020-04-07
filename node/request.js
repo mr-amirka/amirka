@@ -1,6 +1,6 @@
 const http = require('http');
 const https = require('https');
-
+const isObject = require('../isObject');
 const extend = require('../extend');
 const Deal = require('../CancelablePromise');
 const urlExtend = require('../urlExtend');
@@ -14,6 +14,7 @@ function methodProvider(method) {
       const headers = extend({}, options.headers);
       let body = options.body;
 
+      body && isObject(body) && (body = JSON.stringify(body));
       body && (body = Buffer.from(body, 'utf-8'));
       body && (headers['Content-Length'] = body.length);
 
@@ -55,10 +56,14 @@ function methodProvider(method) {
           });
       body && req.write(body);
       req.end();
+      return () => {
+        req.abort();
+      };
     });
   };
 }
 module.exports = {
   get: methodProvider('get'),
   post: methodProvider('post'),
+  options: methodProvider('options'),
 };

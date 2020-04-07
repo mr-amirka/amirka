@@ -38,10 +38,10 @@ function initRootEmitter(self, _init, _value) {
   }
 
   function __emit(value) {
-    _value === value || forEach(_watchers, tryWithValue(_value = value));
+    _value === value
+      || (self._cancel(), forEach(_watchers, tryWithValue(_value = value)));
   }
   function emit(value) {
-    self._cancel();
     self._cancel = asyncable(value, __emit);
   }
   function getValue() {

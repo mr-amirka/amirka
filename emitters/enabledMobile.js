@@ -1,1 +1,1 @@
-module.exports = require('./viewport').map((v) => v.width < 992);
+module.exports = require('./viewport').map((v) => v[0] < 992);
