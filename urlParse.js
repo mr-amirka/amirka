@@ -14,8 +14,8 @@ function urlParse(_href) {
   let parts = half(href, '#');
   const hash = parts[1];
   const unhash = parts[0];
-  const unsearch = (parts = half(unhash, '?'))[0];
-  const search = parts[1];
+  let unsearch = (parts = half(unhash, '?'))[0];
+  let search = parts[1];
 
   if (!search && unsearch.indexOf('=') > -1) {
     search = unsearch;
