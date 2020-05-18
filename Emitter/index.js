@@ -222,7 +222,7 @@ Emitter.prototype = {
       }) : on,
     }, _value);
     function update(value) {
-      _watcher(_value = value);
+      _value === value || _watcher(_value = value);
     }
     return emitter;
   },

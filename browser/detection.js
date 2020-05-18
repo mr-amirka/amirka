@@ -1,5 +1,7 @@
 const joinSpace = require('../joinSpace');
 const forEach = require('../forEach');
+const push = require('../push');
+
 const AGENTS = [
   'linux', 'mozilla', 'firefox', 'opera', 'trident', 'edge',
   'chrome', 'ubuntu', 'chromium', 'safari', 'msie', 'WebKit', 'AppleWebKit',
@@ -15,8 +17,8 @@ module.exports = (userAgent, output) => {
       + userAgentName.toLowerCase()
     + ')([/ ]([0-9_x]+))?', 'g')).exec(userAgent);
     matchs && (
-      output.push(name = matchs[1].replace(' ', '_')),
-      (version = matchs[3]) && output.push(name + '-' + version)
+      push(output, name = matchs[1].replace(' ', '_')),
+      (version = matchs[3]) && push(output, name + '-' + version)
     );
   });
   return joinSpace(output);

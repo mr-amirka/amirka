@@ -1,6 +1,8 @@
 const noop = require('../noop');
 const isFunction = require('../isFunction');
 const isDefined = require('../isDefined');
+const isPromise = require('../isPromise');
+const isEqual = require('../isEqual');
 const Emitter = require('../Emitter');
 
 module.exports = (storage, prefix) => {
@@ -19,20 +21,23 @@ module.exports = (storage, prefix) => {
       return normalize(__get(name));
     }
     function __emit(v) {
-      __set(name, defaultValue === v ? null : v);
+      __set(name, isEqual(defaultValue, v) ? null : v);
+    }
+    function emitAsync(v) {
+      isPromise(v) ? v.then(__emit) : __emit(v);
     }
     function normalize(v) {
       return isDefined(v) ? v : defaultValue;
     }
     const emitter = new Emitter((emit, getValue, on) => {
       emit(getInitialValue());
-      init(__emit, getValue, on);
+      init(emitAsync, getValue, on);
     }, getInitialValue());
     const emit = emitter.emit;
     __on((e, v) => {
       e.key === name && emit(normalize(e.value));
     });
-    emitter.emit = __emit;
+    emitter.emit = emitAsync;
     return emitter;
   };
 };
