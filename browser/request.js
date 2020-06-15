@@ -55,6 +55,7 @@ function base(_options) {
     xhr.onreadystatechange = () => {
       xhr.readyState == XHR.DONE && execute();
     };
+    xhr.open(method, _url, true);
 
     for (k in headers) { //eslint-disable-line
       try {
@@ -67,7 +68,6 @@ function base(_options) {
     if (timeout) xhr.timeout = timeout;
     if (responseType) xhr.responseType = responseType;
 
-    xhr.open(method, _url, true);
     xhr.send(body);
 
     return () => {
