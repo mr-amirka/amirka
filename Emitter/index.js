@@ -91,8 +91,9 @@ function combineEmitBase(emit, src, depth) {
   for (k in src) (e = emit[k]) && combineEmitBase(e, src[k], depth); //eslint-disable-line
 }
 
-function initRootEmitter(self, _init, _value) {
+function initRootEmitter(self, _init, _value, hasReinit) {
   const _watchers = [];
+  let _initCancel = noop;
   self._cancel = noop;
   self.on = on;
   self.emit = emit;
@@ -118,20 +119,26 @@ function initRootEmitter(self, _init, _value) {
   function getValue() {
     return _value;
   }
+  function onDestroy() {
+    _watchers.length < 1 && (
+      _initCancel(),
+      hasReinit && (init = 0)
+    );
+  }
   function on(watcher) {
     if (_init) {
       const _watchers = [], init = _init; // eslint-disable-line
       _init = 0;
-      init(
+      _initCancel = init(
           emit,
           getValue,
-          (watcher) => subscribeProvider(_watchers, watcher),
-      );
+          (watcher) => subscribeProvider(_watchers, watcher, onDestroy),
+      ) || noop;
       on((value) => {
         forEach(_watchers, tryWithValue(value));
       });
     }
-    return subscribeProvider(_watchers, watcher);
+    return subscribeProvider(_watchers, watcher, onDestroy);
   }
 }
 
@@ -160,10 +167,14 @@ function Emitter(_init, _value) {
   };
 }
 
-function subscribeProvider(watchers, watcher) {
+function subscribeProvider(watchers, watcher, onDestroy) {
   addOf(watchers, watcher);
   return function() {
-    watcher && (removeOf(watchers, watcher), watcher = watchers = 0);
+    watcher && (
+      removeOf(watchers, watcher),
+      onDestroy && onDestroy(),
+      onDestroy = watcher = watchers = 0
+    );
   };
 }
 function isEmitter(v) {
