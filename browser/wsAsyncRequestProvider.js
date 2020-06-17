@@ -17,22 +17,34 @@ module.exports = (wsUrl) => {
       data: args[1],
     }), 'utf-8'));
   }
+  function errorApply(err) {
+    let k, v, msgs = messages; // eslint-disable-line
+    messages = {};
+    for (k in msgs) { // eslint-disable-line
+      v = msgs[k];
+      v && v[1](err);
+    }
+  }
   function connect() {
-    let _item = getRequest();
-    if (!_item) return;
     socket = new WebSocket(wsUrl);
     socket.onopen = () => {
-      console.log('Connection is open.');
+      console.log('Connection is open');
       opened = 1;
-      socketApplyBase(_item);
-      while (_item = getRequest()) {
-        socketApplyBase(_item);
+      let item;
+      while (item = getRequest()) {
+        socketApplyBase(item);
       }
-      _item = 0;
     };
-    socket.onclose = (event) => {
+    socket.onclose = (e) => {
       opened = socket = 0;
-      console.log('Connection is closed.');
+      const message = 'Connection is closed';
+      const err = new Error(message);
+      let item;
+      console.log(message);
+      while (item = getRequest()) {
+        item[1](err);
+      }
+      errorApply(err);
     };
     socket.onmessage = (e) => {
       const reader = new FileReader();
@@ -50,12 +62,7 @@ module.exports = (wsUrl) => {
       reader.readAsText(e.data);
     };
     socket.onerror = () => {
-      let k, v, msgs = messages; // eslint-disable-line
-      messages = {};
-      for (k in msgs) { // eslint-disable-line
-        v = msgs[k];
-        v && v[1](new Error('Browser cannot connect to server'));
-      }
+      errorApply(new Error('Browser cannot connect to server'));
     };
   }
 

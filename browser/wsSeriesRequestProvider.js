@@ -16,18 +16,21 @@ module.exports = (wsUrl) => {
     socketApplyBase(getRequest());
   }
   function connect() {
-    let _item = getRequest();
-    if (!_item) return;
     socket = new WebSocket(wsUrl);
     socket.onopen = () => {
-      console.log('Connection is open.');
+      console.log('Connection is open');
       opened = 1;
-      socketApplyBase(_item);
-      _item = 0;
+      socketApply();
     };
     socket.onclose = (event) => {
       opened = socket = 0;
-      console.log('Connection is closed.');
+      const message = 'Connection is closed';
+      const err = new Error(message);
+      let item;
+      console.log(message);
+      while (item = getRequest()) {
+        item[1](err);
+      }
     };
     socket.onmessage = (event) => {
       const item = getResponse();
@@ -44,8 +47,7 @@ module.exports = (wsUrl) => {
       reader.readAsText(event.data);
     };
     socket.onerror = () => {
-      const item = _item || getResponse() || getRequest();
-      _item = 0;
+      const item = getResponse() || getRequest();
       connect();
       item && item[1](new Error('Browser cannot connect to server'));
     };
