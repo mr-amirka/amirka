@@ -37,14 +37,13 @@ module.exports = (env) => {
         _effects.push([cb, values]);
       }
       function mountIteratee(cb) {
-        const subscription = cb();
-        subscription && _mountSubscriptions.push(subscription);
+        _mountSubscriptions.push(cb());
       }
       function checkEffects() {
         const effects = _effects;
         _effects = [];
         forEach(effects, (item, index, i, l, prev, cb, next, subscription) => {
-          subscription = _effectSubscriptions[index];
+          subscription = _effectSubscriptions[index] || noop;
           cb = item[0];
           next = item[1];
           (prev = _prevEffects[index]) && (prev = prev[1]);

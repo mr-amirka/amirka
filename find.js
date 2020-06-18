@@ -1,5 +1,5 @@
 /**
- * @overview filter
+ * @overview find
  * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
