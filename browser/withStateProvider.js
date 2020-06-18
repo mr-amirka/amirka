@@ -69,13 +69,12 @@ module.exports = (env) => {
           useEffect,
         ]);
       };
-      self.UNSAFE_componentWillUpdate = checkEffects;
+      self.componentDidUpdate = checkEffects;
       self.UNSAFE_componentWillMount = () => {
         _subscription || (
           _subscription = emitter.on(setState),
           setState(getValue()),
-          forEach(_mountWatchers, mountIteratee),
-          checkEffects()
+          forEach(_mountWatchers, mountIteratee)
         );
       };
       self.componentWillUnmount = (w) => {
