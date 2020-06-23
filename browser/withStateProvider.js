@@ -37,7 +37,7 @@ module.exports = (env) => {
         _effects.push([cb, values]);
       }
       function mountIteratee(cb) {
-        _mountSubscriptions.push(cb());
+        _mountSubscriptions.push(cb() || noop);
       }
       function checkEffects() {
         const effects = _effects;
