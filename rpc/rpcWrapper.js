@@ -6,7 +6,6 @@ const noop = require('../noop');
 const map = require('../map');
 const uniqIdProvider = require('../uniqIdProvider');
 const __get = require('../get');
-const protoOf = Object.getPrototypeOf;
 
 const RPC_RESULT_HAS_ERROR = 0;
 const RPC_RESULT_DATA = 1;
@@ -39,11 +38,11 @@ function rpcProvider(env, init, emit, on) {
   const getTaskId = uniqIdProvider();
   const getFnId = uniqIdProvider();
 
-  let current, last = []; // eslint-disable-line
-  let defers = {};
-  let fns = {};
-  let handlers = [];
+  const defers = {};
+  const fns = {};
+  const handlers = [];
   let promises = {};
+  let current, last = []; // eslint-disable-line
   function __apply(taskId, fn, params) {
     const result = execute(fn, params);
     const data = result[RPC_RESULT_DATA];
@@ -104,8 +103,8 @@ function rpcProvider(env, init, emit, on) {
   }
   function __start(task) {
     const taskId = getTaskId();
-    defers[taskId] = task;
     const args = task[RPC_TASK_ARGS];
+    defers[taskId] = task;
     task[RPC_TASK_CANCEL] = () => {
       if (defers[taskId]) {
         emit([RPC_MSG_CANCEL, [taskId]]);
@@ -168,13 +167,9 @@ function rpcEncode(src, scope, name) {
         dst = new Array(length = src.length);
         for (k = 0; k < length; k++) dst[k] = withFn(src[k], scope, k, prefix);
       } else {
-        if (isOtherObject(src)) {
-          return '' + src;
-        } else {
-          dst = {};
-          // eslint-disable-next-line
-          for (k in src) dst[k] = withFn(src[k], scope, k, prefix);
-        }
+        dst = {};
+        // eslint-disable-next-line
+        for (k in src) dst[k] = withFn(src[k], scope, k, prefix);
       }
       return [RPC_TYPE_OBJECT, dst];
     }
@@ -191,13 +186,7 @@ function rpcEncode(src, scope, name) {
               ? (
                 isDate(src)
                   ? [RPC_TYPE_TIME, src.toISOString()]
-                  : (
-                    isOtherObject(src) ? (
-                      isArray(src)
-                        ? [RPC_TYPE_OBJECT, map(src, base)]
-                        : ('' + src)
-                    ) : [RPC_TYPE_OBJECT, map(src, base)]
-                  )
+                  : [RPC_TYPE_OBJECT, map(src, base)]
               )
               : src
           )
@@ -223,9 +212,7 @@ function rpcDecode(value, getFn) {
   }
   return unpack(value);
 }
-function isOtherObject(v) {
-  return (v = protoOf(v)) && protoOf(v);
-}
+
 function normalizePromise(data) {
   return [0, data];
 }

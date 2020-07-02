@@ -118,11 +118,11 @@ module.exports = {
         './src/index.html',
       ],
       presets: [
-        require('mn-presets/styles'),
-        require('mn-presets/medias'),
-        require('mn-presets/prefixes'),
-        require('mn-presets/states'),
-        require('mn-presets/main'),
+        require('minimalist-notation/presets/styles'),
+        require('minimalist-notation/presets/medias'),
+        require('minimalist-notation/presets/prefixes'),
+        require('minimalist-notation/presets/states'),
+        require('minimalist-notation/presets/main'),
       ],
     }),
     new HtmlWebpackPlugin({

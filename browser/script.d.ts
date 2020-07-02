@@ -5,17 +5,20 @@
  * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
 
-import { UrlOptions } from 'mn-utils/urlParse';
-import * as Deal from 'mn-utils/CancelablePromise';
+import {
+  CancelablePromise,
+  IUrlOptions,
+} from "../global";
 
-declare namespace script {
-  export interface ScriptOptions extends UrlOptions {
-    attrs?: {[name: string]: string}
-  }
-  export interface script {
-    (url: UrlOptions | string, options?: ScriptOptions): Deal;
-    base: (options: ScriptOptions) => Deal;
-  }
+interface IScriptOptions extends IUrlOptions {
+  attrs?: {
+    [name: string]: string,
+  };
 }
-declare const script: script.script;
+interface IScript {
+  (url: IUrlOptions | string, options?: IScriptOptions): CancelablePromise<any>;
+  base: (options: IScriptOptions) => CancelablePromise<any>;
+}
+
+declare const script: IScript;
 export = script;

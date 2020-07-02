@@ -18,6 +18,7 @@ module.exports = (wsUrl) => {
     }), 'utf-8'));
   }
   function errorApply(err) {
+    console.error(err);
     let k, v, msgs = messages; // eslint-disable-line
     messages = {};
     for (k in msgs) { // eslint-disable-line
@@ -37,10 +38,8 @@ module.exports = (wsUrl) => {
     };
     socket.onclose = (e) => {
       opened = socket = 0;
-      const message = 'Connection is closed';
-      const err = new Error(message);
+      const err = new Error('Connection is closed');
       let item;
-      console.log(message);
       while (item = getRequest()) {
         item[1](err);
       }
@@ -56,7 +55,7 @@ module.exports = (wsUrl) => {
           delete messages[id];
           item[0](response);
         } catch (ex) {
-          console.error(ex);
+          errorApply(ex);
         }
       };
       reader.readAsText(e.data);
