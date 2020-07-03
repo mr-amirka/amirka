@@ -2,8 +2,11 @@ const CancelablePromise = require('../CancelablePromise');
 const stackProvider = require('../stackProvider');
 const jsonParse = require('../jsonParse');
 const jsonStringify = require('../jsonStringify');
+const noop = require('../noop');
 
-module.exports = (wsUrl) => {
+module.exports = (wsUrl, configs) => {
+  configs = configs || {};
+  const onMessage = configs.onMessage || noop;
   const [getRequest, addRequest] = stackProvider();
   let messages = {}, opened, socket, lastId = 0; // eslint-disable-line
   function socketApplyBase(item) {
@@ -50,10 +53,13 @@ module.exports = (wsUrl) => {
       reader.onload = () => {
         try {
           const response = jsonParse(reader.result);
+          if (onMessage(response) === false) return;
           const id = response.id;
           const item = messages[id];
-          delete messages[id];
-          item[0](response);
+          if (item) {
+            delete messages[id];
+            item[0](response);
+          }
         } catch (ex) {
           errorApply(ex);
         }
