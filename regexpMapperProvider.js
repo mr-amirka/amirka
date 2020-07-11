@@ -1,7 +1,7 @@
 /**
  * @overview regexpMapperProvider
  * @example
- * const mapper = regexpMapperProvider(/^([^\]*)\/([^\]*)$/g, [ 'begin', 'end' ]);
+ * const mapper = regexpMapperProvider(/^([^\]*)\/([^\]*)$/g, ['begin', 'end']);
  * var params = {};
  * if (mapper('users/id6574334245', params)) {
  *   console.log(params); // =>
