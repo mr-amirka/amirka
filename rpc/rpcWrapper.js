@@ -1,4 +1,5 @@
 const CancelablePromise = require('../CancelablePromise');
+const slice = require('../slice');
 const isArray = require('../isArray');
 const isPromise = require('../isPromise');
 const isDate = require('../isDate');
@@ -30,7 +31,6 @@ const RPC_TASK_ARGS = 0;
 const RPC_TASK_NEXT = 1;
 const RPC_TASK_CANCEL = 2;
 
-const __slice = [].slice;
 
 function rpcProvider(env, init, emit, on) {
   const deal = new CancelablePromise();
@@ -127,7 +127,7 @@ function rpcProvider(env, init, emit, on) {
   }
   function getFn(fnName) {
     return function() {
-      return invoke([fnName, __slice.call(arguments)]); // eslint-disable-line
+      return invoke([fnName, slice(arguments)]); // eslint-disable-line
     };
   }
 
