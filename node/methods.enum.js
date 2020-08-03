@@ -25,5 +25,5 @@ module.exports = [
   'unsubscribe',
   'patch',
   'search',
-  'connect'
+  'connect',
 ];

@@ -3,7 +3,9 @@ const dealDelay = require('./CancelablePromise').delay;
 const jsonStringify = require('./jsonStringify');
 
 function normalizeKey(key) {
-  return typeof key === 'object' ? sha512(jsonStringify(key)) : key;
+  return typeof key === 'object'
+    ? sha512(jsonStringify(key))
+    : key;
 }
 
 const CACHE_EXPIRES_PROMISE = 0;

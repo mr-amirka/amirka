@@ -2,7 +2,6 @@
  * @overview request
  * @author Amir Absalyamov <mr.amirka@ya.ru>
  */
-
 const once = require('../once');
 const invoke = require('../invoke');
 const extend = require('../extend');
@@ -45,7 +44,11 @@ function base(_options) {
       const status = xhr.status || 0;
       status > 199 && status < 400
         ? resolve(xhr.response)
-        : __reject(new Error('status ' + status));
+        : __reject(new Error(
+          status
+            ? ('HTTP status: ' + status)
+            : 'No connection',
+        ));
     });
     const __reject = xhr.onerror = once((err) => {
       hasError = 1;

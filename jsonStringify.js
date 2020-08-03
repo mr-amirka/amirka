@@ -20,7 +20,7 @@ const handlers = {
   'boolean': (v) => v ? 'true' : 'false',
   'object': (input) => {
     if (input === null) return 'null';
-    var l, v, k, handler, output = []; //eslint-disable-line
+    let l, v, k, handler, output = []; //eslint-disable-line
     if (isArray(input)) {
       for (l = input.length, i = 0; i < l; i++) {
         push(output, stringify(input[i]));

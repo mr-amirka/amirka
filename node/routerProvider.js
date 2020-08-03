@@ -1,6 +1,5 @@
 const pathToRegexp = require('path-to-regexp');
 const once = require('../once');
-const forEach = require('../forEach');
 const METHODS = require('./methods.enum');
 
 function routerProvider() {
@@ -24,11 +23,13 @@ function routerProvider() {
     chain.route(path, middleware);
     return router;
   };
-  forEach(METHODS, (method) => {
-    const METHOD = method.toUpperCase();
-    router[method] = (path, middleware) => {
-      (methods[METHOD] || (methods[METHOD] = chainProvider()))
-          .use(middleware ? routeProvider(path, middleware) : path);
+  METHODS.forEach((method) => {
+    const methodUC = method.toUpperCase();
+    router[method] = (path, middleware, onlyMount) => {
+      (methods[methodUC] || (methods[methodUC] = chainProvider()))
+          .use(middleware ? (
+            (onlyMount ? mountProvider : routeProvider)(path, middleware)
+          ) : path);
       return router;
     };
   });

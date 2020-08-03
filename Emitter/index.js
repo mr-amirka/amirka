@@ -59,7 +59,7 @@ function combine(emitters) {
     on: (watcher) => {
       let subscribed = 0;
       _subscription = aggregateSubscriptions(
-          map(watchEmitters, function(args) {
+          map(watchEmitters, (args) => {
             const path = args[0];
             return args[1].on((item) => {
               item === getBase(_value, path)

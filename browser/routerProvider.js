@@ -18,7 +18,9 @@ const childClass = require('../childClass');
 const Emitter = require('../Emitter');
 
 const WITHOUT_FIELDS_LINK = [
-  'onClick', 'options', 'component', 'timeout', 'href', 'activeAsParent',
+  'onClick', 'options', 'component', 'timeout', 'href',
+  'activeAsParent',
+  'active',
 ];
 
 function mergeLocation(prev, exten) {
@@ -39,8 +41,10 @@ function getChild(v) {
 }
 module.exports = ({Component, window, createElement}) => {
   let hasDurationLink;
+  let _globalLocation;
   const {location, history} = window;
-  const location$ = new Emitter(getLocation());
+  const location$ = new Emitter(_globalLocation = parseLocation());
+  const {emit: emitLocation} = location$;
   const path$ = location$.map(getPath);
   const hashLocation$ = location$.map(getChild);
   const hashPath$ = hashLocation$.map(getPath);
@@ -50,28 +54,28 @@ module.exports = ({Component, window, createElement}) => {
   const HashNavLink = NavLinkProvider(HashLink, hashLocation$); // eslint-disable-line
 
   window.addEventListener('popstate', (e) => {
-    location$.emit(getLocation());
+    emitLocation(_globalLocation = parseLocation());
   });
 
-  function getLocation() {
+  function parseLocation() {
     return urlParse(location.href);
   }
   function pushLocation(extendsLocation) {
-    const location = mergeLocation(location$.getValue(), extendsLocation);
+    const location = mergeLocation(_globalLocation, extendsLocation);
     history.pushState(null, null, location.href);
-    location$.emit(location);
+    emitLocation(_globalLocation = location);
     return location;
   }
   function storagePushLocation(extendsLocation) {
-    const location = urlExtend(location$.getValue(), extendsLocation);
+    const location = urlExtend(_globalLocation, extendsLocation);
     history.pushState(null, null, location.href);
-    location$.emit(location);
+    emitLocation(_globalLocation = location);
     return location;
   }
   function replaceLocation(extendsLocation) {
-    const location = mergeLocation(location$.getValue(), extendsLocation);
+    const location = mergeLocation(_globalLocation, extendsLocation);
     history.replaceState(null, null, location.href);
-    location$.emit(location);
+    emitLocation(_globalLocation = location);
     return location;
   }
   function pushHashLocation(child) {
@@ -100,13 +104,15 @@ module.exports = ({Component, window, createElement}) => {
         if (!hasDurationLink) {
           hasDurationLink = 1;
           onClick(e);
-          timeout ? setTimeout(action, timeout) : action();
+          timeout
+            ? setTimeout(action, timeout)
+            : action();
         }
         return false;
       } : onClick;
       function action() {
         hasDurationLink = 0;
-        pushLocation(options);
+        props.active || pushLocation(options);
       }
       return createElement(
           props.component || 'a',
@@ -115,11 +121,12 @@ module.exports = ({Component, window, createElement}) => {
     };
   }
   function NavLinkProvider(Link, location$) {
-    return childClass(Component, function(props) {
+    const getLocation = location$.getValue;
+    return childClass(Component, function() {
       let subscription;
       const self = this;
       const setState = self.setState.bind(self);
-      self.state = location$.getValue();
+      self.state = getLocation();
       self.UNSAFE_componentWillMount = () => {
         subscription || (subscription = location$.on(setState));
       };
@@ -127,31 +134,35 @@ module.exports = ({Component, window, createElement}) => {
         subscription && (subscription(), subscription = 0);
       };
       self.render = () => {
-        const {props, state} = self;
+        let props = self.props;
+        const {state} = self;
         const path = state.path || '/';
         const matchs = urlExtend(props.href, props.options);
         const targetPath = matchs.path;
-        const _props = extend({}, props);
-        (
-          props.activeAsParent
-            && path.startsWith(
-              targetPath.slice(-1) === '/' ? targetPath : (targetPath + '/'),
-            )
-            || (
-              path === targetPath
-                && isMatch(state.query || {}, matchs.query)
-            )
-        ) && (_props.className = 'active ' + (props.className || ''));
-        return createElement(Link, _props);
+        const hasActive = path === targetPath
+          && isMatch(state.query, matchs.query);
+
+        if (
+          hasActive || props.activeAsParent && path.startsWith(
+            targetPath.slice(-1) === '/' ? targetPath : (targetPath + '/'),
+          )
+        ) {
+          props = extend({}, props);
+          props.active = hasActive;
+          props.className = 'active ' + (props.className || '');
+        }
+
+        return createElement(Link, props);
       };
     });
   }
 
   function paramStorageProvider(location$, pushLocation) {
+    const query$ = location$.map('query');
     const instance = new Emitter({});
     const emit = instance.emit;
     let locked;
-    let state = location$.getValue().query || {};
+    let state = query$.getValue() || {};
 
     function setState(query) {
       locked = 1;
@@ -193,8 +204,8 @@ module.exports = ({Component, window, createElement}) => {
         value: changed[k],
       });
     }
-    location$.on((state) => {
-      locked || changeState(state.query || {});
+    query$.on((state) => {
+      locked || changeState(state || {});
     });
     return instance;
   }
@@ -231,7 +242,7 @@ module.exports = ({Component, window, createElement}) => {
     NavLink,
     HashLink,
     HashNavLink,
-    getLocation,
+    getLocation: parseLocation,
     pushLocation,
     replaceLocation,
     pushHashLocation,
