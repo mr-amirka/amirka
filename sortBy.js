@@ -8,5 +8,11 @@ const __sort = [].sort;
 
 module.exports = (src, iteratee) => {
   const _iteratee = iterateeNormalize(iteratee);
-  return __sort.call(src, (a, b) => _iteratee(a) - _iteratee(b));
+  return __sort.call(src, (a, b) => {
+    a = _iteratee(a);
+    b = _iteratee(b);
+    return a < b ? -1 : (
+      a > b ? 1 : 0
+    );
+  });
 };

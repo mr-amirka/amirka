@@ -82,7 +82,7 @@ module.exports = ({Component, window, createElement}) => {
     return pushLocation({child});
   }
   function storagePushHashLocation(child) {
-    return storagePushLocation({child: child});
+    return storagePushLocation({child});
   }
   function replaceHashLocation(child) {
     return replaceLocation({child});

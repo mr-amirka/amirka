@@ -340,7 +340,7 @@ Emitter.prototype = {
   },
 
   is(standart) {
-    return this.map((v) => v === standart);
+    return this.map((v) => v === standart, (v) => v ? standart : 0);
   },
 
   /*
