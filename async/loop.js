@@ -6,12 +6,12 @@ const isPromise = require('../isPromise');
 module.exports = (checkFn, statementFn, __immediate) => {
   __immediate || (__immediate = immediate);
   return new Deal((resolve, reject) => {
-    let cancel = noop;
+    let _cancel = noop;
     function next() {
       try {
         if (checkFn()) {
           const result = statementFn();
-          cancel = isPromise(result)
+          _cancel = isPromise(result)
             ? result.then(next, reject).cancel || noop
             : __immediate(next);
         } else resolve();
@@ -22,7 +22,7 @@ module.exports = (checkFn, statementFn, __immediate) => {
 
     next();
     return () => {
-      cancel();
+      _cancel();
     };
   }, __immediate);
 };
