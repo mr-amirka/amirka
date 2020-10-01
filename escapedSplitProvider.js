@@ -14,9 +14,8 @@ module.exports = (separator) => {
     return map(base(input, dstSeparators), unslash);
   }
   function base(input, dstSeparators) {
-    let lastOffset = 0;
+    let lastOffset = 0, v = []; // eslint-disable-line
     const output = [];
-    let v = [];
     input.replace(regexp, function(all, escaped, separator) {
       const args = arguments, offset = args[args.length - 2]; // eslint-disable-line
       push(v, input.substr(lastOffset, offset - lastOffset));
