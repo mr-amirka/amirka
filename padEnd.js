@@ -2,7 +2,7 @@ const repeat = require('./repeat');
 const __padEnd = ''.padEnd;
 const defaultSpace = ' ';
 
-module.exports = __padStart
+module.exports = __padEnd
   ? ((v, length, space) => __padEnd.call(
       '' + v, length, space || defaultSpace,
   ))
