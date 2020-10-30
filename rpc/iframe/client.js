@@ -1,16 +1,16 @@
-const Deal = require('../../CancelablePromise');
+const CancelablePromise = require('../../CancelablePromise');
 const {rpcProvider} = require('../rpcWrapper');
 
 module.exports = (childWindow, env) => {
   let parent = childWindow.parent;
-  return new Deal((resolve, reject) => {
+  return new CancelablePromise((resolve, reject) => {
     function terminate() {
       parent = childWindow = env = null;
     }
     resolve(rpcProvider(env || {}, null, (data) => {
-      childWindow.postMessage(data, '*');
+      childWindow && childWindow.postMessage(data, '*');
     }, (emit) => {
-      parent.addEventListener('message', (e) => {
+      parent && parent.addEventListener('message', (e) => {
         emit(e.data);
       }, false);
     }).finally((err, response) => {

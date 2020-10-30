@@ -33,7 +33,12 @@ const RPC_TASK_CANCEL = 2;
 
 
 function rpcProvider(env, init, emit, on) {
-  const deal = new CancelablePromise();
+  const deal = new CancelablePromise(() => {
+    return (k, v) => {
+      for (k in promises) (v = promises[k].cancel) && v(); // eslint-disable-line
+      promises = {};
+    };
+  });
 
   const getTaskId = uniqIdProvider();
   const getFnId = uniqIdProvider();
@@ -43,6 +48,7 @@ function rpcProvider(env, init, emit, on) {
   const handlers = [];
   let promises = {};
   let current, last = []; // eslint-disable-line
+
   function __apply(taskId, fn, params) {
     const result = execute(fn, params);
     const data = result[RPC_RESULT_DATA];
@@ -142,13 +148,7 @@ function rpcProvider(env, init, emit, on) {
   });
 
   env && emit([RPC_MSG_INIT, [getTaskId(), rpcEncode([env], fns, getFnId())]]);
-  return {
-    promise: deal,
-    destroy: (k, v) => {
-      for (k in promises) (v = promises[k]) && v(); // eslint-disable-line
-      promises = {};
-    },
-  };
+  return deal;
 }
 function rpcEncode(src, scope, name) {
   function withFn(src, scope, name, prefix) {

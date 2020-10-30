@@ -17,7 +17,7 @@ function urlParse(_href) {
   let unsearch = (parts = half(unhash, '?'))[0];
   let search = parts[1];
 
-  if (!search && unsearch.indexOf('=') > -1) {
+  if (!search && unsearch.indexOf('/') == -1 && unsearch.indexOf('=') > -1) {
     search = unsearch;
     unsearch = '';
   }

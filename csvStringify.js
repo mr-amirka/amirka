@@ -4,17 +4,19 @@ const escapeRegExp = require('./escapeRegExp');
 
 const regexpSpace = /^\s+|\s+$/;
 
-module.exports = (v, delimeter) => {
+module.exports = (data, delimeter) => {
   delimeter = delimeter || ';';
   const regexpSpecial
     = new RegExp('([,;"\\\\' + escapeRegExp(delimeter) + '])', 'g');
 
   function iteratee(v) {
-    return regexpSpace.test(v = v.replace(regexpSpecial, '\\$1'))
+    return regexpSpace.test(v = ('' + v).replace(regexpSpecial, '\\$1'))
       ? ('"' + v + '"')
       : v;
   }
-  return isObject(v) ? map(v, (v) => {
-    return isObject(v) ? map(v, iteratee, []).join(delimeter) : ('' + v);
+  return isObject(data) ? map(data, (line) => {
+    return isObject(line)
+      ? map(line, iteratee, []).join(delimeter)
+      : ('' + line);
   }, []).join('\n') : '';
 };
