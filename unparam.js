@@ -19,7 +19,8 @@ function base(s) {
   for (;i < l; i++) {
     k = (w = half(a[i], '='))[0];
     if (!k) continue;
-    v = decode(w[1].replace(expSpace, ' '));
+    v = w[1].replace(expSpace, ' ');
+    isNaN(parseInt(v)) && (v = decode(w[1].replace(expSpace, ' ')));
     b = [];
     while (w = expBrackets.exec(k)) b.push(w[1]);
     if ((c = b.length) < 1) {

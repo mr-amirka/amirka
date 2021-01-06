@@ -1,5 +1,4 @@
 
-
 module.exports = (fn, callback) => {
   let count = 0;
   fn(() => {

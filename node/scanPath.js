@@ -9,8 +9,8 @@ module.exports = ({path, each, callback, exclude}) => {
     const _each = each || noop;
     const _exclude = exclude || noop;
     function base(path) {
-      if (_exclude(path)) return;
       inc();
+      if (_exclude(path)) return dec();
       regexpPath.test(path) || (path = './' + path);
       fs.stat(path, (err, stat) => {
         if (!stat) return dec();
