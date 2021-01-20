@@ -1,4 +1,3 @@
-
 const half = require('./half');
 
 module.exports = (v, fixed, dot, space) => {

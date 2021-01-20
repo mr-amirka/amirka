@@ -2,9 +2,9 @@ const padEnd = require('./padEnd');
 const reZero =/\.?0+$/g;
 
 module.exports = (v, padLength) => {
-  padLength = padLength || 0;
-  const parts = ('' + v).split('.'), left = parts[0]; // eslint-disable-line
-  return padLength > 0 ? (
-    left + '.' + padEnd((parts[1] || '').replace(reZero, ''), padLength, '0')
-  ) : left;
+  const parts = ('' + v).split('.');
+  const left = parts[0] || '0';
+  let right = (parts[1] || '').replace(reZero, '');
+  padLength === undefined || (right = padEnd(right, padLength, '0'));
+  return right ? (left + '.' + right) : left;
 };

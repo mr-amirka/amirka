@@ -1,4 +1,5 @@
 const isObjectLike = require('./isObjectLike');
+const isNumber = require('./isNumber');
 const half = require('./half');
 const decode = require('./tryJsonParse');
 
@@ -14,13 +15,12 @@ function base(s) {
   const a = decodeURIComponent(half(s, '?', 1)[1]).split('&');
   const l = a.length;
   const r = {};
-  let w, t, k, v, b, c, d, j, n, ni, q, i = 0; // eslint-disable-line
+  let w, t, k, v, _v, b, c, d, j, n, ni, q, i = 0; // eslint-disable-line
   if (l < 1) return r;
   for (;i < l; i++) {
     k = (w = half(a[i], '='))[0];
     if (!k) continue;
-    v = w[1].replace(expSpace, ' ');
-    isNaN(parseInt(v)) && (v = decode(w[1].replace(expSpace, ' ')));
+    isNumber(_v = decode(v = w[1].replace(expSpace, ' '))) || (v = _v);
     b = [];
     while (w = expBrackets.exec(k)) b.push(w[1]);
     if ((c = b.length) < 1) {
